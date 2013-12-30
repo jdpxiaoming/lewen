@@ -1,5 +1,26 @@
 <resources>
-
     <string name="app_name">VideoSecure</string>
+    <string name="home_page">主菜单</string>
+    <string name="home_video">视频</string>
+    <string name="home_yuntai">云台</string>
+    <string name="home_map">地图</string>
+    <string name="OK">确定</string>
+    <string name="special_tip">此为专题信息，请到电脑端查看或者开启浏览器查看。</string>
+ 	<string name="more">更多</string>
+ 	<string name="loadinfo">加载中....</string>
+ 	<string name="exitshow">确认退出</string>
+ 	<string name="serverurl">http://58.210.186.110/android2.0/verInfo.xml</string>
+ 	<string name="localpic_path">/sipacnews/pictures/</string>
+ 	<string name="localpic_news_path">/sipacnews/pictures/news/</string>
+ 	<string name="localpic_special_path">/sipacnews/pictures/specials/</string>
+ 	<string name="localpic_talk_path">/sipacnews/pictures/talks/</string>
+ 	<string name="localpic_toutiao_path">/sipacnews/pictures/toutiao/</string>
+ 	<string name="localdb_path">/sipacnews/database/</string>
+ 	
+ 	<string name="pull_to_refresh_pull_label">下拉可以刷新</string>
+    <string name="pull_to_refresh_release_label">松开可以刷新</string>
+    <string name="pull_to_refresh_refreshing_label">加载中...</string>
+    <string name="pull_to_refresh_tap_label">点击刷新</string>
+    <string name="no_internet">网络不可用</string>
 
 </resources>
