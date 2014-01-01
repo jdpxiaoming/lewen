@@ -1,21 +1,39 @@
 <resources>
     <string name="app_name">VideoSecure</string>
+    
     <string name="home_page">主菜单</string>
     <string name="home_video">视频</string>
     <string name="home_yuntai">云台</string>
     <string name="home_map">地图</string>
+    <string name="menue_title">视频监控系统</string>
+    <string name="map_title">地图模式</string>
+    
+	<string name="video_speak">对讲</string>
+	<string name="video_yinliang">音量</string>
+	<string name="video_riverse_video">录像回放</string>
+	<string name="video_riverse_history">轨迹回放</string>
+	
+	<string name="back">返回</string>
+	<string name="ranking">排行</string>
+	<string name="mode_map">地图模式</string>
+		
     <string name="OK">确定</string>
     <string name="special_tip">此为专题信息，请到电脑端查看或者开启浏览器查看。</string>
  	<string name="more">更多</string>
  	<string name="loadinfo">加载中....</string>
  	<string name="exitshow">确认退出</string>
- 	<string name="serverurl">http://58.210.186.110/android2.0/verInfo.xml</string>
- 	<string name="localpic_path">/sipacnews/pictures/</string>
- 	<string name="localpic_news_path">/sipacnews/pictures/news/</string>
- 	<string name="localpic_special_path">/sipacnews/pictures/specials/</string>
- 	<string name="localpic_talk_path">/sipacnews/pictures/talks/</string>
- 	<string name="localpic_toutiao_path">/sipacnews/pictures/toutiao/</string>
- 	<string name="localdb_path">/sipacnews/database/</string>
+ 	
+ 	<string name="yuntai_shensuo">缩伸</string>
+ 	<string name="yuntai_jiaoju">焦距</string>
+ 	<string name="yuntai_guangquan">光圈</string>
+ 	<string name="yuntai_speed">转动速度</string>
+ 	
+ 	<string name="login_title">用户登录</string>
+ 	<string name="login_user_hint">请输入用户名</string>
+ 	<string name="login_passw_hint">请输入密码</string>
+ 	<string name="login_save_txt">保存密码</string>
+ 	
+ 	<string name="save_title">我的收藏</string>
  	
  	<string name="pull_to_refresh_pull_label">下拉可以刷新</string>
     <string name="pull_to_refresh_release_label">松开可以刷新</string>
@@ -23,4 +41,13 @@
     <string name="pull_to_refresh_tap_label">点击刷新</string>
     <string name="no_internet">网络不可用</string>
 
+    <string-array name="home_menue">
+        <item>用户登录</item>
+        <item>全球演示</item>
+        <item>博客直通车</item>
+        <item>我的收藏</item>
+        <item>使用指南</item>
+    </string-array>
+    
+    
 </resources>

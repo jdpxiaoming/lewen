@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout 
+	    		xmlns:android="http://schemas.android.com/apk/res/android"
+				android:orientation="horizontal" 
+				android:layout_width="fill_parent"
+				android:layout_height="60dp"
+				android:background="@drawable/menue_head_bg"
+				>
+    			<TextView 
+    			    		android:id="@+id/titleOfToperBarDetail"
+    			    		android:layout_width="fill_parent"
+    			    		android:layout_height="fill_parent"
+    			    		android:text="@string/app_name"
+    			    		android:textColor="@android:color/background_light"
+    			    		android:textSize="22sp"
+    			    		android:textStyle="bold"
+    			    		android:layout_centerInParent="true"
+    			    		android:gravity="center"
+    			    		/>
+    			<Button
+    			    		android:id="@+id/rightButtonOfToperBarDetal"
+    			    		android:layout_width="50dp"
+    			    		android:layout_height="35dp"
+    			    		android:background="@drawable/top_right_button_selector"
+    			    		android:layout_centerVertical="true"
+    			    		android:layout_alignParentRight="true"
+    			    		android:layout_margin="10dp"
+    			    		android:textColor="@android:color/background_light"
+    			    		android:gravity="center"
+    			    		/>
+    			<Button
+    			    		android:id="@+id/leftButtonOfToperBarDetail" 
+    			    		android:layout_width="70dp"
+    			    		android:layout_height="35dp"
+    			    		android:background="@drawable/top_left_button_selector"
+    			    		android:layout_centerVertical="true"
+    			    		android:layout_alignParentLeft="true"
+    			    		android:textColor="@android:color/background_light"
+    			    		android:gravity="center"
+    			    		android:paddingLeft="5dp"
+    			    		android:layout_marginLeft="5dp"
+    			    		/>
+</RelativeLayout>

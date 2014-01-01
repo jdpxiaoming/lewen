@@ -7,14 +7,14 @@
     android:padding="0dp" >
 
     <LinearLayout
-        android:id="@+id/HotTopic"
+        android:id="@+id/lin_menue"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_weight="1"
         android:orientation="vertical" >
 
         <ImageView
-            android:id="@+id/imageHotTopic"
+            android:id="@+id/image_menue"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_weight="2"
@@ -23,24 +23,25 @@
         </ImageView>
 
         <TextView
+            android:id="@+id/text_menue"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_weight="3"
             android:gravity="center"
             android:text="@string/home_page"
-            android:textSize="10sp"
+            android:textSize="12sp"
             android:textStyle="bold" />
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/JustIn"
+        android:id="@+id/lin_video"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_weight="1"
         android:orientation="vertical" >
 
         <ImageView
-            android:id="@+id/imageJustIn"
+            android:id="@+id/image_video"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_weight="2"
@@ -49,24 +50,25 @@
         </ImageView>
 
         <TextView
+            android:id="@+id/text_video"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_weight="3"
             android:gravity="center"
             android:text="@string/home_video"
-            android:textSize="10sp"
+            android:textSize="12sp"
             android:textStyle="bold" />
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/Popular"
+        android:id="@+id/lin_yuntai"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_weight="1"
         android:orientation="vertical" >
 
         <ImageView
-            android:id="@+id/imagePopular"
+            android:id="@+id/image_yuntai"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_weight="2"
@@ -75,24 +77,25 @@
         </ImageView>
 
         <TextView
+            android:id="@+id/text_yuntai"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_weight="3"
             android:gravity="center"
             android:text="@string/home_yuntai"
-            android:textSize="10sp"
+            android:textSize="12sp"
             android:textStyle="bold" />
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/Commented"
+        android:id="@+id/lin_map"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_weight="1"
         android:orientation="vertical" >
 
         <ImageView
-            android:id="@+id/imageCommented"
+            android:id="@+id/image_map"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_weight="2"
@@ -101,12 +104,13 @@
         </ImageView>
 
         <TextView
+            android:id="@+id/text_map"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_weight="3"
             android:gravity="center"
             android:text="@string/home_map"
-            android:textSize="10sp"
+            android:textSize="12sp"
             android:textStyle="bold" />
     </LinearLayout>
 

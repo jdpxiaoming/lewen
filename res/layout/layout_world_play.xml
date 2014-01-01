@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/home_bg"
+    android:gravity="center_vertical"
+    android:orientation="vertical" >
+
+    <include
+        android:layout_width="fill_parent"
+        android:layout_height="60dp"
+        layout="@layout/toper_bar_world_play" 
+        />
+
+    <ListView
+        android:id="@+id/listviewOfWorldPlay"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" 
+        /> 
+        
+    <com.baidu.mapapi.map.MapView
+		android:id="@+id/mapViewOfWorldPlay"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:clickable="true" 
+		/>     
+		
+</LinearLayout>
