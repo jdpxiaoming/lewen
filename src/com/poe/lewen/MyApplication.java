@@ -93,9 +93,22 @@ public class MyApplication extends Application {
             }
             else{
             	MyApplication.getInstance().m_bKeyRight = true;
-            	Toast.makeText(MyApplication.getInstance().getApplicationContext(), 
-                        "key认证成功", Toast.LENGTH_LONG).show();
+//            	Toast.makeText(MyApplication.getInstance().getApplicationContext(), 
+//                        "key认证成功", Toast.LENGTH_LONG).show();
             }
         }
     }
+    
+    
+	// 没有网络的提示
+	public  void NoNetWorkTips() {
+		Toast.makeText(mInstance, "您的网络不可用,请设置！", Toast.LENGTH_LONG).show();
+	}
+	
+	// 剪贴板复制提示
+		public  void throwTips(String str) {
+			
+			Toast.makeText(mInstance, str, 2200).show();
+			
+		}
 }

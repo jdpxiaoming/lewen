@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout 
+    			xmlns:android="http://schemas.android.com/apk/res/android"
+			    android:layout_width="fill_parent"
+			    android:layout_height="fill_parent"
+			    android:background="#0d2b54"
+			    >
+    	<ImageView 
+    	    		android:id="@+id/imageOfHelpShowImageItem"
+    	    		android:layout_width="fill_parent"
+    	    		android:layout_height="fill_parent"
+    	    		android:scaleType="centerCrop"
+    	    		android:src="@drawable/android_help1"
+    	    		android:layout_centerInParent="true"
+    	    		/>
+    	<!-- 
+    	<ImageButton
+    	    		android:id="@+id/btnOfHelpShowImageItem"
+    	    		android:layout_width="wrap_content"
+    	    		android:layout_height="wrap_content"
+    	    		android:background="@drawable/android_help_button1"
+    	    		android:layout_alignParentRight="true"
+    	    		android:layout_alignParentBottom="true"
+    	    		android:contentDescription="@string/contentDescription"
+    	    		android:layout_marginBottom="10dp"
+    	    		android:layout_marginRight="10dp"
+    	    		/>
+    	    		 -->
+</RelativeLayout>

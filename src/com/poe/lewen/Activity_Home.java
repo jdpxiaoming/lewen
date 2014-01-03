@@ -28,7 +28,6 @@ public class Activity_Home extends BaseActivity  implements OnClickListener{
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.main);
-
 	}
 
 	@Override
@@ -77,14 +76,23 @@ public class Activity_Home extends BaseActivity  implements OnClickListener{
 					startActivity(new Intent(Activity_Home.this,Activity_WorldPlay.class));
 				}
 				
-				if(arg2==3){
+				if(arg2==2){
 					startActivity(new Intent(Activity_Home.this,Activity_Save.class));
 				}
 				
+				if(arg2 ==3){
+					startActivity(new Intent(Activity_Home.this,HelpShowImageActivity.class));
+				}
 			}
 		});
 		
 		setadapter();
+		
+		 //如果首次登陆 进入 登陆界面 ，否则 直接结束当前页面
+		 if(MyApplication.getPreferenceData("first")==null){
+			 MyApplication.pushPreferenceData("first", "yes");
+				startActivity(new Intent(Activity_Home.this,HelpShowImageActivity.class));
+		 }
 	}
 
 	private void setadapter() {

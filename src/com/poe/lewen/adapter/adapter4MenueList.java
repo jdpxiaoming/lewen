@@ -14,7 +14,8 @@ public class adapter4MenueList extends BaseAdapter {
 	private String [] datasets;
 	private LayoutInflater lin;
 	private int[] icons={R.drawable.icon_menue_login,R.drawable.icon_menue_yanshi,
-			R.drawable.icon_menue_boke,R.drawable.icon_menue_save,R.drawable.icon_menue_help};
+//			R.drawable.icon_menue_boke,
+			R.drawable.icon_menue_save,R.drawable.icon_menue_help};
 	
 	
 	
