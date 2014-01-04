@@ -1,8 +1,10 @@
 package com.poe.lewen;
 
 import com.poe.lewen.adapter.adapter4MenueList;
+import com.poe.lewen.adapter.adapter4YanshiList;
+
+import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -13,11 +15,11 @@ import android.widget.Button;
 import android.widget.ListView;
 
 //我的收藏
-public class Activity_Save extends BaseActivity {
+public class Activity_Save extends  Activity {
 
 	private Button back;
 	private ListView listview ;
-	
+	private adapter4YanshiList adapter ;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -25,10 +27,9 @@ public class Activity_Save extends BaseActivity {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.layout_save);
-
+		init();
 	}
 
-	@Override
 	public void init() {
 		back		=	(Button) findViewById(R.id.leftButtonOfToperBarSave);
 		
@@ -42,26 +43,19 @@ public class Activity_Save extends BaseActivity {
 				finish();
 			}
 		});
-		listview.setOnItemClickListener(new OnItemClickListener() {
+		//set list adapter
+				adapter = new  adapter4YanshiList(Activity_Save.this);
+				listview.setAdapter(adapter);
+				
+				listview.setOnItemClickListener(new OnItemClickListener(	) {
 
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-			}
-		});
-		
-		setadapter();
+					@Override
+					public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+						// TODO Auto-generated method stub
+						MyApplication.selectChannel = arg2;
+						startActivity(new Intent(Activity_Save.this, Activity_Video.class));
+						finish();
+					}
+				});
 	}
-
-	private void setadapter() {
-		// TODO Auto-generated method stub
-		String[] datasets = getResources().getStringArray(R.array.home_menue);
-		BaseAdapter adapter = new adapter4MenueList(datasets, Activity_Save.this.getApplicationContext());
-		listview.setAdapter(adapter);
-	}
-
-	@Override
-	public void refresh(Object... param) {
-
-	}
-	
 }

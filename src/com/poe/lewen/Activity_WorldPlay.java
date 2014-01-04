@@ -6,20 +6,26 @@ import com.baidu.mapapi.map.MapController;
 import com.baidu.mapapi.map.MapPoi;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.platform.comapi.basestruct.GeoPoint;
+import com.poe.lewen.adapter.adapter4YanshiList;
+
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class Activity_WorldPlay extends BaseActivity {
+public class Activity_WorldPlay extends  Activity {
 
 	private Button back,btn_model;
 	private int RANKING_MODE =1;//0:普通排行 1：排行 2：地图模式
 	private ListView listview;
+	private adapter4YanshiList adapter ;
 	/**
 	 *  MapView 是地图主控件
 	 */
@@ -47,10 +53,9 @@ public class Activity_WorldPlay extends BaseActivity {
         }
 		setContentView(R.layout.layout_world_play);
 		
-		
+		init();
 	}
 
-	@Override
 	public void init() {
 		// TODO Auto-generated method stub
 		back		=	(Button) findViewById(R.id.leftButtonOfToperBarWorldPlay);
@@ -79,18 +84,33 @@ public class Activity_WorldPlay extends BaseActivity {
 				
 				if(RANKING_MODE==2){
 					RANKING_MODE = 1;
-					btn_model.setBackgroundResource(R.drawable.img_btn_world_play_mode2);
+					btn_model.setBackgroundResource(R.drawable.img_btn_model3);
 					//跳转到 listview
 					listview.setVisibility(View.VISIBLE);
 				}else{
 					RANKING_MODE=2;
-					btn_model.setBackgroundResource(R.drawable.img_btn_world_play_mode3);
+					btn_model.setBackgroundResource(R.drawable.img_btn_model4);
 					//跳转到地图模式
 					listview.setVisibility(View.GONE);
 				}
 			}
 		});
 		
+		
+		//set list adapter
+		adapter = new  adapter4YanshiList(Activity_WorldPlay.this);
+		listview.setAdapter(adapter);
+		
+		listview.setOnItemClickListener(new OnItemClickListener(	) {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+				// TODO Auto-generated method stub
+				MyApplication.selectChannel = arg2;
+				startActivity(new Intent(Activity_WorldPlay.this, Activity_Video.class));
+				finish();
+			}
+		});
 	}
 	//初始化 地图
 	private void initMap(){
@@ -185,12 +205,6 @@ public class Activity_WorldPlay extends BaseActivity {
 	   
 	
 	};
-
-	@Override
-	public void refresh(Object... param) {
-		// TODO Auto-generated method stub
-
-	}
 
 	@Override
 	protected void onPause() {
