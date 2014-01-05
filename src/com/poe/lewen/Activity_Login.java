@@ -8,11 +8,11 @@ import com.mm.android.avnetsdk.param.AV_OUT_Login;
 import com.mm.android.avnetsdk.param.ConnectStatusListener;
 import com.poe.lewen.bean.Constant;
 import com.poe.lewen.util.HttpUtil;
+import com.poe.lewen.util.Packet;
 import com.poe.lewen.util.Tool;
 import android.R.integer;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.AsyncTask;
@@ -166,22 +166,24 @@ public class Activity_Login extends Activity {
 			// TODO Auto-generated method stub
 			Log.e("poe", "doInBackground loging...");
 //			HttpUtil.login(edit_user.getText().toString(), edit_passwd.getText().toString());
-			if (netSDKIsInit) { // 如果NetSDK初始化成功才登陆
-				log_handle = AVNetSDK.AV_Login(refInParam, refOutParam);// 登录失败返回null，调用AV_GetLastError来获取具体的错误信息
-				Log.d("jhe", refOutParam.strDeviceType+":"+refOutParam.nAnalogChnNum+":"+refOutParam.nChannelCount+":"+refOutParam.nDigitalChnNum+":"+refOutParam.nProtocolVersion);
-				mChannelCount=refOutParam.nChannelCount;
-				for(int i =0;i<mChannelCount;i++)
-				{
-					String channel = "通道 " +String.format("%02d", i+1);
-					mChannelList.add(i,channel);
-					
-				}
-				spinnerAdapter=new ArrayAdapter<String>(mActivity, android.R.layout.simple_spinner_item, mChannelList);
-				spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-				//spinner.setSelection(0);
-				
-				return "success";
-			}
+			Packet.send(edit_user.getText().toString(), edit_passwd.getText().toString());
+			
+//			if (netSDKIsInit) { // 如果NetSDK初始化成功才登陆
+//				log_handle = AVNetSDK.AV_Login(refInParam, refOutParam);// 登录失败返回null，调用AV_GetLastError来获取具体的错误信息
+//				Log.d("jhe", refOutParam.strDeviceType+":"+refOutParam.nAnalogChnNum+":"+refOutParam.nChannelCount+":"+refOutParam.nDigitalChnNum+":"+refOutParam.nProtocolVersion);
+//				mChannelCount=refOutParam.nChannelCount;
+//				for(int i =0;i<mChannelCount;i++)
+//				{
+//					String channel = "通道 " +String.format("%02d", i+1);
+//					mChannelList.add(i,channel);
+//					
+//				}
+//				spinnerAdapter=new ArrayAdapter<String>(mActivity, android.R.layout.simple_spinner_item, mChannelList);
+//				spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//				//spinner.setSelection(0);
+//				
+//				return "success";
+//			}
 			return null;
 		}
 
@@ -190,8 +192,7 @@ public class Activity_Login extends Activity {
 			// TODO Auto-generated method stub
 			if(null!=result){
 				Tool.showMsg(mActivity, "登录成功，跳转到Video播放页面！");
-				
-				startActivity(new Intent(mActivity,Activity_Video.class));
+//				startActivity(new Intent(mActivity,Activity_Video.class));
 			}
 		}
 		
