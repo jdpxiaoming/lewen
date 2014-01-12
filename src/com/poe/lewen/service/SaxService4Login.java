@@ -1,6 +1,7 @@
-package com.poe.lewen.util;
+package com.poe.lewen.service;
 
 import java.io.IOException;
+
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -26,15 +27,13 @@ public class SaxService4Login {
 
 			return handler.getData();
 		} catch (ParserConfigurationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SAXException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		} 
 		return null;
 	}
 
@@ -42,7 +41,6 @@ public class SaxService4Login {
 
 		private rsp_login rsp = null;
 		private String tag = null;
-		private boolean hasAttr = true;
 
 		@Override
 		public void startDocument() throws SAXException {
@@ -72,21 +70,21 @@ public class SaxService4Login {
 			if (tag != null) {
 				String data = new String(ch, start, length);
 					if ("type".equals(tag)) {
-						rsp.setType(data.trim().equals("null")?"":rsp.getType()+data.trim());
+						rsp.setType(rsp.getType()!=null?rsp.getType()+data.trim():data.trim());
 					} else if ("cmd".equals(tag)) {
-						rsp.setCmd(data.trim().equals("null")?"":rsp.getCmd()+data.trim());
+						rsp.setCmd(rsp.getCmd()!=null?rsp.getCmd()+data.trim():data.trim());
 					} else if ("userId".equals(tag)) {
-						rsp.setUserId(data.equals("null")?"":rsp.getUserId()+data.trim());
+						rsp.setUserId(rsp.getUserId()!=null?rsp.getUserId()+data.trim():data.trim());
 					} else if ("roleId".equals(tag)) {
-						rsp.setRoleId(data.equals("null")?"":rsp.getRoleId()+data.trim());
+						rsp.setRoleId(rsp.getRoleId()!=null?rsp.getRoleId()+data.trim():data.trim());
 					} else if ("userLoginRet".equals(tag)) {
-						rsp.setUserLoginRet(data.equals("null")?"":rsp.getUserLoginRet()+data.trim());
+						rsp.setUserLoginRet(rsp.getUserLoginRet()!=null?rsp.getUserLoginRet()+data.trim():data.trim());
 					} else if ("ierrorCode".equals(tag)) {
-						rsp.setIerrorCode(data.equals("null")?"":rsp.getIerrorCode()+data.trim());
+						rsp.setIerrorCode(rsp.getIerrorCode()!=null?rsp.getIerrorCode()+data.trim():data.trim());
 					} else if ("menuShow".equals(tag)) {
-						rsp.setMenuShow(data.equals("null")?"":rsp.getMenuShow()+data.trim());
+						rsp.setMenuShow(rsp.getMenuShow()!=null?rsp.getMenuShow()+data.trim():data.trim());
 					} else if ("err".equals(tag)) {
-						rsp.setErr(data.equals("null")?"":rsp.getErr()+data.trim());
+						rsp.setErr(rsp.getErr()!=null?rsp.getErr()+data.trim():data.trim());
 					} 
 			}
 		}
@@ -96,13 +94,18 @@ public class SaxService4Login {
 				throws SAXException {
 			// TODO Auto-generated method stub
 			super.endElement(uri, localName, qName);
+			
+//			if("JoyMon".equals(localName)){
+//				System.out.println(rsp.getUserId());
+//				
+//				return rsp;
+//			}
 		}
 
 		@Override
 		public void endDocument() throws SAXException {
 			// TODO Auto-generated method stub
 			super.endDocument();
-
 		}
 
 		public rsp_login getData() {

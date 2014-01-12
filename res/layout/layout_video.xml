@@ -254,6 +254,7 @@
                             android:src="@drawable/selector_btn_video_guij" 
                             android:scaleType="centerInside"
                             android:background="#00000000"
+                            android:visibility="gone"
                             />
                     </LinearLayout>
             </LinearLayout>

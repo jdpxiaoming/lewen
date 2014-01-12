@@ -1,24 +1,37 @@
 package com.poe.lewen.util;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.Socket;
-
+import java.util.List;
 import org.xml.sax.InputSource;
 
+import android.os.Handler;
 import android.util.Log;
-
 import com.poe.lewen.MyApplication;
 import com.poe.lewen.bean.Constant;
-import com.poe.lewen.bean.rsp_login;
+import com.poe.lewen.bean.channel;
+import com.poe.lewen.bean.channelOnLine;
+import com.poe.lewen.service.SaxService4Channel;
+import com.poe.lewen.service.XmlToListService;
+import com.poe.lewen.socket.Loger;
+import com.poe.lewen.socket.TCPSocketCallback;
+import com.poe.lewen.socket.TCPSocketConnect;
 
 /**
  * typedef struct tagLoginReq { char userName[32]; char userPsw[64];//需要Md5加密
  * int userType; char loginIp[32]; char pcName[32]; }LoginReq;
- * 
  */
 public class Packet {
+	
+	static TCPSocketConnect connect = null ;
+	
 	private byte[] buf = null;
-
+	
+	private static int login_req = -1;//0 :登录 1：获取播放列表 2：获取直播流 3：心跳保持
+	
 	/**
 	 * 将int转为低字节在前，高字节在后的byte数组
 	 */
@@ -99,65 +112,175 @@ public class Packet {
 	}
 
 	/**
-	 * 发送测试
+	 * 登录
 	 */
-	public static void send(String userName, String passwd) {
+	public static void login(final String userName, final String passwd) {
+		
+		connect = new TCPSocketConnect(new TCPSocketCallback() {
+			
+			@Override
+			public void tcp_receive(byte[] buffer)  {
+				String str = "";
+				ByteArrayOutputStream ba =new ByteArrayOutputStream();
+				try {
+					ba.write(buffer);
+					 str =new String(ba.toByteArray(),"GBK");
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				System.out.println(str);
+				
+				switch(login_req){
+				case 0://login
+					try {
+						MyApplication.rsp_login = XmlToListService.GetLogin(str);
+						if(MyApplication.rsp_login!=null){
+							System.out.println(MyApplication.rsp_login.getUserId());
+							
+							//发送请求：获取 播放列表
+							String tmp =  XMLUtil.MakeXML4List(MyApplication.rsp_login.getUserId());
+							byte[] req =new Packet(Constant.REQ_GET_ORG_STRUCTURE, tmp.length(), 1, tmp).getBuf();
+							connect.write(req);
+							Log.e("req", bytesToHexString(req));
+							login_req = 1;
+						}
+					} catch (UnsupportedEncodingException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					break;
+				case 1://play list
+					//获取播放列表
+					try {
+						List<channel> list =XmlToListService.GetChannelList(str);
+						if(list!=null){
+							for(channel c: list){
+								System.out.println(c.getName());
+							}
+							
+							//发送请求：获取 第一个直播地址
+							String tmp =  XMLUtil.MakeXML4PlayAddress(list.get(4).getId());
+							byte[] req =new Packet(Constant.REQ_GET_VIDEO_ADDR, tmp.length(), 1, tmp).getBuf();
+							connect.write(req);
+							Log.e("req", bytesToHexString(req));
+							login_req = 2;
+						}
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					break;
+				case 2://real rtmp address
+					try {
+						channelOnLine cline1 =XmlToListService.GetVideoAddress(str);
+						if(null!=cline1){
+							System.out.println(cline1.getPlayer_Addr());
+						}
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					break;
+				}
+				
+			}
+			
+			@Override
+			public void tcp_disconnect() {
+				// TODO Auto-generated method stub
+				Loger.i("tcp_disconnect()");
+			}
+			
+			@Override
+			public void tcp_connected() {
+				Loger.i("tcp_connect()");
+				//login 数据
+				String tmp = XMLUtil.MakeXML(userName, passwd);
+				byte[] req =new Packet(Constant.REQ_LOGIN, tmp.length(), 1, tmp).getBuf();
+				connect.write(req);
+				Log.e("req", bytesToHexString(req));
+				login_req = 0;
+				
+			}
+		});
+		
+		connect.setAddress(Constant.str_login_ip, Constant.login_port);
+		new Thread(connect).start();
+		
+	}
+
+	private static InputSource getInputSource(Socket sock) throws UnsupportedEncodingException, IOException {
+		InputStreamReader streamReader = new InputStreamReader(sock.getInputStream(),"GBK");
+		InputSource inputSource = new InputSource(streamReader);
+		return inputSource;
+	}
+
+	
+
+	/**
+	 * 登录
+	 */
+	public static void getPlayingList(String userId) {
 
 		try {
+			String tmp =  XMLUtil.MakeXML4List(userId);
+			Socket sock = MyApplication.getInstance().getSocket();
+			byte[] req =new Packet(0XE007, tmp.length(), 1, tmp).getBuf();
+			Log.e("req", bytesToHexString(req));
+			sock.getOutputStream().write(req);
 
-			String tmp = MakeXML(userName, passwd);
-
-			Socket sock = new Socket(Constant.str_login_ip, Constant.login_port);
-			sock.getOutputStream().write(new Packet(0XA001, tmp.length(), 1, tmp).getBuf());
-
-//			byte[] recvHead = new byte[4];
-//			int cForm;
-//
-//			sock.getInputStream().read(recvHead, 0, 4);
-//
-//			cForm = Common.bytes2Integer(recvHead);
-//			System.out.println(cForm);
-			
 			//解析文件流 inputstream
-			SaxService4Login sax = new SaxService4Login();
+			SaxService4Channel sax = new SaxService4Channel();
+			InputSource inputSource = getInputSource(sock);
+			List<channel> list =sax.getRSP(inputSource); 
 			
-			InputStreamReader streamReader = new InputStreamReader(sock.getInputStream(),"GBK");
-			InputSource inputSource = new InputSource(streamReader);
-			rsp_login rsp =sax.getRSP(inputSource); 
-			
-			if(null!=rsp){
-				Log.e("rsp", rsp.getType());
-				MyApplication.getInstance().throwTips("返回错误："+rsp.getErr());
+			//show 
+			if(list!=null&&list.size()>0){
+				for(channel c :list){
+					Log.e("rsp","频道:  "+ c.getName());
+				}
 			}
-			// sock.close();
+//			 sock.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-
-	private static String MakeXML(String userName, String passwd) {
-		// TODO Auto-generated method stub
-		// <JoyMon>
-		// <type>req</type>
-		// <cmd>0xA001</cmd>
-		// <userName>102</userName>
-		// <userPsw>e10adc3949ba59abbe56e057f20f883e</userPsw>
-		// <loginType>0</loginType>
-		// <userType>1</userType>
-		// <loginIp>127.0.0.1</loginIp>
-		// <pcName>nyPcName</pcName>
-		// </JoyMon>
-		StringBuffer sb = new StringBuffer();
-		sb.append("<JoyMon>");
-		sb.append("<type>req</type>");
-		sb.append("<cmd>0xA001</cmd>");
-		sb.append("<userName>" + userName + "</userName>");
-		sb.append("<userPsw>" + Md5Util.getMD5Str(passwd) + "</userPsw>");
-		sb.append("<loginType>0</loginType>");
-		sb.append("<loginIp>" + Constant.str_login_ip + "</loginIp>");
-		sb.append("<pcName>nyPcName</pcName>");
-		sb.append("</JoyMon>");
-
-		return sb.toString();
+	
+	
+	
+	/**
+	 * bytes 转化为 0x 16进制格式 
+	 * @param src
+	 * @return
+	 */
+	public static String bytesToHexString(byte[] src){  
+		
+	    StringBuilder stringBuilder = new StringBuilder("");  
+	    
+	    if (src == null || src.length <= 0) {  
+	        return null;  
+	    }  
+	    
+	    for (int i = 0; i < src.length; i++) {  
+	        int v = src[i] & 0xFF;  
+	        String hv = Integer.toHexString(v);  
+	        if (hv.length() < 2) {  
+	            stringBuilder.append(0);  
+	        }  
+	        stringBuilder.append(hv);  
+	    }  
+	    return stringBuilder.toString();  
+	}  
+	
+	public static void close(){
+		if(connect!=null){
+			connect.disconnect();
+		}
 	}
+	
 }

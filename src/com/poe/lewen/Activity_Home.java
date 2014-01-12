@@ -1,20 +1,15 @@
 package com.poe.lewen;
 
 import com.poe.lewen.adapter.adapter4MenueList;
-
-import android.content.DialogInterface;
+import com.poe.lewen.util.Packet;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 
 public class Activity_Home extends BaseActivity {
 
@@ -81,5 +76,14 @@ public class Activity_Home extends BaseActivity {
 	@Override
 	public void refresh(Object... param) {
 
+	}
+	
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		MyApplication.rsp_login=null;
+//		MyApplication.getInstance().closeSocket();
+		Packet.close();
 	}
 }

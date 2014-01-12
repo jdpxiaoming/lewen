@@ -1,5 +1,8 @@
 package com.poe.lewen;
 
+import java.io.IOException;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import com.baidu.mapapi.BMapManager;
@@ -11,6 +14,7 @@ import com.mm.android.avnetsdk.param.AV_IN_Login;
 import com.mm.android.avnetsdk.param.AV_OUT_Login;
 import com.mm.android.avnetsdk.param.ConnectStatusListener;
 import com.poe.lewen.bean.Constant;
+import com.poe.lewen.bean.rsp_login;
 
 import android.R.integer;
 import android.app.Application;
@@ -34,16 +38,22 @@ public class MyApplication extends Application {
 	 
 	
 //	-----、、
-	private boolean netSDKIsInit = false; // NetSDK是否初始化成功标志
+	private  boolean netSDKIsInit = false; // NetSDK是否初始化成功标志
 	public static AV_HANDLE log_handle = null; // 登陆句柄
 	private AV_IN_Login refInParam = null; // 登陆输入参数
 	private AV_OUT_Login refOutParam = null; // 登陆输出参数
 	private int mChannelCount=0;	//连接设备的通道数
 	public static ArrayList<String> mChannelList = new ArrayList<String>();
+	private String username="admin";
+	private String password	="123456";
+	
+	public static rsp_login rsp_login;
 	/**
 	 * 用户在列表模式中选择的摄像头 index default:0
 	 */
 	public static int selectChannel = 0;
+	
+	private Socket sock =null;
 	
 	@Override
 	public void onCreate() {
@@ -56,7 +66,14 @@ public class MyApplication extends Application {
 		
 		netSDKIsInit = AVNetSDK.AV_Startup(mInstance.getPackageName());	
 		
-		new loginTask().execute();
+		
+//		new loginTask().execute();
+	}
+	
+	public void reLogin(String username,String password,loaded4login ll){
+		this.username = username;
+		this.password = password;
+		new loginTask().execute(ll);
 	}
 	
 	public void initEngineManager(Context context) {
@@ -80,7 +97,35 @@ public class MyApplication extends Application {
 		editor.commit();
 	}
 	
+	public Socket getSocket(){
+		if(null==sock||sock.isClosed()){
+			try {
+				sock =new Socket(Constant.str_login_ip, Constant.login_port);
+				
+				//启动心跳线程执行 心跳发送 每分钟一次
+				
+			} catch (UnknownHostException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return sock;
+	}
 	
+	public void closeSocket(){
+		if(null!=sock){
+			try {
+				sock.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			sock = null;
+		}
+	}
 	public static MyApplication getInstance() {
 		return mInstance;
 	}
@@ -140,9 +185,9 @@ public class MyApplication extends Application {
 			
 		}
 		
-		class loginTask extends AsyncTask<Void, integer, String>{
+		class loginTask extends AsyncTask<loaded4login, integer, String>{
 
-
+			private loaded4login login_interface = null;
 			
 			@Override
 			protected void onPreExecute() {
@@ -151,8 +196,8 @@ public class MyApplication extends Application {
 				refInParam = new AV_IN_Login();
 				refInParam.strDevIP = Constant.str_login_ip;
 				refInParam.nDevPort = Constant.login_port;
-				refInParam.strUsername = "admin";
-				refInParam.strPassword = "123456";
+				refInParam.strUsername = username;
+				refInParam.strPassword = password;
 				refInParam.bReconnect = false;
 				refInParam.connStatusListener = new ConnectStatusListener() {
 
@@ -168,7 +213,11 @@ public class MyApplication extends Application {
 			}
 
 			@Override
-			protected String doInBackground(Void... params) {
+			protected String doInBackground(loaded4login... params) {
+				
+				if(params!=null&&params.length>0)
+					login_interface = params[0];
+				
 				if (netSDKIsInit) { // 如果NetSDK初始化成功才登陆
 					log_handle = AVNetSDK.AV_Login(refInParam, refOutParam);// 登录失败返回null，调用AV_GetLastError来获取具体的错误信息
 					Log.d("jhe", refOutParam.strDeviceType+":"+refOutParam.nAnalogChnNum+":"+refOutParam.nChannelCount+":"+refOutParam.nDigitalChnNum+":"+refOutParam.nProtocolVersion);
@@ -191,7 +240,13 @@ public class MyApplication extends Application {
 			protected void onPostExecute(String result) {
 				if(null!=result){
 					throwTips("登录成功~@！");
+					if(null!=login_interface)
+					login_interface.done();
 				}
-			}	
+			}
 		}
+		
+	 interface loaded4login{
+		 void done();
+	 }
 }
