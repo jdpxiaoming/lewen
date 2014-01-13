@@ -2,19 +2,14 @@ package com.poe.lewen.util;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.net.Socket;
 import java.util.List;
-import org.xml.sax.InputSource;
-
 import android.os.Handler;
 import android.util.Log;
 import com.poe.lewen.MyApplication;
 import com.poe.lewen.bean.Constant;
 import com.poe.lewen.bean.channel;
 import com.poe.lewen.bean.channelOnLine;
-import com.poe.lewen.service.SaxService4Channel;
 import com.poe.lewen.service.XmlToListService;
 import com.poe.lewen.socket.Loger;
 import com.poe.lewen.socket.TCPSocketCallback;
@@ -26,12 +21,15 @@ import com.poe.lewen.socket.TCPSocketConnect;
  */
 public class Packet {
 	
+	public static Handler handler = null;
+	
 	static TCPSocketConnect connect = null ;
 	
 	private byte[] buf = null;
 	
 	private static int login_req = -1;//0 :登录 1：获取播放列表 2：获取直播流 3：心跳保持
 	
+	private static boolean isConnected = false;
 	/**
 	 * 将int转为低字节在前，高字节在后的byte数组
 	 */
@@ -110,13 +108,13 @@ public class Packet {
 	public byte[] getBuf() {
 		return buf;
 	}
-
-	/**
-	 * 登录
+	
+	/*
+	 * 初始化 tcp连接
 	 */
-	public static void login(final String userName, final String passwd) {
-		
-		connect = new TCPSocketConnect(new TCPSocketCallback() {
+  private static 	void init(){
+	  
+	  connect = new TCPSocketConnect(new TCPSocketCallback() {
 			
 			@Override
 			public void tcp_receive(byte[] buffer)  {
@@ -129,127 +127,147 @@ public class Packet {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				
 				System.out.println(str);
-				
-				switch(login_req){
-				case 0://login
-					try {
-						MyApplication.rsp_login = XmlToListService.GetLogin(str);
-						if(MyApplication.rsp_login!=null){
-							System.out.println(MyApplication.rsp_login.getUserId());
-							
-							//发送请求：获取 播放列表
-							String tmp =  XMLUtil.MakeXML4List(MyApplication.rsp_login.getUserId());
-							byte[] req =new Packet(Constant.REQ_GET_ORG_STRUCTURE, tmp.length(), 1, tmp).getBuf();
-							connect.write(req);
-							Log.e("req", bytesToHexString(req));
-							login_req = 1;
-						}
-					} catch (UnsupportedEncodingException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					break;
-				case 1://play list
-					//获取播放列表
-					try {
-						List<channel> list =XmlToListService.GetChannelList(str);
-						if(list!=null){
-							for(channel c: list){
-								System.out.println(c.getName());
-							}
-							
-							//发送请求：获取 第一个直播地址
-							String tmp =  XMLUtil.MakeXML4PlayAddress(list.get(4).getId());
-							byte[] req =new Packet(Constant.REQ_GET_VIDEO_ADDR, tmp.length(), 1, tmp).getBuf();
-							connect.write(req);
-							Log.e("req", bytesToHexString(req));
-							login_req = 2;
-						}
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					break;
-				case 2://real rtmp address
-					try {
-						channelOnLine cline1 =XmlToListService.GetVideoAddress(str);
-						if(null!=cline1){
-							System.out.println(cline1.getPlayer_Addr());
-						}
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					break;
-				}
-				
+
+				//反馈工具类
+				if(null!=handler)
+				Packet.handler.sendMessage(Packet.handler.obtainMessage(login_req, str));
+//				doSomeThing(str);
 			}
+
+		
 			
 			@Override
 			public void tcp_disconnect() {
 				// TODO Auto-generated method stub
+				isConnected = false;
 				Loger.i("tcp_disconnect()");
 			}
 			
 			@Override
 			public void tcp_connected() {
+				isConnected = true;
 				Loger.i("tcp_connect()");
-				//login 数据
-				String tmp = XMLUtil.MakeXML(userName, passwd);
-				byte[] req =new Packet(Constant.REQ_LOGIN, tmp.length(), 1, tmp).getBuf();
-				connect.write(req);
-				Log.e("req", bytesToHexString(req));
-				login_req = 0;
-				
 			}
 		});
 		
 		connect.setAddress(Constant.str_login_ip, Constant.login_port);
 		new Thread(connect).start();
-		
 	}
 
-	private static InputSource getInputSource(Socket sock) throws UnsupportedEncodingException, IOException {
-		InputStreamReader streamReader = new InputStreamReader(sock.getInputStream(),"GBK");
-		InputSource inputSource = new InputSource(streamReader);
-		return inputSource;
-	}
-
-	
-
+  //******************************************
 	/**
 	 * 登录
 	 */
-	public static void getPlayingList(String userId) {
-
-		try {
-			String tmp =  XMLUtil.MakeXML4List(userId);
-			Socket sock = MyApplication.getInstance().getSocket();
-			byte[] req =new Packet(0XE007, tmp.length(), 1, tmp).getBuf();
+	public static void login(final String userName, final String passwd,Handler handler) {
+		Packet.handler =handler;
+		
+		if(!isConnected){
+			init();
+		}
+		if(login_req!=0){
+			String tmp = XMLUtil.MakeXML(userName, passwd);
+			byte[] req =new Packet(Constant.REQ_LOGIN, tmp.length(), 1, tmp).getBuf();
+			connect.write(req);
 			Log.e("req", bytesToHexString(req));
-			sock.getOutputStream().write(req);
-
-			//解析文件流 inputstream
-			SaxService4Channel sax = new SaxService4Channel();
-			InputSource inputSource = getInputSource(sock);
-			List<channel> list =sax.getRSP(inputSource); 
-			
-			//show 
-			if(list!=null&&list.size()>0){
-				for(channel c :list){
-					Log.e("rsp","频道:  "+ c.getName());
-				}
-			}
-//			 sock.close();
-		} catch (Exception e) {
-			e.printStackTrace();
+			login_req = 0;
 		}
 	}
+	
+	//************************************
+	/**
+	 * 获得播放组织结构
+	 * @param handler
+	 */
+	public static void getPlayingList(Handler handler) {
+		
+		Packet.handler =handler;
+		if(!isConnected){
+			init();
+		}
+		
+		//发送请求：获取 播放列表
+		String tmp =  XMLUtil.MakeXML4List(MyApplication.rsp_login.getUserId());
+		byte[] req =new Packet(Constant.REQ_GET_ORG_STRUCTURE, tmp.length(), 1, tmp).getBuf();
+		connect.write(req);
+		Log.e("req", bytesToHexString(req));
+		login_req = 1;
+	}
+	
+	//***************
+	//获取某个摄像头的具体播放地址信息
+	public static void getVideoAddress(String nodeId,Handler handler){
+		Packet.handler =handler;
+		if(!isConnected){
+			init();
+		}
+		
+		//发送请求：获取 第一个直播地址
+		String tmp =  XMLUtil.MakeXML4PlayAddress(nodeId);
+		byte[] req =new Packet(Constant.REQ_GET_VIDEO_ADDR, tmp.length(), 1, tmp).getBuf();
+		connect.write(req);
+		Log.e("req", bytesToHexString(req));
+		login_req = 2;
+		
+	}
+	private static void doSomeThing(String str) {
+		
+		switch(login_req){
+		case 0://login
+			try {
+				MyApplication.rsp_login = XmlToListService.GetLogin(str);
+				if(MyApplication.rsp_login!=null){
+					System.out.println(MyApplication.rsp_login.getUserId());
+//					//发送请求：获取 播放列表
+//					String tmp =  XMLUtil.MakeXML4List(MyApplication.rsp_login.getUserId());
+//					byte[] req =new Packet(Constant.REQ_GET_ORG_STRUCTURE, tmp.length(), 1, tmp).getBuf();
+//					connect.write(req);
+//					Log.e("req", bytesToHexString(req));
+//					login_req = 1;
+				}
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			break;
+		case 1://play list
+			//获取播放列表
+			try {
+				List<channel> list =XmlToListService.GetChannelList(str);
+				if(list!=null){
+					for(channel c: list){
+						System.out.println(c.getName());
+					}
+					
+					//发送请求：获取 第一个直播地址
+					String tmp =  XMLUtil.MakeXML4PlayAddress(list.get(4).getId());
+					byte[] req =new Packet(Constant.REQ_GET_VIDEO_ADDR, tmp.length(), 1, tmp).getBuf();
+					connect.write(req);
+					Log.e("req", bytesToHexString(req));
+					login_req = 2;
+				}
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			break;
+		case 2://real rtmp address
+			try {
+				channelOnLine cline1 =XmlToListService.GetVideoAddress(str);
+				if(null!=cline1){
+					System.out.println(cline1.getPlayer_Addr());
+				}
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			break;
+		}
+	}
+
 	
 	
 	
@@ -276,6 +294,10 @@ public class Packet {
 	    }  
 	    return stringBuilder.toString();  
 	}  
+	
+	public static boolean isConnected(){
+		return isConnected;
+	}
 	
 	public static void close(){
 		if(connect!=null){

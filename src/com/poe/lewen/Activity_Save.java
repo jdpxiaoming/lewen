@@ -1,8 +1,6 @@
 package com.poe.lewen;
 
-import com.poe.lewen.adapter.adapter4MenueList;
-import com.poe.lewen.adapter.adapter4YanshiList;
-
+import com.poe.lewen.adapter.adapter4Save;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,7 +8,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
@@ -19,7 +16,7 @@ public class Activity_Save extends  Activity {
 
 	private Button back;
 	private ListView listview ;
-	private adapter4YanshiList adapter ;
+	private adapter4Save adapter ;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +41,7 @@ public class Activity_Save extends  Activity {
 			}
 		});
 		//set list adapter
-				adapter = new  adapter4YanshiList(Activity_Save.this);
+				adapter = new  adapter4Save(Activity_Save.this);
 				listview.setAdapter(adapter);
 				
 				listview.setOnItemClickListener(new OnItemClickListener(	) {

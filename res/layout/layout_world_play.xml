@@ -11,7 +11,14 @@
         android:layout_height="60dp"
         layout="@layout/toper_bar_world_play" 
         />
-
+  	<LinearLayout 
+						 android:id="@+id/progressbarOfWorldPlay"
+						 android:layout_width="fill_parent"
+						 android:layout_height="fill_parent"
+						 android:visibility="gone"
+						  >
+						<include layout="@layout/myprogress"/>
+   	 </LinearLayout>
     <ListView
         android:id="@+id/listviewOfWorldPlay"
         android:layout_width="fill_parent"

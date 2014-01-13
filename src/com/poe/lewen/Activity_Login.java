@@ -1,12 +1,17 @@
 package com.poe.lewen;
 
+import java.io.UnsupportedEncodingException;
+import com.poe.lewen.service.XmlToListService;
 import com.poe.lewen.util.HttpUtil;
 import com.poe.lewen.util.Packet;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils; 
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -14,6 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 public class Activity_Login extends Activity {
 
@@ -23,7 +29,8 @@ public class Activity_Login extends Activity {
 	private ImageButton login;
 	private EditText edit_user,edit_passwd;
 	private SharedPreferences sharedPreferences;
-	private Activity mActivity;
+	private LinearLayout progress;
+	private Handler handler ;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -36,8 +43,10 @@ public class Activity_Login extends Activity {
 
 	public void init() {
 		
-		mActivity = this;
 		sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE);
+		
+		progress = (LinearLayout) findViewById(R.id.progressbarOfLogin);
+		progress.setVisibility(View.GONE);
 		
 		back		=	(Button) findViewById(R.id.leftButtonOfToperBarLogin);
 		img_switch	=	(ImageView) findViewById(R.id.imgSwitchOfLogin);
@@ -48,8 +57,9 @@ public class Activity_Login extends Activity {
 		edit_user.setText(sharedPreferences.getString("username", ""));
 		edit_passwd.setText(sharedPreferences.getString("password", ""));
 		
-		edit_user.setText("SuperAdmin");
-		edit_passwd.setText("123456");
+//		edit_user.setText("SuperAdmin");
+		edit_user.setText("wangchen");//备用账号：cxm
+		edit_passwd.setText("111111");
 		
 		back.setOnClickListener(new OnClickListener() {
 			
@@ -109,25 +119,44 @@ public class Activity_Login extends Activity {
 //						}
 //					});
 					
-					
 					if(MyApplication.rsp_login!=null){
 						MyApplication.getInstance().throwTips("您已经登录了！");
-						
-						new Thread(new Runnable() {
-							
-							@Override
-							public void run() {
-								Packet.getPlayingList(MyApplication.rsp_login.getUserId());
-							}
-						}).start();
-						
+						startActivity(new Intent(Activity_Login.this,Activity_WorldPlay.class));
 					}else{
-						Packet.login(username, password);
+						progress.setVisibility(View.VISIBLE);
+						Packet.login(username, password,handler);
 					}
 				}
 			}
 		});
+		
+		handler = new Handler(){
+
+			@Override
+			public void handleMessage(Message msg) {
+				super.handleMessage(msg);
+				//接受登录返回数据
+				progress.setVisibility(View.GONE);
+				
+				String result_login =(String) msg.obj;
+				try {
+					MyApplication.rsp_login = XmlToListService.GetLogin(result_login);
+					if(MyApplication.rsp_login!=null){
+						System.out.println(MyApplication.rsp_login.getUserId());
+						MyApplication.getInstance().throwTips("登录成功，自动跳转到播放列表页面！");
+						
+						 startActivity(new Intent(Activity_Login.this,Activity_WorldPlay.class));
+					}
+					
+					MyApplication.getInstance().throwTips("登录失败！");
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		};
+		
 	}
-	
 	
 }

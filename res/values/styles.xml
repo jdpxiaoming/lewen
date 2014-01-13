@@ -34,5 +34,8 @@
      <style name="top_bar_icon_sytle">
 		<item name="android:scaleType">centerInside</item>
 	</style>
-    
+     <!--progressbar -->
+     <style name="animStyle">
+        <item name="android:indeterminateDrawable">@anim/progressbar</item>
+    </style>
 </resources>

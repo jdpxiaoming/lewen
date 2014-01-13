@@ -50,4 +50,6 @@
     </string-array>
     
     
+    <string name="loading">加载中...</string>
+    
 </resources>

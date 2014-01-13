@@ -27,7 +27,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
- * 树数据源构造器
+ * 数据源构造器
  * @author LongShao
  *
  */
