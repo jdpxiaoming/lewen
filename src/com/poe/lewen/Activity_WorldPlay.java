@@ -3,23 +3,23 @@ package com.poe.lewen;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
-
 import com.baidu.mapapi.BMapManager;
 import com.baidu.mapapi.map.MKMapViewListener;
 import com.baidu.mapapi.map.MapController;
 import com.baidu.mapapi.map.MapPoi;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.platform.comapi.basestruct.GeoPoint;
+import com.poe.lewen.MyApplication.loaded4login;
 import com.poe.lewen.adapter.TreeAdapter;
-import com.poe.lewen.adapter.adapter4YanshiList;
 import com.poe.lewen.bean.Node;
 import com.poe.lewen.bean.channel;
+import com.poe.lewen.bean.channelOnLine;
 import com.poe.lewen.service.XmlToListService;
 import com.poe.lewen.util.Packet;
-import com.poe.lewen.util.XMLUtil;
 import com.poe.lewen.vlc.VideoPlayerActivity;
-
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -36,7 +36,7 @@ import android.widget.Toast;
 
 public class Activity_WorldPlay extends Activity implements OnItemClickListener {
 
-	private String hubei_movie="http://live9.hbtv.com.cn/channels/zbk/hbys/flv:sd/live";
+	private String hubei_movie = "http://live9.hbtv.com.cn/channels/zbk/hbys/flv:sd/live";
 	private Button back, btn_model;
 	private int RANKING_MODE = 1;// 0:普通排行 1：排行 2：地图模式
 	private List<channel> list_channel = null;// 全球演示组织架构
@@ -67,12 +67,13 @@ public class Activity_WorldPlay extends Activity implements OnItemClickListener 
 			/**
 			 * 如果BMapManager没有初始化则初始化BMapManager
 			 */
-			app.mBMapManager.init(MyApplication.strKey,
-					new MyApplication.MyGeneralListener());
+			app.mBMapManager.init(MyApplication.strKey, new MyApplication.MyGeneralListener());
 		}
 		setContentView(R.layout.layout_world_play);
 
 		init();
+		//test rtsp
+//		VideoPlayerActivity.start(Activity_WorldPlay.this, hubei_movie, false);
 	}
 
 	public void init() {
@@ -127,36 +128,82 @@ public class Activity_WorldPlay extends Activity implements OnItemClickListener 
 				progress.setVisibility(View.GONE);
 
 				String result_login = (String) msg.obj;
-				try {
-					list_channel = XmlToListService
-							.GetChannelList(result_login);
-					if (list_channel != null) {
-						for (channel c : list_channel) {
-							System.out.println(c.getName());
+
+				switch (msg.what) {
+				case 1:
+					try {
+						list_channel = XmlToListService.GetChannelList(result_login);
+						if (list_channel != null) {
+							for (channel c : list_channel) {
+								System.out.println(c.getName());
+							}
+							// set adapter
+							setAdapter();
+						}else{
+							MyApplication.getInstance().throwTips("获取数据失败！");
 						}
-						// set adapter
-						setAdapter();
-
-						// 获取最后一个直播地址：
-						// 发送请求：获取 第一个直播地址
-						String tmp = XMLUtil.MakeXML4PlayAddress(list_channel
-								.get(list_channel.size() - 1).getId());
-						Packet.getVideoAddress(
-								list_channel.get(list_channel.size() - 1)
-										.getId(), null);
-
+					} catch (UnsupportedEncodingException e) {
+						e.printStackTrace();
+					} catch (Exception e) {
+						e.printStackTrace();
 					}
-					MyApplication.getInstance().throwTips("获取数据失败！");
-				} catch (UnsupportedEncodingException e) {
-					e.printStackTrace();
-				} catch (Exception e) {
-					e.printStackTrace();
+					break;
+				case 2:
+					try {
+						final channelOnLine conline = XmlToListService.GetVideoAddress(result_login);
+						if(conline!=null&&conline.getPlayer_Addr()!=null){
+							System.out.println("直播地址："+conline.getPlayer_Addr());
+							MyApplication.ip_dahua = conline.getDevice_ipAddr();
+							MyApplication.prot_dahua	= Integer.parseInt(conline.getDevice_portNo());
+							MyApplication.username	=	conline.getUserName();
+							MyApplication.password	=	conline.getUserPsw();
+							MyApplication.selectChannel  = 0;
+							
+							//可选择 1.直播  2.通道选择
+							MyApplication.getInstance().reLogin(new loaded4login() {
+								
+								@Override
+								public void done() {
+									AlertDialog.Builder ab=new AlertDialog.Builder(Activity_WorldPlay.this);
+									ab.setTitle("是否进入直播？选择否进入普通模式");
+									ab.setPositiveButton("高码流", new DialogInterface.OnClickListener(){
+										
+										@Override
+										public void onClick(DialogInterface dialog, int which) {
+											
+											VideoPlayerActivity.start(Activity_WorldPlay.this, conline.getPlayer_Addr(), false);
+										}
+										
+									});
+									
+									ab.setNegativeButton("低码流", new DialogInterface.OnClickListener() {
+										@Override
+										public void onClick(DialogInterface dialog, int which) {
+											
+											startActivity(new Intent(Activity_WorldPlay.this,Activity_Video.class));
+											
+										}
+									});
+									
+									ab.show();
+								}
+							});
+						}
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					break;
 				}
 			}
 		};
 
 		// 获取数据命令
-		doSendTcpRequest();
+		if(MyApplication.rsp_login!=null){
+			doSendTcpRequest();
+		}else{
+			MyApplication.getInstance().throwTips("请登陆后查看本通道信息！");
+		}
 
 		// setAdapter();
 	}
@@ -166,15 +213,14 @@ public class Activity_WorldPlay extends Activity implements OnItemClickListener 
 	private void setAdapter() {
 		adapter = new TreeAdapter(Activity_WorldPlay.this, makeDataNew());
 		// 设置展开和折叠时图标
-		adapter.setExpandedCollapsedIcon(R.drawable.icon_minus, R.drawable.icon_pus,
-				R.drawable.icon_save_video);
+		adapter.setExpandedCollapsedIcon(R.drawable.icon_minus, R.drawable.icon_pus, R.drawable.icon_save_video);
 		// 设置默认展开级别
 		adapter.setExpandLevel(1);
 		listview.setAdapter(adapter);
 	}
 
-	//********
-	//制作根节点
+	// ********
+	// 制作根节点
 	private Node makeData() {
 		// 创建根节点
 		Node root = new Node("全球演示点", "000000");
@@ -399,8 +445,7 @@ public class Activity_WorldPlay extends Activity implements OnItemClickListener 
 				String title = "";
 				if (mapPoiInfo != null) {
 					title = mapPoiInfo.strText;
-					Toast.makeText(Activity_WorldPlay.this, title,
-							Toast.LENGTH_SHORT).show();
+					Toast.makeText(Activity_WorldPlay.this, title, Toast.LENGTH_SHORT).show();
 					mMapController.animateTo(mapPoiInfo.geoPt);
 				}
 			}
@@ -424,13 +469,11 @@ public class Activity_WorldPlay extends Activity implements OnItemClickListener 
 			 */
 			@Override
 			public void onMapLoadFinish() {
-				Toast.makeText(Activity_WorldPlay.this, "地图加载完成",
-						Toast.LENGTH_SHORT).show();
+				Toast.makeText(Activity_WorldPlay.this, "地图加载完成", Toast.LENGTH_SHORT).show();
 
 			}
 		};
-		mMapView.regMapViewListener(MyApplication.getInstance().mBMapManager,
-				mMapListener);
+		mMapView.regMapViewListener(MyApplication.getInstance().mBMapManager, mMapListener);
 
 	};
 
@@ -473,14 +516,14 @@ public class Activity_WorldPlay extends Activity implements OnItemClickListener 
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> parent, View arg1, int position,
-			long id) {
-		//1.判断是否为 叶子节点
-		Node n=(Node) ((TreeAdapter) parent.getAdapter()).getItem(position);
-		if(n.isLeaf()){
-			//2.如果是叶子节点获取 详细播放地址 后 跳转进行播放
-			VideoPlayerActivity.start(Activity_WorldPlay.this, hubei_movie, false);
-		
+	public void onItemClick(AdapterView<?> parent, View arg1, int position, long id) {
+		// 1.判断是否为 叶子节点
+		Node n = (Node) ((TreeAdapter) parent.getAdapter()).getItem(position);
+		if (n.isLeaf()) {
+			// 2.如果是叶子节点获取 详细播放地址 后 跳转进行播放
+			progress.setVisibility(View.VISIBLE);
+			// 发送请求：获取 第一个直播地址
+			Packet.getVideoAddress(n.getId(), handler);
 		}
 		// 这句话写在最后面
 		((TreeAdapter) parent.getAdapter()).ExpandOrCollapse(position);

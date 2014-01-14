@@ -85,6 +85,7 @@ public class Activity_Home extends BaseActivity {
 		// TODO Auto-generated method stub
 		super.onDestroy();
 		MyApplication.rsp_login=null;
+		MyApplication.getInstance().defaultSDKParam();
 		Packet.close();
 	}
 }

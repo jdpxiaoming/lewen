@@ -18,15 +18,27 @@
             android:layout_width="fill_parent"
             android:layout_height="60dp"
             layout="@layout/toper_bar_yuntai" />
+		 <LinearLayout
+                android:id="@+id/loadingOfVideo"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal" >
+                <ProgressBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
 
-         <com.mm.android.avplaysdk.render.BasicGLSurfaceView
-	        android:id="@+id/screenOfVideo"
-	        android:layout_width="fill_parent"
-	        android:layout_height="fill_parent"
-            android:layout_weight="3"
-	        >
-	    </com.mm.android.avplaysdk.render.BasicGLSurfaceView>
-
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="正在加载视频信息..." />
+            </LinearLayout> 
+        <com.mm.android.avplaysdk.render.BasicGLSurfaceView
+            android:id="@+id/screenOfVideo"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="3" >
+        </com.mm.android.avplaysdk.render.BasicGLSurfaceView>
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="1dp"
@@ -41,9 +53,8 @@
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal" 
                 android:layout_margin="10dp"
-                >
+                android:orientation="horizontal" >
 
                 <LinearLayout
                     android:layout_width="fill_parent"
@@ -125,13 +136,12 @@
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
-            
+
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal" 
                 android:layout_margin="10dp"
-                >
+                android:orientation="horizontal" >
 
                 <LinearLayout
                     android:layout_width="fill_parent"
@@ -177,89 +187,81 @@
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:layout_weight="3"
-                        android:text="@string/video_yinliang" 
-                        />
+                        android:text="@string/video_yinliang" />
 
                     <LinearLayout
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:layout_weight="1"
-                        android:orientation="horizontal" 
-                        >
+                        android:orientation="horizontal" >
 
                         <RelativeLayout
-		                            android:layout_width="fill_parent"
-		                            android:layout_height="fill_parent"
-		                            android:layout_weight="1"
-		                            >
-							<LinearLayout 
-							    		android:layout_width="fill_parent"
-							    		android:layout_height="3dp"
-							    		android:background="@drawable/line_video_voice2"
-							    		android:layout_centerVertical="true"
-							    		/>
-							<LinearLayout 
-							    		android:id="@+id/lin_voice"
-							    		android:layout_width="30dp"
-							    		android:layout_height="3dp"
-							    		android:orientation="horizontal"
-							    		android:background="@drawable/line_video_voice1"
-							    		android:layout_centerVertical="true"
-							    		/>
-							<ImageView 
-							    		android:layout_width="20dp"
-							    		android:layout_height="20dp"
-							    		android:src="@drawable/icon_video_vioce"
-							    		android:layout_toRightOf="@id/lin_voice"
-							    		android:layout_centerVertical="true"
-							    		/>
-                        </RelativeLayout>
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="1" >
 
+                            <LinearLayout
+                                android:layout_width="fill_parent"
+                                android:layout_height="3dp"
+                                android:layout_centerVertical="true"
+                                android:background="@drawable/line_video_voice2" />
+
+                            <LinearLayout
+                                android:id="@+id/lin_voice"
+                                android:layout_width="30dp"
+                                android:layout_height="3dp"
+                                android:layout_centerVertical="true"
+                                android:background="@drawable/line_video_voice1"
+                                android:orientation="horizontal" />
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_centerVertical="true"
+                                android:layout_toRightOf="@id/lin_voice"
+                                android:src="@drawable/icon_video_vioce" />
+                        </RelativeLayout>
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
-            
+
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal" 
                 android:layout_margin="10dp"
-                >
-                    <LinearLayout
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal" >
+                android:orientation="horizontal" >
 
-                        <ImageButton
-                            android:layout_width="100dp"
-                            android:layout_height="40dp"
-                            android:src="@drawable/selector_btn_video_lux" 
-                            android:scaleType="centerInside"
-                            android:background="#00000000"
-                            />
-                    </LinearLayout>
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal" >
 
-                    <LinearLayout
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical|right"
-                        android:orientation="horizontal" >
+                    <ImageButton
+                        android:layout_width="100dp"
+                        android:layout_height="40dp"
+                        android:background="#00000000"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/selector_btn_video_lux" />
+                </LinearLayout>
 
-                        <ImageButton
-                            android:layout_width="100dp"
-                            android:layout_height="40dp"
-                            android:src="@drawable/selector_btn_video_guij" 
-                            android:scaleType="centerInside"
-                            android:background="#00000000"
-                            android:visibility="gone"
-                            />
-                    </LinearLayout>
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|right"
+                    android:orientation="horizontal" >
+
+                    <ImageButton
+                        android:layout_width="100dp"
+                        android:layout_height="40dp"
+                        android:background="#00000000"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/selector_btn_video_guij"
+                        android:visibility="gone" />
+                </LinearLayout>
             </LinearLayout>
-            
-            
         </LinearLayout>
     </LinearLayout>
 

@@ -35,8 +35,6 @@ public class MyApplication extends Application {
 	public boolean m_bKeyRight = true;
     BMapManager mBMapManager = null;
 	public static final String strKey = "7klwK4swNouixDI6ukEcFLRQ";
-	 
-	
 //	-----、、
 	private  boolean netSDKIsInit = false; // NetSDK是否初始化成功标志
 	public static AV_HANDLE log_handle = null; // 登陆句柄
@@ -44,8 +42,10 @@ public class MyApplication extends Application {
 	private AV_OUT_Login refOutParam = null; // 登陆输出参数
 	private int mChannelCount=0;	//连接设备的通道数
 	public static ArrayList<String> mChannelList = new ArrayList<String>();
-	private String username="admin";
-	private String password	="123456";
+	public static String ip_dahua ="60.18.152.38";
+	public static int prot_dahua=37779;
+	public static String username="admin";
+	public static String password	="admin";
 	
 	public static rsp_login rsp_login;
 	/**
@@ -66,13 +66,15 @@ public class MyApplication extends Application {
 		
 		netSDKIsInit = AVNetSDK.AV_Startup(mInstance.getPackageName());	
 		
-		
-//		new loginTask().execute();
+		defaultSDKParam();
+		new loginTask().execute();
 	}
 	
-	public void reLogin(String username,String password,loaded4login ll){
-		this.username = username;
-		this.password = password;
+	//***********
+	//重复获取大华SDK通道信息
+	public void reLogin(loaded4login ll){
+//		this.username = username;
+//		this.password = password;
 		new loginTask().execute(ll);
 	}
 	
@@ -103,7 +105,6 @@ public class MyApplication extends Application {
 				sock =new Socket(Constant.str_login_ip, Constant.login_port);
 				
 				//启动心跳线程执行 心跳发送 每分钟一次
-				
 			} catch (UnknownHostException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -172,7 +173,16 @@ public class MyApplication extends Application {
         }
     }
     
-    
+    /*
+     * 回复默认演示地址
+     */
+    public void defaultSDKParam(){
+		MyApplication.ip_dahua = "60.18.152.38";
+		MyApplication.prot_dahua	= 37779;
+		MyApplication.username	=	"admin";
+		MyApplication.password	=	"admin";
+		MyApplication.selectChannel  = 0;
+    }
 	// 没有网络的提示
 	public  void NoNetWorkTips() {
 		Toast.makeText(mInstance, "您的网络不可用,请设置！", Toast.LENGTH_LONG).show();
@@ -194,8 +204,8 @@ public class MyApplication extends Application {
 				
 				//构造登陆输入参数
 				refInParam = new AV_IN_Login();
-				refInParam.strDevIP = Constant.str_login_ip;
-				refInParam.nDevPort = Constant.login_port;
+				refInParam.strDevIP = ip_dahua;
+				refInParam.nDevPort = prot_dahua;
 				refInParam.strUsername = username;
 				refInParam.strPassword = password;
 				refInParam.bReconnect = false;
@@ -227,10 +237,10 @@ public class MyApplication extends Application {
 						String channel = "通道 " +String.format("%02d", i+1);
 						mChannelList.add(i,channel);
 					}
-					if (log_handle != null){
+					if (log_handle == null){
 //						startVideo();
+						return null;
 					}
-					
 					return "success";
 				}
 				return null;
@@ -239,9 +249,11 @@ public class MyApplication extends Application {
 			@Override
 			protected void onPostExecute(String result) {
 				if(null!=result){
-					throwTips("登录成功~@！");
+					throwTips("通道连接成功~@！");
 					if(null!=login_interface)
 					login_interface.done();
+				}else{
+					throwTips("通道连接失败~@！");
 				}
 			}
 		}

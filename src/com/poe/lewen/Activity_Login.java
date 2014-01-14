@@ -57,8 +57,9 @@ public class Activity_Login extends Activity {
 		edit_user.setText(sharedPreferences.getString("username", ""));
 		edit_passwd.setText(sharedPreferences.getString("password", ""));
 		
-//		edit_user.setText("SuperAdmin");
-		edit_user.setText("wangchen");//备用账号：cxm
+//			edit_user.setText("SuperAdmin");
+//			edit_passwd.setText("123456");
+		edit_user.setText("cxm");//备用账号：cxm
 		edit_passwd.setText("111111");
 		
 		back.setOnClickListener(new OnClickListener() {

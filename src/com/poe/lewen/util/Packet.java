@@ -132,7 +132,6 @@ public class Packet {
 				//反馈工具类
 				if(null!=handler)
 				Packet.handler.sendMessage(Packet.handler.obtainMessage(login_req, str));
-//				doSomeThing(str);
 			}
 
 		
@@ -210,6 +209,7 @@ public class Packet {
 		login_req = 2;
 		
 	}
+	
 	private static void doSomeThing(String str) {
 		
 		switch(login_req){

@@ -2,9 +2,12 @@ package com.poe.lewen.bean;
 
 public class Constant {
 
+	//大华sdk播放列表
+	public static String ip_dahua ="202.136.60.234";//"60.18.152.38";
+	public static int prot_dahua=37780;//37779;
+	
 	public static String str_login_ip = "219.146.251.189";
-//	public static String str_login_ip = "60.18.152.38";//"202.136.60.234";
-	public static int login_port = 8888;//37779;//8808;//
+	public static int login_port = 8888;//;//8808;//
 	
 	public static int REQ_LOGIN = 0XA001;	//用登陆请求XML格式
 	

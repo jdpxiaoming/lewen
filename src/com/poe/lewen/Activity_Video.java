@@ -13,12 +13,20 @@ import com.mm.android.avnetsdk.param.IAV_NetWorkListener;
 import com.mm.android.avnetsdk.param.IAV_PlayerEventListener;
 import com.mm.android.avnetsdk.param.RecordInfo;
 import com.mm.android.avplaysdk.render.BasicGLSurfaceView;
+import com.poe.lewen.MyApplication.loaded4login;
 import com.poe.lewen.util.Tool;
+import com.poe.lewen.vlc.Util;
+
 import android.R.integer;
 import android.graphics.Color;
+import android.media.AudioManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.View.OnTouchListener;
+import android.widget.LinearLayout;
 
 public class Activity_Video extends BaseActivity {
 
@@ -27,6 +35,7 @@ public class Activity_Video extends BaseActivity {
 	private AV_OUT_RealPlay playOutParam = null; // 实时监视输出参数
 	private BasicGLSurfaceView bsView = null; // 播放的视图
 	private AV_HANDLE realPlay = null; // 实时监测句柄
+	private LinearLayout loading;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -39,10 +48,75 @@ public class Activity_Video extends BaseActivity {
 
 	@Override
 	public void init() {
+		loading	=	(LinearLayout) findViewById(R.id.loadingOfVideo);
+		
 		lin_video.setBackgroundResource(R.drawable.btn_bg_press	);
 		image_video.setImageResource(R.drawable.icon_video_press);
 		text_video.setTextColor(Color.WHITE);
 		bsView = (BasicGLSurfaceView) findViewById(R.id.screenOfVideo);
+		
+		bsView.setOnTouchListener(new OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+//				float mTouchY=0;
+//				 switch (event.getAction()) {
+//
+//			        case MotionEvent.ACTION_DOWN:
+//			            mTouchY = event.getRawY();
+//			            break;
+//
+//			        case MotionEvent.ACTION_MOVE:
+//			            // No volume/brightness action if coef < 2
+//			            if (coef > 2) {
+//			                // Volume (Up or Down - Right side)
+//			                if (!mEnableBrightnessGesture || mTouchX > (screen.widthPixels / 2)){
+//			                    doVolumeTouch(y_changed);
+//			                }
+//			                // Extend the overlay for a little while, so that it doesn't
+//			                // disappear on the user if more adjustment is needed. This
+//			                // is because on devices with soft navigation (e.g. Galaxy
+//			                // Nexus), gestures can't be made without activating the UI.
+//			                if(Util.hasNavBar())
+//			                    showOverlay();
+//			            }
+//			            // Seek (Right or Left move)
+//			            doSeekTouch(coef, xgesturesize, false);
+//			            break;
+//
+//			        case MotionEvent.ACTION_UP:
+//			            // Audio or Brightness
+//			            break;
+//			        }
+				float y1=(float) 0.0,y2=(float) 0.0;
+				if(event.getAction()==MotionEvent.ACTION_DOWN){
+					y1 = event.getY();
+				}else if(event.getAction() == MotionEvent.ACTION_UP){
+					y2 =event.getY();
+					
+					System.out.println(y2-y1);
+					if(y2-y1>30.0){
+						MyApplication.selectChannel=MyApplication.selectChannel+1;
+					}
+					
+					if(y1-y2>30){
+						MyApplication.selectChannel=MyApplication.selectChannel-1;
+					}
+					
+					if(MyApplication.selectChannel<0){
+						MyApplication.selectChannel = 0;
+					}
+					
+					if(MyApplication.selectChannel>MyApplication.mChannelList.size()){
+						MyApplication.selectChannel = MyApplication.selectChannel%(MyApplication.mChannelList.size()==0?1:MyApplication.mChannelList.size());
+					}
+					
+					new playTask().execute();
+					
+				}
+				return true;
+			}
+		});
 	}
 
 	@Override
@@ -102,6 +176,8 @@ public class Activity_Video extends BaseActivity {
 		
 		@Override
 		protected void onPreExecute() {
+			loading.setVisibility(View.VISIBLE);
+			
 			playINParam = new AV_IN_RealPlay();
 			playINParam.nChannelID =MyApplication.selectChannel; // 测试零号通道
 			playINParam.nSubType = 1;
@@ -181,8 +257,17 @@ public class Activity_Video extends BaseActivity {
 
 		@Override
 		protected void onPostExecute(String result) {
+			loading.setVisibility(View.GONE);
 			if(null!=result){
-				Tool.showMsg(MyApplication.getInstance().getApplicationContext(), result);
+//				Tool.showMsg(MyApplication.getInstance().getApplicationContext(), result);
+				MyApplication.getInstance().reLogin(new loaded4login() {
+					
+					@Override
+					public void done() {
+						// TODO Auto-generated method stub
+						new playTask().execute();
+					}
+				});
 			}
 		}
 	}

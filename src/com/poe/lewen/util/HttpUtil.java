@@ -25,13 +25,8 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
-
-import struct.JavaStruct;
-import struct.StructException;
-
 import com.poe.lewen.MyApplication;
 import com.poe.lewen.bean.Constant;
-import com.poe.lewen.bean.tagLoginReq;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -278,96 +273,4 @@ public class HttpUtil {
 		return inStream;
 	}
 	
-	
-	public static String login(String username , String passwd){
-		
-		String result  = null;
-		tagLoginReq tr =new tagLoginReq();
-		tr.loginIp = Constant.str_login_ip.toCharArray();
-		tr.pcName = "nyPcName".toCharArray();
-		tr.userType=0;
-		tr.userName = username.toCharArray();
-		tr.userPsw	=	Md5Util.getMD5Str(passwd).toCharArray();
-		
-		try {
-			
-			byte[] b =JavaStruct.pack(tr);
-			
-			Socket socket = new Socket(Constant.str_login_ip, Constant.login_port);
-			
-		    socket.getOutputStream().write(b);
-		    
-		    byte[] recvHead =new byte[4];
-	        int cForm;
-	        int cmd, length, para1,para2, para3;
-	        // readcmd转换字节序
-
-	        socket.getInputStream().read(recvHead,0, 4);
-
-	        cForm= Common.bytes2Integer(recvHead);
-
-	        cmd= Common.bytes2Integer(Common.toLH(cForm));
-
-	 
-
-	        // read length转换字节序
-
-	        socket.getInputStream().read(recvHead,0, 4);
-
-	        cForm= Common.bytes2Integer(recvHead);
-
-	        length= Common.bytes2Integer(Common.toLH(cForm));
-
-	 
-
-	        // read para1转换字节序
-
-	        socket.getInputStream().read(recvHead,0, 4);
-
-	        cForm= Common.bytes2Integer(recvHead);
-
-	        para1= Common.bytes2Integer(Common.toLH(cForm));
-
-	 
-
-	        // read para2转换字节序
-
-	        socket.getInputStream().read(recvHead,0, 4);
-
-	        cForm= Common.bytes2Integer(recvHead);
-
-	        para2= Common.bytes2Integer(Common.toLH(cForm));
-
-	 
-
-	        // read para3转换字节序
-
-	        socket.getInputStream().read(recvHead,0, 4);
-
-	        cForm= Common.bytes2Integer(recvHead);
-
-	        para3= Common.bytes2Integer(Common.toLH(cForm));
-
-	 
-
-	        byte[] recvData =new byte[length];
-
-	 
-
-	        // read data
-
-	        socket.getInputStream().read(recvData,0, length);
-
-	        String DataStr = new String(recvData);
-
-	        System.out.println(DataStr);
-		} catch (StructException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch(IOException e) {
-            e.printStackTrace();
-        }
-		
-		return result;
-	}
 }

@@ -164,6 +164,7 @@ public class XmlToListService {
 		
 		return talkpic;
 	}
+	
 //	
 //	public static List<Announcement> GetAnn(String str)throws Exception{
 //		if(str==null||"".equals(str))
