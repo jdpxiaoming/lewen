@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#000000</color>
     <color name="green">#00ff00</color>
     <color name="grey">#58616d</color>
     <color name="darkgrey">#ff404040</color>
@@ -23,4 +22,19 @@
     
     <color name="ssl_dot_image_color_new">#00ccff</color>
      <color name="ssl_dot_image_color_selector">#113e7d</color>
+     
+     <color name="item_divider">#fafafa</color>
+    <color name="item_common_pressed">#e0e0e0</color>
+    <color name="item_common_selected">#5e5e5e</color>
+    <color name="item_footer">#e0e0e0</color>
+    <color name="background_common">#fafafa</color>
+    <color name="background_menu_divider">#d0d0d0</color>
+    <color name="background_menu">#e0e0e0</color>
+    <color name="font_default">#222222</color>
+    <color name="font_light">#777777</color>
+    <color name="orange">#ffbb33</color>
+    <color name="darkorange">#ff8800</color>
+    <color name="black">#000001</color>
+    <color name="transparent_gray">#8000</color>
+    <color name="action_bar_title">#FFFFFF</color>
 </resources>

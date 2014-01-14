@@ -2,6 +2,7 @@ package com.poe.lewen;
 
 import com.poe.lewen.adapter.adapter4MenueList;
 import com.poe.lewen.util.Packet;
+import com.poe.lewen.vlc.VideoPlayerActivity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.widget.ListView;
 public class Activity_Home extends BaseActivity {
 
 	private ListView listview ;
+	private String hubei_movie="http://live9.hbtv.com.cn/channels/zbk/hbys/flv:sd/live";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -39,21 +41,22 @@ public class Activity_Home extends BaseActivity {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 //				Toast.makeText(Activity_Home.this.getApplicationContext(), "clicked!"+arg2, 300).show();
-				if(arg2==0){
-					startActivity(new Intent(Activity_Home.this,Activity_Login.class));
-				}
-				
-				if(arg2==1){
-					startActivity(new Intent(Activity_Home.this,Activity_WorldPlay.class));
-				}
-				
-				if(arg2==2){
-					startActivity(new Intent(Activity_Home.this,Activity_Save.class));
-				}
-				
-				if(arg2 ==3){
-					startActivity(new Intent(Activity_Home.this,HelpShowImageActivity.class));
-				}
+//				if(arg2==0){
+//					startActivity(new Intent(Activity_Home.this,Activity_Login.class));
+//				}
+//				
+//				if(arg2==1){
+//					startActivity(new Intent(Activity_Home.this,Activity_WorldPlay.class));
+//				}
+//				
+//				if(arg2==2){
+//					startActivity(new Intent(Activity_Home.this,Activity_Save.class));
+//				}
+//				
+//				if(arg2 ==3){
+//					startActivity(new Intent(Activity_Home.this,HelpShowImageActivity.class));
+//				}
+				VideoPlayerActivity.start(Activity_Home.this, hubei_movie, false);
 			}
 		});
 		

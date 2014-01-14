@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#FFFFFF"
+    android:orientation="vertical" >
+
+    <include
+        android:layout_width="fill_parent"
+        android:layout_height="60dp"
+        layout="@layout/toper_video_play" />
+    <com.poe.view_vlc.VideoView4VLC
+            android:id="@+id/videoOfVideoPlay"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
+</LinearLayout>
