@@ -17,6 +17,7 @@ import com.poe.lewen.bean.channel;
 import com.poe.lewen.service.XmlToListService;
 import com.poe.lewen.util.Packet;
 import com.poe.lewen.util.XMLUtil;
+import com.poe.lewen.vlc.VideoPlayerActivity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -35,6 +36,7 @@ import android.widget.Toast;
 
 public class Activity_WorldPlay extends Activity implements OnItemClickListener {
 
+	private String hubei_movie="http://live9.hbtv.com.cn/channels/zbk/hbys/flv:sd/live";
 	private Button back, btn_model;
 	private int RANKING_MODE = 1;// 0:普通排行 1：排行 2：地图模式
 	private List<channel> list_channel = null;// 全球演示组织架构
@@ -473,6 +475,13 @@ public class Activity_WorldPlay extends Activity implements OnItemClickListener 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View arg1, int position,
 			long id) {
+		//1.判断是否为 叶子节点
+		Node n=(Node) ((TreeAdapter) parent.getAdapter()).getItem(position);
+		if(n.isLeaf()){
+			//2.如果是叶子节点获取 详细播放地址 后 跳转进行播放
+			VideoPlayerActivity.start(Activity_WorldPlay.this, hubei_movie, false);
+		
+		}
 		// 这句话写在最后面
 		((TreeAdapter) parent.getAdapter()).ExpandOrCollapse(position);
 	}
