@@ -1,7 +1,9 @@
 package com.poe.lewen;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.List;
+
 import com.baidu.mapapi.BMapManager;
 import com.baidu.mapapi.map.MKMapViewListener;
 import com.baidu.mapapi.map.MapController;
@@ -10,7 +12,6 @@ import com.baidu.mapapi.map.MapView;
 import com.baidu.platform.comapi.basestruct.GeoPoint;
 import com.poe.lewen.adapter.TreeAdapter;
 import com.poe.lewen.adapter.adapter4YanshiList;
-import com.poe.lewen.bean.Constant;
 import com.poe.lewen.bean.Node;
 import com.poe.lewen.bean.channel;
 import com.poe.lewen.service.XmlToListService;
@@ -23,7 +24,6 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -41,7 +41,7 @@ public class Activity_WorldPlay extends Activity implements OnItemClickListener 
 	private LinearLayout progress;
 	private Handler handler;
 	private ListView listview;
-	private adapter4YanshiList adapter;
+	private TreeAdapter adapter;
 	/**
 	 * MapView 是地图主控件
 	 */
@@ -65,7 +65,8 @@ public class Activity_WorldPlay extends Activity implements OnItemClickListener 
 			/**
 			 * 如果BMapManager没有初始化则初始化BMapManager
 			 */
-			app.mBMapManager.init(MyApplication.strKey, new MyApplication.MyGeneralListener());
+			app.mBMapManager.init(MyApplication.strKey,
+					new MyApplication.MyGeneralListener());
 		}
 		setContentView(R.layout.layout_world_play);
 
@@ -78,10 +79,10 @@ public class Activity_WorldPlay extends Activity implements OnItemClickListener 
 
 		back = (Button) findViewById(R.id.leftButtonOfToperBarWorldPlay);
 		btn_model = (Button) findViewById(R.id.rightButtonOfToperBarWorldPlay);
-		
+
 		listview = (ListView) findViewById(R.id.listviewOfWorldPlay);
 		listview.setOnItemClickListener(this);
-		
+
 		initMap();
 
 		back.setOnClickListener(new OnClickListener() {
@@ -114,21 +115,6 @@ public class Activity_WorldPlay extends Activity implements OnItemClickListener 
 		});
 
 		// // set list adapter
-		// adapter = new adapter4YanshiList(Activity_WorldPlay.this);
-		// listview.setAdapter(adapter);
-
-		// listview.setOnItemClickListener(new OnItemClickListener() {
-		//
-		// @Override
-		// public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-		// long arg3) {
-		// // TODO Auto-generated method stub
-		// MyApplication.selectChannel = arg2;
-		// startActivity(new Intent(Activity_WorldPlay.this,
-		// Activity_Video.class));
-		// finish();
-		// }
-		// });
 
 		handler = new Handler() {
 
@@ -140,19 +126,23 @@ public class Activity_WorldPlay extends Activity implements OnItemClickListener 
 
 				String result_login = (String) msg.obj;
 				try {
-					list_channel = XmlToListService.GetChannelList(result_login);
+					list_channel = XmlToListService
+							.GetChannelList(result_login);
 					if (list_channel != null) {
 						for (channel c : list_channel) {
 							System.out.println(c.getName());
 						}
 						// set adapter
 						setAdapter();
-						
-						//获取最后一个直播地址：
-						//发送请求：获取 第一个直播地址
-						String tmp =  XMLUtil.MakeXML4PlayAddress(list_channel.get(list_channel.size()-1).getId());
-						Packet.getVideoAddress(list_channel.get(list_channel.size()-1).getId(), null);
-					
+
+						// 获取最后一个直播地址：
+						// 发送请求：获取 第一个直播地址
+						String tmp = XMLUtil.MakeXML4PlayAddress(list_channel
+								.get(list_channel.size() - 1).getId());
+						Packet.getVideoAddress(
+								list_channel.get(list_channel.size() - 1)
+										.getId(), null);
+
 					}
 					MyApplication.getInstance().throwTips("获取数据失败！");
 				} catch (UnsupportedEncodingException e) {
@@ -164,9 +154,86 @@ public class Activity_WorldPlay extends Activity implements OnItemClickListener 
 		};
 
 		// 获取数据命令
-		 doSendTcpRequest();
+		doSendTcpRequest();
 
-//		setAdapter();
+		// setAdapter();
+	}
+
+	// ****************
+	// 配置无限级列表
+	private void setAdapter() {
+		adapter = new TreeAdapter(Activity_WorldPlay.this, makeDataNew());
+		// 设置展开和折叠时图标
+		adapter.setExpandedCollapsedIcon(R.drawable.icon_minus, R.drawable.icon_pus,
+				R.drawable.icon_save_video);
+		// 设置默认展开级别
+		adapter.setExpandLevel(1);
+		listview.setAdapter(adapter);
+	}
+
+	//********
+	//制作根节点
+	private Node makeData() {
+		// 创建根节点
+		Node root = new Node("全球演示点", "000000");
+		// 创建1级子节点
+		Node n1 = new Node("治安警察大队", "1");
+		n1.setParent(root);// 设置父节点
+
+		Node n11 = new Node("李伟", "13966664567");
+		n11.setParent(n1);
+		Node n12 = new Node("张同刚", "13966664567");
+		n12.setParent(n1);
+
+		n1.add(n11);
+		n1.add(n12);
+
+		// 创建1级子节点
+		Node n2 = new Node("刑事警察大队", "2");
+		n2.setParent(root);
+		Node n21 = new Node("曹梦华", "13966664567");
+		n21.setParent(n2);
+		Node n22 = new Node("文燕", "13966664567");
+		n22.setParent(n2);
+		Node n23 = new Node("赵文涛", "13766604867");
+		n23.setParent(n2);
+		n2.add(n21);
+		n2.add(n22);
+		n2.add(n23);
+
+		// 创建1级子节点
+		Node n3 = new Node("巡警防暴大队", "3");
+		n3.setParent(root);
+		Node n31 = new Node("崔逊田", "15305510131");
+		n31.setParent(n3);
+		Node n32 = new Node("测试用户", "13855196982");
+		n32.setParent(n3);
+
+		// 创建2级子节点
+		Node n33 = new Node("巡警第一中队", "31");
+		n33.setParent(n3);
+
+		Node n331 = new Node("张楠", "15890875672");
+		n331.setParent(n33);
+		// n331.setIcon(R.drawable.icon_police);
+		Node n332 = new Node("阮明东", "15890875672");
+		n332.setParent(n33);
+		Node n333 = new Node("司徒正雄", "15890875672");
+		n333.setParent(n33);
+		// n333.setIcon(R.drawable.icon_police);
+		n33.add(n331);
+		n33.add(n332);
+		n33.add(n333);
+
+		n3.add(n31);
+		n3.add(n32);
+		n3.add(n33);
+
+		root.add(n3);
+		root.add(n1);
+		root.add(n2);
+
+		return root;
 	}
 
 	/**
@@ -179,145 +246,91 @@ public class Activity_WorldPlay extends Activity implements OnItemClickListener 
 	 * <node><id>7</id><name>1号通道</name><parent>6</parent></node>
 	 * <node><id>8</id><name>2号通道</name><parent>6</parent></node>
 	 */
-	// ****************
-	// 配置无限级列表
-	private void setAdapter() {
-		TreeAdapter ta = new TreeAdapter(Activity_WorldPlay.this, makeData());
-		// 设置展开和折叠时图标
-		ta.setExpandedCollapsedIcon(R.drawable.icon_minus, R.drawable.icon_pus, R.drawable.icon_save_video);
-		// 设置默认展开级别
-		ta.setExpandLevel(1);
-		listview.setAdapter(ta);
-	}
-
-	private Node makeData() {
-		// 创建根节点
-				Node root = new Node("全球演示点", "000000");
-				// 创建1级子节点
-				Node n1 = new Node("治安警察大队", "1");
-				n1.setParent(root);// 设置父节点
-
-				Node n11 = new Node("李伟", "13966664567");
-				n11.setParent(n1);
-				Node n12 = new Node("张同刚", "13966664567");
-				n12.setParent(n1);
-
-				n1.add(n11);
-				n1.add(n12);
-
-				// 创建1级子节点
-				Node n2 = new Node("刑事警察大队", "2");
-				n2.setParent(root);
-				Node n21 = new Node("曹梦华", "13966664567");
-				n21.setParent(n2);
-				Node n22 = new Node("文燕", "13966664567");
-				n22.setParent(n2);
-				Node n23 = new Node("赵文涛", "13766604867");
-				n23.setParent(n2);
-				n2.add(n21);
-				n2.add(n22);
-				n2.add(n23);
-
-				// 创建1级子节点
-				Node n3 = new Node("巡警防暴大队", "3");
-				n3.setParent(root);
-				Node n31 = new Node("崔逊田", "15305510131");
-				n31.setParent(n3);
-				Node n32 = new Node("测试用户", "13855196982");
-				n32.setParent(n3);
-
-				// 创建2级子节点
-				Node n33 = new Node("巡警第一中队", "31");
-				n33.setParent(n3);
-
-				Node n331 = new Node("张楠", "15890875672");
-				n331.setParent(n33);
-				// n331.setIcon(R.drawable.icon_police);
-				Node n332 = new Node("阮明东", "15890875672");
-				n332.setParent(n33);
-				Node n333 = new Node("司徒正雄", "15890875672");
-				n333.setParent(n33);
-				// n333.setIcon(R.drawable.icon_police);
-				n33.add(n331);
-				n33.add(n332);
-				n33.add(n333);
-
-				n3.add(n31);
-				n3.add(n32);
-				n3.add(n33);
-
-				root.add(n3);
-				root.add(n1);
-				root.add(n2);
-				
-		return root;
-	}
-	
-	//********
-	//根据实时数据早root
+	// ********
+	// 根据实时数据早root
 	private Node makeDataNew() {
 		// 创建根节点
-				Node root = new Node("全球演示点", "000000");
-				// 创建1级子节点
-				Node n1 = new Node("治安警察大队", "1");
-				n1.setParent(root);// 设置父节点
+		Node root = new Node("全球演示点", "000000");
 
-				Node n11 = new Node("李伟", "13966664567");
-				n11.setParent(n1);
-				Node n12 = new Node("张同刚", "13966664567");
-				n12.setParent(n1);
+		// get the first level data collection
+		List<channel> leve1s = getFirstLevel(list_channel);
 
-				n1.add(n11);
-				n1.add(n12);
-
-				// 创建1级子节点
-				Node n2 = new Node("刑事警察大队", "2");
-				n2.setParent(root);
-				Node n21 = new Node("曹梦华", "13966664567");
-				n21.setParent(n2);
-				Node n22 = new Node("文燕", "13966664567");
-				n22.setParent(n2);
-				Node n23 = new Node("赵文涛", "13766604867");
-				n23.setParent(n2);
-				n2.add(n21);
-				n2.add(n22);
-				n2.add(n23);
-
-				// 创建1级子节点
-				Node n3 = new Node("巡警防暴大队", "3");
-				n3.setParent(root);
-				Node n31 = new Node("崔逊田", "15305510131");
-				n31.setParent(n3);
-				Node n32 = new Node("测试用户", "13855196982");
-				n32.setParent(n3);
-
-				// 创建2级子节点
-				Node n33 = new Node("巡警第一中队", "31");
-				n33.setParent(n3);
-
-				Node n331 = new Node("张楠", "15890875672");
-				n331.setParent(n33);
-				// n331.setIcon(R.drawable.icon_police);
-				Node n332 = new Node("阮明东", "15890875672");
-				n332.setParent(n33);
-				Node n333 = new Node("司徒正雄", "15890875672");
-				n333.setParent(n33);
-				// n333.setIcon(R.drawable.icon_police);
-				n33.add(n331);
-				n33.add(n332);
-				n33.add(n333);
-
-				n3.add(n31);
-				n3.add(n32);
-				n3.add(n33);
-
-				root.add(n3);
+		if (leve1s.size() > 0) {
+			int i = 0;
+			for (channel c : leve1s) {
+				Node n1 = MakeNode(c, i++, root);
 				root.add(n1);
-				root.add(n2);
-				
+			}
+		}
+
 		return root;
 	}
-	
+
+	/**
+	 * 制造Node
+	 * 
+	 * @param c
+	 * @return
+	 */
+	private Node MakeNode(channel c, int i, Node parent) {
+		Node node = new Node(c.getName(), "" + i);
+		node.setId(c.getId());
+		node.setParentId(c.getParent_id());
+		node.setParent(parent);
+
+		List<channel> childs = getChild(c.getId());
+		if (childs.size() > 0) {
+			for (channel c1 : childs) {
+				node.add(MakeNode(c1, i + 1, node));
+			}
+		}
+
+		return node;
+	}
+
+	/**
+	 * 获取child
+	 * 
+	 * @param id
+	 * @return
+	 */
+	private List<channel> getChild(String id) {
+		List<channel> childs = new ArrayList<channel>();
+
+		for (int i = 0; i < list_channel.size(); i++) {
+			if (list_channel.get(i).getParent_id().equals(id)) {
+				childs.add(list_channel.get(i));
+			}
+		}
+
+		return childs;
+	}
+
+	// 获取第一级组织
+	private List<channel> getFirstLevel(List<channel> list_channel2) {
+		List<channel> levels = new ArrayList<channel>();
+
+		if (list_channel2 != null && list_channel2.size() > 0) {
+
+			for (int i = 0; i < list_channel2.size(); i++) {
+
+				channel c1 = list_channel2.get(i);
+				boolean isFirst = true;
+				for (int j = 0; j < list_channel2.size(); j++) {
+					if (c1.getParent_id().equals(list_channel2.get(j).getId())) {
+						isFirst = false;
+						break;
+					}
+				}
+
+				if (isFirst) {
+					levels.add(c1);
+				}
+			}
+		}
+
+		return levels;
+	}
 
 	/**
 	 * 获取直播组织架构
@@ -384,7 +397,8 @@ public class Activity_WorldPlay extends Activity implements OnItemClickListener 
 				String title = "";
 				if (mapPoiInfo != null) {
 					title = mapPoiInfo.strText;
-					Toast.makeText(Activity_WorldPlay.this, title, Toast.LENGTH_SHORT).show();
+					Toast.makeText(Activity_WorldPlay.this, title,
+							Toast.LENGTH_SHORT).show();
 					mMapController.animateTo(mapPoiInfo.geoPt);
 				}
 			}
@@ -408,11 +422,13 @@ public class Activity_WorldPlay extends Activity implements OnItemClickListener 
 			 */
 			@Override
 			public void onMapLoadFinish() {
-				Toast.makeText(Activity_WorldPlay.this, "地图加载完成", Toast.LENGTH_SHORT).show();
+				Toast.makeText(Activity_WorldPlay.this, "地图加载完成",
+						Toast.LENGTH_SHORT).show();
 
 			}
 		};
-		mMapView.regMapViewListener(MyApplication.getInstance().mBMapManager, mMapListener);
+		mMapView.regMapViewListener(MyApplication.getInstance().mBMapManager,
+				mMapListener);
 
 	};
 
@@ -455,7 +471,8 @@ public class Activity_WorldPlay extends Activity implements OnItemClickListener 
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> parent, View arg1, int position, long id) {
+	public void onItemClick(AdapterView<?> parent, View arg1, int position,
+			long id) {
 		// 这句话写在最后面
 		((TreeAdapter) parent.getAdapter()).ExpandOrCollapse(position);
 	}

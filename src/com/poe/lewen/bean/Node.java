@@ -25,8 +25,8 @@ import java.util.List;
 public class Node {
     private Node parent;//父节点
     private List<Node> children = new ArrayList<Node>();//子节点
-    private int id;//节点id
-    private int parentId;//父亲节点的id
+    private String id;//节点id
+    private String parentId;//父亲节点的id
     private String text;//节点显示的文字
     private String value;//节点的值
     private boolean isExpanded = true;//是否处于展开状态
@@ -41,37 +41,25 @@ public class Node {
     	this.value = value;
     }
     
-    public Node() {
-		super();
-		// TODO Auto-generated constructor stub
-		this.id=-1;
-		this.parentId = -1;
-	}
 
-
-
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 
 
-
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
 
-
-	public int getParentId() {
+	public String getParentId() {
 		return parentId;
 	}
 
 
-
-	public void setParentId(int parentId) {
+	public void setParentId(String parentId) {
 		this.parentId = parentId;
 	}
-
 
 
 	/**
