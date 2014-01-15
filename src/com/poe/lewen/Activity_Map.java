@@ -21,6 +21,7 @@ import com.mm.android.avnetsdk.param.IAV_PlayerEventListener;
 import com.mm.android.avnetsdk.param.RecordInfo;
 import com.mm.android.avplaysdk.render.BasicGLSurfaceView;
 import com.poe.lewen.Activity_Video.playTask;
+import com.poe.lewen.MyApplication.loaded4login;
 import com.poe.lewen.util.Tool;
 
 import android.R.integer;
@@ -195,8 +196,19 @@ public class Activity_Map extends BaseActivity {
 	        if(bsView.getRenderer()==null){
 	    		bsView.init(Activity_Map.this);
 	    	}
-	    		//start video defalut channel is 0
+	      //start video defalut channel is 0
+	    	if(MyApplication.log_handle!=null){
 	    		new playTask().execute();
+	    	}else{
+	    		MyApplication.getInstance().reLogin(new loaded4login() {
+	    			
+	    			@Override
+	    			public void done() {
+	    				// TODO Auto-generated method stub
+	    				new playTask().execute();
+	    			}
+	    		});
+	    	}
 	    		
 	        super.onResume();
 	    }
@@ -207,6 +219,13 @@ public class Activity_Map extends BaseActivity {
 	    	 *  MapView的生命周期与Activity同步，当activity销毁时需调用MapView.destroy()
 	    	 */
 	        mMapView.destroy();
+	        
+	    	if (realPlay != null) {
+	    		AVNetSDK.AV_StopRealPlay(realPlay); // 停止实时监视
+	    		realPlay = null;
+	    	}
+	    	bsView.uninit();	//反
+	    	
 	        super.onDestroy();
 	    }
 	 

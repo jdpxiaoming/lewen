@@ -148,11 +148,11 @@ public class Activity_Video extends BaseActivity {
 			AVNetSDK.AV_StopRealPlay(realPlay); // 停止实时监视
 			realPlay = null;
 		}
-		if (MyApplication.log_handle != null) {
-			AVNetSDK.AV_Logout(MyApplication.log_handle);
-			MyApplication.log_handle = null;
-		}
-		AVNetSDK.AV_Cleanup(); // 清理网络SDK
+//		if (MyApplication.log_handle != null) {
+//			AVNetSDK.AV_Logout(MyApplication.log_handle);
+////			MyApplication.log_handle = null;
+//		}
+//		AVNetSDK.AV_Cleanup(); // 清理网络SDK
 		bsView.uninit();	//反初始化播放视图
 		super.onDestroy();
 	}

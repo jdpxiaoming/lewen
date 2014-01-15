@@ -14,7 +14,7 @@ import com.mm.android.avnetsdk.param.IAV_NetWorkListener;
 import com.mm.android.avnetsdk.param.IAV_PlayerEventListener;
 import com.mm.android.avnetsdk.param.RecordInfo;
 import com.mm.android.avplaysdk.render.BasicGLSurfaceView;
-import com.poe.lewen.Activity_Video.playTask;
+import com.poe.lewen.MyApplication.loaded4login;
 import com.poe.lewen.util.Tool;
 
 import android.R.integer;
@@ -57,8 +57,21 @@ public class Activity_Yuntai extends BaseActivity {
 	if(bsView.getRenderer()==null){
 		bsView.init(Activity_Yuntai.this);
 	}
-		//start video defalut channel is 0
+	
+	//start video defalut channel is 0
+	if(MyApplication.log_handle!=null){
 		new playTask().execute();
+	}else{
+		MyApplication.getInstance().reLogin(new loaded4login() {
+			
+			@Override
+			public void done() {
+				// TODO Auto-generated method stub
+				new playTask().execute();
+			}
+		});
+	}
+		
 		super.onResume();
 	}
 
@@ -67,6 +80,21 @@ protected void onPause() {
 	// TODO Auto-generated method stub
 //	bsView.uninit();
 	super.onPause();
+}
+
+@Override
+protected void onDestroy() {
+	if (realPlay != null) {
+		AVNetSDK.AV_StopRealPlay(realPlay); // 停止实时监视
+		realPlay = null;
+	}
+//	if (MyApplication.log_handle != null) {
+//		AVNetSDK.AV_Logout(MyApplication.log_handle);
+////		MyApplication.log_handle = null;
+//	}
+//	AVNetSDK.AV_Cleanup(); // 清理网络SDK
+	bsView.uninit();	//反初始化播放视图
+	super.onDestroy();
 }
 class playTask extends AsyncTask<Void, integer, String>{
 	
