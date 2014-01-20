@@ -84,6 +84,10 @@ public class XmlToListService {
 					if("parent".equals(name)){
 						newInfo.setParent_id(parser.nextText());
 					}
+//					if("channelId".equals(name)){
+//						newInfo.setChannel_id(parser.nextText());
+//					}
+					
 				}
 				break;
 			case XmlPullParser.END_TAG:
@@ -151,7 +155,7 @@ public class XmlToListService {
 					if("playerAddrType".equals(name)){
 						talkpic.setPlayerAddrType(parser.nextText());
 					}
-					if("device_id".equals(name)){
+					if("channelId".equals(name)){
 						talkpic.setDevice_id(parser.nextText());
 					}
 				}

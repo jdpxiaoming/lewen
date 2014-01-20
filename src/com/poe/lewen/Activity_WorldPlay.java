@@ -158,6 +158,7 @@ public class Activity_WorldPlay extends Activity implements OnItemClickListener 
 							MyApplication.username	=	conline.getUserName();
 							MyApplication.password	=	conline.getUserPsw();
 							MyApplication.selectChannel  = 0;
+							MyApplication.cOnline = conline;
 							
 							//可选择 1.直播  2.通道选择
 							MyApplication.getInstance().reLogin(new loaded4login() {

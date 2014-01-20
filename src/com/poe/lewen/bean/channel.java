@@ -5,7 +5,6 @@ public class channel {
 	private String id;//通道id
 	private String name;//通道名称
 	private String parent_id;//父类id
-	
 	public String getName() {
 		return name;
 	}

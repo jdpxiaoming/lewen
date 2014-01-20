@@ -88,6 +88,7 @@ public abstract class BaseActivity extends Activity implements OnClickListener, 
 			startActivity(new Intent(mContext, Activity_Map.class));
 			break;
 		default:
+//			onClick(v);
 			break;
 		}
 		

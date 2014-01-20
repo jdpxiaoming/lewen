@@ -1,36 +1,32 @@
 package com.poe.lewen.adapter;
 
-import java.util.ArrayList;
-
-import com.poe.lewen.MyApplication;
+import com.poe.lewen.Activity_Save;
 import com.poe.lewen.R;
+import com.poe.lewen.bean.channel;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 public class adapter4Save extends BaseAdapter {
 
-	private ArrayList<String> datasets;
 	private LayoutInflater lin;
 	
 	public adapter4Save(Context c) {
 		super();
-		this.datasets = MyApplication.mChannelList;
 		lin = LayoutInflater.from(c);
 	}
 
 	@Override
 	public int getCount() {
-		return datasets.size();
+		return Activity_Save.list_channel.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
-		return datasets.get(position);
+		return Activity_Save.list_channel.get(position);
 	}
 
 	@Override
@@ -45,10 +41,11 @@ public class adapter4Save extends BaseAdapter {
 		}
 		
 		TextView tv 	  = (TextView) convertView.findViewById(R.id.textOfSaveItem);
+		channel c =Activity_Save.list_channel.get(position);
 		
-		tv.setText(datasets.get(position));
+		tv.setText(c.getName());
 		
 		return convertView;
 	}
-
+	
 }

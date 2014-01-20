@@ -30,6 +30,8 @@ public class Packet {
 	private static int login_req = -1;//0 :登录 1：获取播放列表 2：获取直播流 3：心跳保持
 	
 	private static boolean isConnected = false;
+	
+	public  static String userName;//缓存登陆 的用户名
 	/**
 	 * 将int转为低字节在前，高字节在后的byte数组
 	 */
@@ -160,6 +162,7 @@ public class Packet {
 	 */
 	public static void login(final String userName, final String passwd,Handler handler) {
 		Packet.handler =handler;
+		Packet.userName = userName;
 		
 		if(!isConnected){
 			init();
@@ -193,6 +196,48 @@ public class Packet {
 		login_req = 1;
 	}
 	
+	
+	//************************************
+			/**
+			 * 添加收藏
+			 * @param handler
+			 */
+			public static void SaveChannel(Handler handler,String channelName,String channelNo) {
+				
+				Packet.handler =handler;
+				if(!isConnected){
+					init();
+				}
+				
+				//发送请求：获取 播放列表
+				String tmp =  XMLUtil.MakeXML4SaveAdd(MyApplication.rsp_login.getUserId(), userName, channelName, channelNo);
+				byte[] req =new Packet(Constant.REQ_ADD_FAVORITES, tmp.length(), 1, tmp).getBuf();
+				connect.write(req);
+				Log.e("req", bytesToHexString(req));
+				login_req = 3;
+			}
+			
+	//************************************
+		/**
+		 * 获得收藏组织结构
+		 * @param handler
+		 */
+		public static void getSaveList(Handler handler) {
+			
+			Packet.handler =handler;
+			if(!isConnected){
+				init();
+			}
+			
+			//发送请求：获取 播放列表
+			String tmp =  XMLUtil.MakeXML4SaveList(MyApplication.rsp_login.getUserId(), Packet.userName);
+			byte[] req =new Packet(Constant.REQ_LIST_FAVORITES, tmp.length(), 1, tmp).getBuf();
+			connect.write(req);
+			Log.e("req", bytesToHexString(req));
+			login_req = 1;
+			
+		}
+	
 	//***************
 	//获取某个摄像头的具体播放地址信息
 	public static void getVideoAddress(String nodeId,Handler handler){
@@ -209,66 +254,6 @@ public class Packet {
 		login_req = 2;
 		
 	}
-	
-	private static void doSomeThing(String str) {
-		
-		switch(login_req){
-		case 0://login
-			try {
-				MyApplication.rsp_login = XmlToListService.GetLogin(str);
-				if(MyApplication.rsp_login!=null){
-					System.out.println(MyApplication.rsp_login.getUserId());
-//					//发送请求：获取 播放列表
-//					String tmp =  XMLUtil.MakeXML4List(MyApplication.rsp_login.getUserId());
-//					byte[] req =new Packet(Constant.REQ_GET_ORG_STRUCTURE, tmp.length(), 1, tmp).getBuf();
-//					connect.write(req);
-//					Log.e("req", bytesToHexString(req));
-//					login_req = 1;
-				}
-			} catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			break;
-		case 1://play list
-			//获取播放列表
-			try {
-				List<channel> list =XmlToListService.GetChannelList(str);
-				if(list!=null){
-					for(channel c: list){
-						System.out.println(c.getName());
-					}
-					
-					//发送请求：获取 第一个直播地址
-					String tmp =  XMLUtil.MakeXML4PlayAddress(list.get(4).getId());
-					byte[] req =new Packet(Constant.REQ_GET_VIDEO_ADDR, tmp.length(), 1, tmp).getBuf();
-					connect.write(req);
-					Log.e("req", bytesToHexString(req));
-					login_req = 2;
-				}
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			break;
-		case 2://real rtmp address
-			try {
-				channelOnLine cline1 =XmlToListService.GetVideoAddress(str);
-				if(null!=cline1){
-					System.out.println(cline1.getPlayer_Addr());
-				}
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			break;
-		}
-	}
-
-	
 	
 	
 	/**

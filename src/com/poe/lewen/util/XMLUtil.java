@@ -43,6 +43,31 @@ public class XMLUtil {
 	}
 	
 	/**
+	 * 收藏列表的xml 请求
+	 * @param userId	用户id
+	 * @param userName 登陆用户名
+	 * @return 组织好的mxl
+	 * ex:
+	 * <JoyMon>
+		<type>req</type>
+		<cmd>0XC002</cmd>
+		<userId>10034</userId>
+		<userName>cxm</userName>
+	   </JoyMon>
+	 */
+	public static String MakeXML4SaveList(String userId,String userName) {
+		StringBuffer sb = new StringBuffer();
+		sb.append("<JoyMon>");
+		sb.append("<type>req</type>");
+		sb.append("<cmd>0XC002</cmd>");
+		sb.append("<userId>" + userId + "</userName>");
+		sb.append("<userName>"+userName+	"</userName>");
+		sb.append("</JoyMon>");
+
+		return sb.toString();
+	}
+	
+	/**
 	 * 心跳xml
 	 * @return
 	 */
@@ -68,6 +93,34 @@ public class XMLUtil {
 		sb.append("<type>req</type>");
 		sb.append("<cmd>0XA000</cmd>");
 		sb.append("<nodeId>" + nodeId + "</nodeId>");
+		sb.append("</JoyMon>");
+
+		return sb.toString();
+	}
+	
+	/**
+	 * 
+	 * @param nodeId
+	 * @return 
+	 * 
+		<JoyMon>
+		<type>req</type>
+		<cmd>0XC001</cmd>
+		<userId>10034</userId>
+		<userName>cxm</userName>
+		<channelName>收藏的通道名字</channelName>
+		<channelNo>收藏的通道编号</channelNo>
+		</JoyMon>
+	 */
+	public static String MakeXML4SaveAdd(String userId,String userName,String channelName,String channelNo) {
+		StringBuffer sb = new StringBuffer();
+		sb.append("<JoyMon>");
+		sb.append("<type>req</type>");
+		sb.append("<cmd>0XC001</cmd>");
+		sb.append("<userId>" +	userId +	"</userId>");
+		sb.append("<userName>" +userName +"</userName>");
+		sb.append("<channelName>" +channelName +"</channelName>");
+		sb.append("<channelNo>" +channelNo+	"</channelNo>");
 		sb.append("</JoyMon>");
 
 		return sb.toString();

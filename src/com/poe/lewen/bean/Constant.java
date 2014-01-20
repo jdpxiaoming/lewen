@@ -19,5 +19,17 @@ public class Constant {
 	
 	public static int REQ_GET_VIDEO_ADDR            = 0XE008;      //获取直播地址
 	
+	public static int RSP_CUT_OFFLINE         = 0XB03A     ;      //强制离线注销
+	
+	public static int REQ_ADD_FAVORITES       = 0XC001 ;		//添加到收藏夹 Favorites
+	
+	public static int RSP_ADD_FAVORITES       = 0XB101 ; 		//响应添加到收藏夹
+	
+	public static int REQ_LIST_FAVORITES      = 0XC002;		//从收藏夹查询 Favorites
+	
+	public static int RSP_LIST_FAVORITES		= 0XB102;		//响应从收藏夹查询
+	
+	public static int REQ_LIST_DEMO_ADDR      = 0XC003;     //获取演示地址
+	
 	
 }

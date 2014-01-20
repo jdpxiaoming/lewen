@@ -1,34 +1,45 @@
 package com.poe.lewen;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 import com.mm.android.avnetsdk.AVNetSDK;
 import com.mm.android.avnetsdk.param.AV_HANDLE;
+import com.mm.android.avnetsdk.param.AV_IN_Capture;
 import com.mm.android.avnetsdk.param.AV_IN_RealPlay;
 import com.mm.android.avnetsdk.param.AV_MediaInfo;
+import com.mm.android.avnetsdk.param.AV_OUT_Capture;
 import com.mm.android.avnetsdk.param.AV_OUT_RealPlay;
 import com.mm.android.avnetsdk.param.AV_PlayPosInfo;
 import com.mm.android.avnetsdk.param.AV_Time;
+import com.mm.android.avnetsdk.param.IAV_CaptureDataListener;
 import com.mm.android.avnetsdk.param.IAV_DataListener;
 import com.mm.android.avnetsdk.param.IAV_NetWorkListener;
 import com.mm.android.avnetsdk.param.IAV_PlayerEventListener;
 import com.mm.android.avnetsdk.param.RecordInfo;
 import com.mm.android.avplaysdk.render.BasicGLSurfaceView;
 import com.poe.lewen.MyApplication.loaded4login;
+import com.poe.lewen.util.DateUtil;
+import com.poe.lewen.util.Packet;
 import com.poe.lewen.util.Tool;
-import com.poe.lewen.vlc.Util;
-
 import android.R.integer;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.media.AudioManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
-public class Activity_Video extends BaseActivity {
+public class Activity_Video extends BaseActivity  implements IAV_CaptureDataListener{
 
 //---------------------------通道一
 	private AV_IN_RealPlay playINParam = null; // 实时监视输入参数
@@ -37,9 +48,12 @@ public class Activity_Video extends BaseActivity {
 	private AV_HANDLE realPlay = null; // 实时监测句柄
 	private LinearLayout loading;
 	
+	//screen capture
+	private AV_HANDLE av_capture_handler = null;//开启截屏的句柄
+	private ImageButton btn_capture,btn_add_save;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.layout_video);
@@ -49,6 +63,11 @@ public class Activity_Video extends BaseActivity {
 	@Override
 	public void init() {
 		loading	=	(LinearLayout) findViewById(R.id.loadingOfVideo);
+		btn_capture	=	(ImageButton) findViewById(R.id.imgScreenCaptureOfVideo);
+		btn_add_save	=	(ImageButton) findViewById(R.id.imgAddSaveOfVideo);
+		
+		btn_capture.setOnClickListener(this);
+		btn_add_save.setOnClickListener(this);
 		
 		lin_video.setBackgroundResource(R.drawable.btn_bg_press	);
 		image_video.setImageResource(R.drawable.icon_video_press);
@@ -59,35 +78,6 @@ public class Activity_Video extends BaseActivity {
 			
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-//				float mTouchY=0;
-//				 switch (event.getAction()) {
-//
-//			        case MotionEvent.ACTION_DOWN:
-//			            mTouchY = event.getRawY();
-//			            break;
-//
-//			        case MotionEvent.ACTION_MOVE:
-//			            // No volume/brightness action if coef < 2
-//			            if (coef > 2) {
-//			                // Volume (Up or Down - Right side)
-//			                if (!mEnableBrightnessGesture || mTouchX > (screen.widthPixels / 2)){
-//			                    doVolumeTouch(y_changed);
-//			                }
-//			                // Extend the overlay for a little while, so that it doesn't
-//			                // disappear on the user if more adjustment is needed. This
-//			                // is because on devices with soft navigation (e.g. Galaxy
-//			                // Nexus), gestures can't be made without activating the UI.
-//			                if(Util.hasNavBar())
-//			                    showOverlay();
-//			            }
-//			            // Seek (Right or Left move)
-//			            doSeekTouch(coef, xgesturesize, false);
-//			            break;
-//
-//			        case MotionEvent.ACTION_UP:
-//			            // Audio or Brightness
-//			            break;
-//			        }
 				float y1=(float) 0.0,y2=(float) 0.0;
 				if(event.getAction()==MotionEvent.ACTION_DOWN){
 					y1 = event.getY();
@@ -148,11 +138,6 @@ public class Activity_Video extends BaseActivity {
 			AVNetSDK.AV_StopRealPlay(realPlay); // 停止实时监视
 			realPlay = null;
 		}
-//		if (MyApplication.log_handle != null) {
-//			AVNetSDK.AV_Logout(MyApplication.log_handle);
-////			MyApplication.log_handle = null;
-//		}
-//		AVNetSDK.AV_Cleanup(); // 清理网络SDK
 		bsView.uninit();	//反初始化播放视图
 		super.onDestroy();
 	}
@@ -172,6 +157,29 @@ public class Activity_Video extends BaseActivity {
 		return super.onKeyDown(keyCode, event);
 	}
 	
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.imgScreenCaptureOfVideo:
+			doCapture();
+			break;
+		case R.id.imgAddSaveOfVideo:
+			doSave();
+			break;
+		default: super.onClick(v);
+			break;
+		}
+	}
+
+	/**
+	 * 增加收藏通道信息到服务器
+	 */
+	private void doSave() {
+		
+		Packet.SaveChannel(null, MyApplication.cOnline.getChannelName()
+				, MyApplication.cOnline.getChannelNo());
+	}
+
 	class playTask extends AsyncTask<Void, integer, String>{
 		
 		@Override
@@ -248,8 +256,11 @@ public class Activity_Video extends BaseActivity {
 		@Override
 		protected String doInBackground(Void... params) {
 			if (MyApplication.log_handle != null) // 登陆成功才能播放
+				{
+				
 				realPlay = AVNetSDK.AV_RealPlay(MyApplication.log_handle, playINParam,	playOutParam);
-			else {
+		
+				}	else {
 				return "请先登陆！";
 			}
 			return null;
@@ -259,16 +270,88 @@ public class Activity_Video extends BaseActivity {
 		protected void onPostExecute(String result) {
 			loading.setVisibility(View.GONE);
 			if(null!=result){
-//				Tool.showMsg(MyApplication.getInstance().getApplicationContext(), result);
 				MyApplication.getInstance().reLogin(new loaded4login() {
-					
 					@Override
 					public void done() {
-						// TODO Auto-generated method stub
 						new playTask().execute();
 					}
 				});
 			}
 		}
 	}
+	
+	/**
+	 * 截屏action
+	 */
+	private void doCapture() {
+		
+		System.out.println("test capture!");
+		if(null==av_capture_handler){
+		AV_IN_Capture		 inParam = new AV_IN_Capture();
+		inParam.captureListener = Activity_Video.this	;
+		inParam.channelId	=	MyApplication.selectChannel;
+		inParam.imageSize = 100*100;
+		AV_OUT_Capture outParam	=	new AV_OUT_Capture();
+		
+		av_capture_handler=AVNetSDK.AV_CreateCapture(MyApplication.log_handle, inParam, outParam);
+		}
+		
+		//start 
+		AVNetSDK.AV_StartCapture(av_capture_handler);
+	}
+
+	@Override
+	public void captureData(int arg0, int arg1, byte[] arg2) {
+		System.out.println(arg2.length+"截屏开始！");
+		if(arg2!=null&&arg2.length>0){
+			System.out.println(arg2.length+"截屏返回成功！");
+			//把 byte转化为 图片
+			
+			Bitmap bmap = BitmapFactory.decodeByteArray(arg2, 0, arg2.length);
+			
+			File lewen =new File("/mnt/sdcard/lewen");
+			
+			if(!lewen.exists())
+				lewen.mkdir();
+			
+			DateUtil dt = new DateUtil();
+			String currentTime = dt.getNowTime("yyyy-MM-dd-hh-mm-ss");
+			savePic(bmap, "/mnt/sdcard/lewen/" +currentTime+	".png");
+			
+			AVNetSDK.AV_StopCapture(av_capture_handler, arg1);
+			
+		}
+		
+	}
+	
+	private static Handler handler_toast = new Handler(){
+
+		@Override
+		public void handleMessage(Message msg) {
+			// TODO Auto-generated method stub
+			super.handleMessage(msg);
+			String strFileName = (String) msg.obj;
+			MyApplication.getInstance().throwTipsLong("抓图成功！保存路径："+strFileName);
+		}
+		
+	};
+	 // 保存到sdcard
+    private static void savePic(Bitmap b, String strFileName) {
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(strFileName);
+            if (null != fos) {
+                b.compress(Bitmap.CompressFormat.PNG, 90, fos);
+                fos.flush();
+                fos.close();
+                
+                handler_toast.sendMessage(handler_toast.obtainMessage(0, strFileName));
+                
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

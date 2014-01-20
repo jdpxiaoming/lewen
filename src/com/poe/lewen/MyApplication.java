@@ -14,6 +14,7 @@ import com.mm.android.avnetsdk.param.AV_IN_Login;
 import com.mm.android.avnetsdk.param.AV_OUT_Login;
 import com.mm.android.avnetsdk.param.ConnectStatusListener;
 import com.poe.lewen.bean.Constant;
+import com.poe.lewen.bean.channelOnLine;
 import com.poe.lewen.bean.rsp_login;
 
 import android.R.integer;
@@ -40,12 +41,15 @@ public class MyApplication extends Application {
 	public static AV_HANDLE log_handle = null; // 登陆句柄
 	private AV_IN_Login refInParam = null; // 登陆输入参数
 	private AV_OUT_Login refOutParam = null; // 登陆输出参数
+//	private IAV_CaptureDataListener
 	private int mChannelCount=0;	//连接设备的通道数
 	public static ArrayList<String> mChannelList = new ArrayList<String>();
 	public static String ip_dahua ="60.18.152.38";
 	public static int prot_dahua=37779;
 	public static String username="admin";
 	public static String password	="admin";
+	
+	public static channelOnLine cOnline ;
 	
 	public static rsp_login rsp_login;
 	/**
@@ -195,6 +199,12 @@ public class MyApplication extends Application {
 			
 		}
 		
+		// 剪贴板复制提示
+				public  void throwTipsLong(String str) {
+					
+					Toast.makeText(mInstance, str, 5000).show();
+					
+				}
 		class loginTask extends AsyncTask<loaded4login, integer, String>{
 
 			private loaded4login login_interface = null;
@@ -218,6 +228,8 @@ public class MyApplication extends Application {
 						return 0;
 					}
 				};
+				
+//				refInParam.
 				//构造登陆输出参数
 				refOutParam = new AV_OUT_Login();
 			}

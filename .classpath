@@ -9,5 +9,6 @@
 	<classpathentry exported="true" kind="lib" path="libs/tplayer.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/baidumapapi_v2_3_1.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/locSDK_3.1.jar"/>
+	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
