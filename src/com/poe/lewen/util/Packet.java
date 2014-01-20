@@ -202,7 +202,7 @@ public class Packet {
 			 * 添加收藏
 			 * @param handler
 			 */
-			public static void SaveChannel(Handler handler,String channelName,String channelNo) {
+			public static void SaveChannel(Handler handler,String channelName,String channelNo,String channelId) {
 				
 				Packet.handler =handler;
 				if(!isConnected){
@@ -210,7 +210,7 @@ public class Packet {
 				}
 				
 				//发送请求：获取 播放列表
-				String tmp =  XMLUtil.MakeXML4SaveAdd(MyApplication.rsp_login.getUserId(), userName, channelName, channelNo);
+				String tmp =  XMLUtil.MakeXML4SaveAdd(MyApplication.rsp_login.getUserId(), userName, channelName, channelNo,channelId);
 				byte[] req =new Packet(Constant.REQ_ADD_FAVORITES, tmp.length(), 1, tmp).getBuf();
 				connect.write(req);
 				Log.e("req", bytesToHexString(req));

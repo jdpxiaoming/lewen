@@ -22,10 +22,17 @@ public class channelOnLine {
 	
 	private String playerAddrType;//播放地址类型
 	
-	/**
-	 * 对应服务器的 channel_id
-	 */
 	private String device_id;//设备编号
+
+	private String channelId;
+	
+	public String getChannelId() {
+		return channelId;
+	}
+
+	public void setChannelId(String channelId) {
+		this.channelId = channelId;
+	}
 
 	public String getDevice_name() {
 		return device_name;

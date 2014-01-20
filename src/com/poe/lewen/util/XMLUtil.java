@@ -112,7 +112,7 @@ public class XMLUtil {
 		<channelNo>收藏的通道编号</channelNo>
 		</JoyMon>
 	 */
-	public static String MakeXML4SaveAdd(String userId,String userName,String channelName,String channelNo) {
+	public static String MakeXML4SaveAdd(String userId,String userName,String channelName,String channelNo,String channelId) {
 		StringBuffer sb = new StringBuffer();
 		sb.append("<JoyMon>");
 		sb.append("<type>req</type>");
@@ -121,6 +121,7 @@ public class XMLUtil {
 		sb.append("<userName>" +userName +"</userName>");
 		sb.append("<channelName>" +channelName +"</channelName>");
 		sb.append("<channelNo>" +channelNo+	"</channelNo>");
+		sb.append("<channelId>" +channelId+	"</channelId>");
 		sb.append("</JoyMon>");
 
 		return sb.toString();

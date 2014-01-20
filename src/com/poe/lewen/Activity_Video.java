@@ -177,7 +177,7 @@ public class Activity_Video extends BaseActivity  implements IAV_CaptureDataList
 	private void doSave() {
 		
 		Packet.SaveChannel(null, MyApplication.cOnline.getChannelName()
-				, MyApplication.cOnline.getChannelNo());
+				, MyApplication.cOnline.getChannelNo(),MyApplication.cOnline.getChannelId());
 	}
 
 	class playTask extends AsyncTask<Void, integer, String>{

@@ -155,9 +155,13 @@ public class XmlToListService {
 					if("playerAddrType".equals(name)){
 						talkpic.setPlayerAddrType(parser.nextText());
 					}
-					if("channelId".equals(name)){
+					if("device_id".equals(name)){
 						talkpic.setDevice_id(parser.nextText());
 					}
+					if("channelId".equals(name)){
+						talkpic.setChannelId(parser.nextText());
+					}
+					
 				}
 				break;
 			case XmlPullParser.END_TAG:
