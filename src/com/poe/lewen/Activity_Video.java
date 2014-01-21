@@ -175,9 +175,12 @@ public class Activity_Video extends BaseActivity  implements IAV_CaptureDataList
 	 * 增加收藏通道信息到服务器
 	 */
 	private void doSave() {
-		
+		if(MyApplication.cOnline!=null){
 		Packet.SaveChannel(null, MyApplication.cOnline.getChannelName()
 				, MyApplication.cOnline.getChannelNo(),MyApplication.cOnline.getChannelId());
+		}else{
+			MyApplication.getInstance().throwTips("请先登录选择通道，再来收藏！");
+		}
 	}
 
 	class playTask extends AsyncTask<Void, integer, String>{
@@ -286,15 +289,15 @@ public class Activity_Video extends BaseActivity  implements IAV_CaptureDataList
 	private void doCapture() {
 		
 		System.out.println("test capture!");
-		if(null==av_capture_handler){
+//		if(null==av_capture_handler){
 		AV_IN_Capture		 inParam = new AV_IN_Capture();
 		inParam.captureListener = Activity_Video.this	;
-		inParam.channelId	=	MyApplication.selectChannel;
+		inParam.channelId	=	MyApplication.cOnline!=null?Integer.parseInt(MyApplication.cOnline.getChannelId()):0;
 		inParam.imageSize = 100*100;
 		AV_OUT_Capture outParam	=	new AV_OUT_Capture();
 		
 		av_capture_handler=AVNetSDK.AV_CreateCapture(MyApplication.log_handle, inParam, outParam);
-		}
+//		}
 		
 		//start 
 		AVNetSDK.AV_StartCapture(av_capture_handler);
@@ -317,7 +320,6 @@ public class Activity_Video extends BaseActivity  implements IAV_CaptureDataList
 			DateUtil dt = new DateUtil();
 			String currentTime = dt.getNowTime("yyyy-MM-dd-hh-mm-ss");
 			savePic(bmap, "/mnt/sdcard/lewen/" +currentTime+	".png");
-			
 			AVNetSDK.AV_StopCapture(av_capture_handler, arg1);
 			
 		}
