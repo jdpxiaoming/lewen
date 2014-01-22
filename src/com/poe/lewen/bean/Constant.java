@@ -6,7 +6,7 @@ public class Constant {
 	public static String ip_dahua ="202.136.60.234";//"60.18.152.38";
 	public static int prot_dahua=37780;//37779;
 	
-	public static String str_login_ip = "219.146.251.189";
+	public static String str_login_ip = "202.136.60.234";//"219.146.251.189";
 	public static int login_port = 8888;//;//8808;//
 	
 	public static int REQ_LOGIN = 0XA001;	//用登陆请求XML格式
@@ -30,6 +30,5 @@ public class Constant {
 	public static int RSP_LIST_FAVORITES		= 0XB102;		//响应从收藏夹查询
 	
 	public static int REQ_LIST_DEMO_ADDR      = 0XC003;     //获取演示地址
-	
 	
 }

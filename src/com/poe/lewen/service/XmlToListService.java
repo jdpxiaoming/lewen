@@ -111,6 +111,7 @@ public class XmlToListService {
 	public static channelOnLine GetVideoAddress(String str)throws Exception{
 		if(str==null||"".equals(str))
 			return null;
+		List<channelOnLine> lists=new ArrayList<channelOnLine>();
 		channelOnLine talkpic = null;
 		XmlPullParser parser = Xml.newPullParser();
 		InputStream  inputStream   =   new   ByteArrayInputStream(str.getBytes());
@@ -165,12 +166,16 @@ public class XmlToListService {
 				}
 				break;
 			case XmlPullParser.END_TAG:
+				if("channel".equals(parser.getName())){
+//					talkpic = new channelOnLine();
+					lists.add(talkpic);
+				}
 				break;
 			}
 			eventType = parser.next();
 		}
 		
-		return talkpic;
+		return lists.get(0);
 	}
 	
 //	

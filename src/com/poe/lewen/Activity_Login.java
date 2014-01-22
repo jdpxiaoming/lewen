@@ -147,9 +147,9 @@ public class Activity_Login extends Activity {
 						MyApplication.getInstance().throwTips("登录成功，自动跳转到播放列表页面！");
 						
 						 startActivity(new Intent(Activity_Login.this,Activity_WorldPlay.class));
+					}else{
+						MyApplication.getInstance().throwTips("登录失败！");
 					}
-					
-					MyApplication.getInstance().throwTips("登录失败！");
 				} catch (UnsupportedEncodingException e) {
 					e.printStackTrace();
 				} catch (Exception e) {
