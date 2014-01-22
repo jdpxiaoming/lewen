@@ -41,6 +41,7 @@ public class TreeAdapter extends BaseAdapter{
 	private int expandedIcon = -1;//展开的icon 	"-"
 	private int collapsedIcon = -1;//合起来的icon 	"+"
 	private int leafIcon			=	-1;//叶子节点的icon	"0"
+	private Node rootNode;
 	
 	/**
 	 * TreeAdapter构造函数
@@ -52,6 +53,7 @@ public class TreeAdapter extends BaseAdapter{
 		this.lif = (LayoutInflater) con.
     	getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		addNode(rootNode);
+		this.rootNode = rootNode;
 	}
 	
 	private void addNode(Node node){
@@ -61,6 +63,16 @@ public class TreeAdapter extends BaseAdapter{
 		for(int i=0;i<node.getChildren().size();i++){
 			addNode(node.getChildren().get(i));
 		}
+	}
+	
+	public void update(){
+		
+		alls.clear();
+		allsCache.clear();
+		
+		if(null!=rootNode)
+			addNode(rootNode);
+		
 	}
 	
 	// 控制节点的展开和折叠

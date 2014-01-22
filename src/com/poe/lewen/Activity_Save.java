@@ -102,7 +102,7 @@ public class Activity_Save extends Activity {
 					break;
 				case 2:
 					try {
-						final channelOnLine conline = XmlToListService.GetVideoAddress(result_login);
+						final channelOnLine conline = XmlToListService.GetVideoAddress(result_login).get(0);
 						if(conline!=null&&conline.getPlayer_Addr()!=null){
 							System.out.println("直播地址："+conline.getPlayer_Addr());
 							MyApplication.ip_dahua = conline.getDevice_ipAddr();

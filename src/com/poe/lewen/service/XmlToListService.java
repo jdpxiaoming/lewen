@@ -108,7 +108,7 @@ public class XmlToListService {
 	 * @return
 	 * @throws Exception
 	 */
-	public static channelOnLine GetVideoAddress(String str)throws Exception{
+	public static List<channelOnLine> GetVideoAddress(String str)throws Exception{
 		if(str==null||"".equals(str))
 			return null;
 		List<channelOnLine> lists=new ArrayList<channelOnLine>();
@@ -175,7 +175,7 @@ public class XmlToListService {
 			eventType = parser.next();
 		}
 		
-		return lists.get(0);
+		return lists;
 	}
 	
 //	
