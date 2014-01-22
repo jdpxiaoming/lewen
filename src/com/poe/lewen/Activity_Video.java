@@ -292,7 +292,7 @@ public class Activity_Video extends BaseActivity  implements IAV_CaptureDataList
 //		if(null==av_capture_handler){
 		AV_IN_Capture		 inParam = new AV_IN_Capture();
 		inParam.captureListener = Activity_Video.this	;
-		inParam.channelId	=	MyApplication.cOnline!=null?Integer.parseInt(MyApplication.cOnline.getChannelId()):0;
+		inParam.channelId	=0;//	MyApplication.cOnline!=null?Integer.parseInt(MyApplication.cOnline.getChannelId()):0;
 		inParam.imageSize = 100*100;
 		AV_OUT_Capture outParam	=	new AV_OUT_Capture();
 		

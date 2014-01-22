@@ -86,6 +86,7 @@ public class Activity_Home extends BaseActivity {
 		super.onDestroy();
 		MyApplication.rsp_login=null;
 		MyApplication.getInstance().defaultSDKParam();
+		MyApplication.cOnline =null;
 		Packet.close();
 	}
 }
