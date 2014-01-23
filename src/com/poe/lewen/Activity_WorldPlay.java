@@ -47,7 +47,7 @@ public class Activity_WorldPlay extends Activity implements OnItemClickListener 
 	private TreeAdapter adapter;
 	private Node root,selected_node ;
 	private HashMap<String, List<channelOnLine>> hash_online = new HashMap<String, List<channelOnLine>>();
-//	private List<channelOnLine> conlines ;
+//private List<channelOnLine> conlines ;
 	private channelOnLine conline = null;
 	
 	/**

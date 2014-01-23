@@ -162,12 +162,12 @@ public class Activity_Save extends Activity {
 		 listview.setAdapter(adapter);
 	}
 	
-	
 	/**
 	 * 获取直播组织架构
 	 */
 	private void doSendTcpRequest() {
 		progress.setVisibility(View.VISIBLE);
-		Packet.getPlayingList(handler);
+		Packet.getSaveList(handler);
 	}
+	
 }

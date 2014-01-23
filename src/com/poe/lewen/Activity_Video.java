@@ -38,6 +38,7 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 public class Activity_Video extends BaseActivity  implements IAV_CaptureDataListener{
 
@@ -51,6 +52,8 @@ public class Activity_Video extends BaseActivity  implements IAV_CaptureDataList
 	private AV_HANDLE av_capture_handler = null;//开启截屏的句柄
 	private ImageButton btn_capture,btn_add_save;
 	
+	private RelativeLayout relative_volume;
+	private LinearLayout linear_volume;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +66,9 @@ public class Activity_Video extends BaseActivity  implements IAV_CaptureDataList
 
 	@Override
 	public void init() {
+		relative_volume	=	(RelativeLayout) findViewById(R.id.relativeVolumeOfVideo);
+		linear_volume		=	(LinearLayout) findViewById(R.id.lin_voice);
+		
 		loading	=	(LinearLayout) findViewById(R.id.loadingOfVideo);
 		btn_capture	=	(ImageButton) findViewById(R.id.imgScreenCaptureOfVideo);
 		btn_add_save	=	(ImageButton) findViewById(R.id.imgAddSaveOfVideo);
@@ -106,6 +112,26 @@ public class Activity_Video extends BaseActivity  implements IAV_CaptureDataList
 					
 				}
 				return true;
+			}
+		});
+		
+		//volume
+		relative_volume.setOnTouchListener(new OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				// TODO Auto-generated method stub
+				float x  = event.getX();
+				System.out.println("x:"+x);
+				if(x>0){
+//					if(x-0>relative_volume.getWidth()){
+//						linear_volume.setLayoutParams(new LinearLayout.LayoutParams((int)(relative_volume.getWidth()-10), 5));
+//						
+//					}else{
+//						linear_volume.setLayoutParams(new LinearLayout.LayoutParams((int)x, 5));
+//					}
+				}
+				return false;
 			}
 		});
 	}

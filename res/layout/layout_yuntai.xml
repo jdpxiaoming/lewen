@@ -52,6 +52,7 @@
                     >
 
                     <ImageButton
+                        android:id="@+id/btn_minus1OfYuntai"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:layout_alignParentLeft="true"
@@ -67,6 +68,7 @@
                         />
 
                     <ImageButton
+                        android:id="@+id/btn_plus1OfYuntai"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:layout_alignParentRight="true"
@@ -81,6 +83,7 @@
                     >
 
                     <ImageButton
+                         android:id="@+id/btn_minus2OfYuntai"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:layout_alignParentLeft="true"
@@ -95,6 +98,7 @@
                         />
 
                     <ImageButton
+                        android:id="@+id/btn_plus2OfYuntai"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:layout_alignParentRight="true"
@@ -109,6 +113,7 @@
                     >
 
                     <ImageButton
+                         android:id="@+id/btn_minus3OfYuntai"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:layout_alignParentLeft="true"
@@ -123,6 +128,7 @@
                          />
 
                     <ImageButton
+                        android:id="@+id/btn_plus3OfYuntai"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:layout_alignParentRight="true"
@@ -144,6 +150,7 @@
 			                android:orientation="vertical" 
 			                >
                 			 <ImageButton
+                			     	android:id="@+id/btn_switchOfYuntai"
 			                        android:layout_width="wrap_content"
 			                        android:layout_height="fill_parent"
 			                        android:layout_margin="10dp"
@@ -165,6 +172,7 @@
                 			     			    		android:textColor="#000000"
                 			     			    		/>
                 			     			<RelativeLayout 
+                			     			    			android:id="@+id/relativeSpeedOfYuntai"
                 			     			    			android:layout_width="fill_parent"
                 			     			    			android:layout_height="fill_parent"
                			     			    				>
@@ -175,10 +183,10 @@
 														    			android:layout_centerVertical="true"
 														    			/>   
 														 <ImageView 
+														     		android:id="@+id/imgSpeedOfYuntai"
                			     			    			    		android:layout_width="wrap_content"
                			     			    			    		android:layout_height="wrap_content"
                			     			    			    		android:src="@drawable/img_yuntai_point"
-               			     			    			    		android:layout_marginLeft="30dp"
                			     			    			    		/>            			     			    
                 			     			</RelativeLayout>
                 			 </LinearLayout>

@@ -4,9 +4,12 @@ import java.util.List;
 
 import com.mm.android.avnetsdk.AVNetSDK;
 import com.mm.android.avnetsdk.param.AV_HANDLE;
+import com.mm.android.avnetsdk.param.AV_IN_PTZ;
 import com.mm.android.avnetsdk.param.AV_IN_RealPlay;
 import com.mm.android.avnetsdk.param.AV_MediaInfo;
+import com.mm.android.avnetsdk.param.AV_OUT_PTZ;
 import com.mm.android.avnetsdk.param.AV_OUT_RealPlay;
+import com.mm.android.avnetsdk.param.AV_PTZ_Type;
 import com.mm.android.avnetsdk.param.AV_PlayPosInfo;
 import com.mm.android.avnetsdk.param.AV_Time;
 import com.mm.android.avnetsdk.param.IAV_DataListener;
@@ -21,6 +24,13 @@ import android.R.integer;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.View.OnTouchListener;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 public class Activity_Yuntai extends BaseActivity {
 	//---------------------------通道一
@@ -28,6 +38,14 @@ public class Activity_Yuntai extends BaseActivity {
 		private AV_OUT_RealPlay playOutParam = null; // 实时监视输出参数
 		private BasicGLSurfaceView bsView = null; // 播放的视图
 		private AV_HANDLE realPlay = null; // 实时监测句柄
+		private AV_IN_PTZ cloudInParam=null;	//云台控制输入参数
+		private AV_OUT_PTZ cloudOutParam=null;	//云台控制输出参数
+		
+		//功能键
+		private RelativeLayout relativeSpeed;
+		private ImageView imgSwitch;
+		private ImageButton btn_minus1,btn_minus2,btn_minus3;
+		private ImageButton btn_plus1,btn_plus2,btn_plus3;
 		
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,12 +58,56 @@ public class Activity_Yuntai extends BaseActivity {
 
 	@Override
 	public void init() {
+		
+		relativeSpeed	=	(RelativeLayout) findViewById(R.id.relativeSpeedOfYuntai);
+		imgSwitch	=	(ImageView) findViewById(R.id.imgSpeedOfYuntai);
+		btn_minus1	=	(ImageButton) findViewById(R.id.btn_minus1OfYuntai);
+		btn_minus2	=	(ImageButton) findViewById(R.id.btn_minus2OfYuntai);
+		btn_minus3	=	(ImageButton) findViewById(R.id.btn_minus3OfYuntai);
+		btn_plus1	=	(ImageButton) findViewById(R.id.btn_plus1OfYuntai);
+		btn_plus2	=	(ImageButton) findViewById(R.id.btn_plus2OfYuntai);
+		btn_plus3	=	(ImageButton) findViewById(R.id.btn_plus3OfYuntai);
+		
+		
 		bsView	=	(BasicGLSurfaceView) findViewById(R.id.screenOfYuntai);
 		//footer select index default
 		lin_yuntai.setBackgroundResource(R.drawable.btn_bg_press	);
 		image_yuntai.setImageResource(R.drawable.icon_yuntai_press);
 		text_yuntai.setTextColor(Color.WHITE);
-	}
+		
+		
+		relativeSpeed.setOnTouchListener(new OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				// TODO Auto-generated method stub
+				float x  = event.getX();
+				System.out.println("x:"+x);
+				float point_x = relativeSpeed.getX();
+				System.out.println("point_x:"+point_x);
+				if(x>0){
+					if(x-0>relativeSpeed.getWidth()){
+						imgSwitch.setPadding((int)(relativeSpeed.getWidth()-10), 0, 0, 0);
+					}else{
+						imgSwitch.setPadding((int)(x), 0, 0, 0);
+					}
+				}
+				return false;
+			}
+		});
+		
+		btn_minus1.setOnClickListener(this);
+
+		btn_minus2.setOnClickListener(this);
+
+		btn_minus3.setOnClickListener(this);
+
+		btn_plus1.setOnClickListener(this);
+
+		btn_plus2.setOnClickListener(this);
+
+		btn_plus3.setOnClickListener(this);
+}
 
 	@Override
 	public void refresh(Object... param) {
@@ -96,6 +158,68 @@ protected void onDestroy() {
 	bsView.uninit();	//反初始化播放视图
 	super.onDestroy();
 }
+
+
+@Override
+public void onClick(View v) {
+	cloudInParam=new AV_IN_PTZ();
+	cloudInParam.nChannelID=MyApplication.selectChannel;
+	cloudInParam.bStop=false;
+	cloudOutParam=new AV_OUT_PTZ();
+	
+	switch (v.getId()) {
+	case 0:
+		cloudInParam.nType=AV_PTZ_Type.AV_PTZ_Up;
+		break;
+		
+	case 1:
+		cloudInParam.nType=AV_PTZ_Type.AV_PTZ_Right;
+		break;
+		
+	case R.id.btn_minus1OfYuntai:
+		cloudInParam.nType=AV_PTZ_Type.AV_PTZ_Zoom_Dec;
+		break;
+		
+	case R.id.btn_plus2OfYuntai:
+		cloudInParam.nType=AV_PTZ_Type.AV_PTZ_Focus_Add;
+		break;
+		
+	case R.id.btn_plus3OfYuntai:
+		cloudInParam.nType=AV_PTZ_Type.AV_PTZ_Aperture_Add;
+		break;
+		
+	case 5:
+		cloudInParam.nType=AV_PTZ_Type.AV_PTZ_Down;
+		break;
+		
+	case 6:
+		cloudInParam.nType=AV_PTZ_Type.AV_PTZ_Left;
+		break;
+		
+	case R.id.btn_plus1OfYuntai:
+		cloudInParam.nType=AV_PTZ_Type.AV_PTZ_Zoom_Add;
+		break;
+		
+	case R.id.btn_minus2OfYuntai:
+		cloudInParam.nType=AV_PTZ_Type.AV_PTZ_Focus_Dec;
+		break;
+		
+	case R.id.btn_minus3OfYuntai:
+		cloudInParam.nType=AV_PTZ_Type.AV_PTZ_Aperture_Dec;
+		break;
+		
+	default:
+		cloudInParam.bStop=true;
+		break;
+	}
+	
+	AVNetSDK.AV_ControlPTZ(MyApplication.log_handle, cloudInParam, cloudOutParam);
+	
+	
+	super.onClick(v);
+}
+
+
 class playTask extends AsyncTask<Void, integer, String>{
 	
 	@Override
