@@ -2,6 +2,7 @@ package com.poe.lewen;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import com.baidu.mapapi.BMapManager;
 import com.baidu.mapapi.map.MKMapViewListener;
@@ -45,7 +46,8 @@ public class Activity_WorldPlay extends Activity implements OnItemClickListener 
 	private ListView listview;
 	private TreeAdapter adapter;
 	private Node root,selected_node ;
-	private List<channelOnLine> conlines ;
+	private HashMap<String, List<channelOnLine>> hash_online = new HashMap<String, List<channelOnLine>>();
+//	private List<channelOnLine> conlines ;
 	private channelOnLine conline = null;
 	
 	/**
@@ -65,7 +67,9 @@ public class Activity_WorldPlay extends Activity implements OnItemClickListener 
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+		
 		MyApplication app = (MyApplication) this.getApplication();
+		
 		if (app.mBMapManager == null) {
 			app.mBMapManager = new BMapManager(this);
 			/**
@@ -73,11 +77,12 @@ public class Activity_WorldPlay extends Activity implements OnItemClickListener 
 			 */
 			app.mBMapManager.init(MyApplication.strKey, new MyApplication.MyGeneralListener());
 		}
+		
 		setContentView(R.layout.layout_world_play);
 
 		init();
 		//test rtsp
-//		VideoPlayerActivity.start(Activity_WorldPlay.this, hubei_movie, false);
+//	VideoPlayerActivity.start(Activity_WorldPlay.this, hubei_movie, false);
 	}
 
 	public void init() {
@@ -155,12 +160,14 @@ public class Activity_WorldPlay extends Activity implements OnItemClickListener 
 				case 2://获取直播地址 的通道
 					try {
 						
-						conlines = XmlToListService.GetVideoAddress(result_login);
+						List<channelOnLine>	conlines = XmlToListService.GetVideoAddress(result_login);
+						
+						hash_online.put(selected_node.getText(), conlines);
 						
 						for(channelOnLine conline:conlines){
 							Node lead = MakeNode(conline, selected_node);
 							selected_node.add(lead);
-//							adapter.notifyDataSetChanged();
+//						adapter.notifyDataSetChanged();
 							adapter.update();
 						}
 						
@@ -512,7 +519,8 @@ public class Activity_WorldPlay extends Activity implements OnItemClickListener 
 				// 发送请求：获取 第一个直播地址
 				Packet.getVideoAddress(selected_node.getId(), handler);
 			}else{
-				for(channelOnLine c:conlines){
+//				List<channelOnLine> conlines
+				for(channelOnLine c:hash_online.get(selected_node.getParent().getText())){
 					if(c.getChannelName().equals(selected_node.getText())){
 						conline =c ;
 						break;

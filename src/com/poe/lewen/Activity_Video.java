@@ -47,17 +47,18 @@ public class Activity_Video extends BaseActivity  implements IAV_CaptureDataList
 	private BasicGLSurfaceView bsView = null; // 播放的视图
 	private AV_HANDLE realPlay = null; // 实时监测句柄
 	private LinearLayout loading;
-	
 	//screen capture
 	private AV_HANDLE av_capture_handler = null;//开启截屏的句柄
 	private ImageButton btn_capture,btn_add_save;
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.layout_video);
-
+		
+		
 	}
 
 	@Override
