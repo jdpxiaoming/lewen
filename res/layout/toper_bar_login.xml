@@ -29,4 +29,15 @@
     			    		android:paddingLeft="5dp"
     			    		android:layout_marginLeft="5dp"
     			    		/>
+    			<Button
+    			    		android:id="@+id/rightButtonOfToperBarLogin"
+    			    		android:layout_width="30dp"
+    			    		android:layout_height="30dp"
+    			    		android:background="@drawable/icon_set"
+    			    		android:layout_centerVertical="true"
+    			    		android:layout_alignParentRight="true"
+    			    		android:layout_margin="10dp"
+    			    		android:textColor="@android:color/background_light"
+    			    		android:gravity="center"
+    			    		/>
 </RelativeLayout>

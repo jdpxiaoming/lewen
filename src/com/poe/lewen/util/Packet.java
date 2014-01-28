@@ -3,14 +3,11 @@ package com.poe.lewen.util;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.List;
+
 import android.os.Handler;
 import android.util.Log;
 import com.poe.lewen.MyApplication;
 import com.poe.lewen.bean.Constant;
-import com.poe.lewen.bean.channel;
-import com.poe.lewen.bean.channelOnLine;
-import com.poe.lewen.service.XmlToListService;
 import com.poe.lewen.socket.Loger;
 import com.poe.lewen.socket.TCPSocketCallback;
 import com.poe.lewen.socket.TCPSocketConnect;
@@ -126,21 +123,18 @@ public class Packet {
 					ba.write(buffer);
 					 str =new String(ba.toByteArray(),"GBK");
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
+				
 				System.out.println(str);
 
 				//反馈工具类
 				if(null!=handler)
-				Packet.handler.sendMessage(Packet.handler.obtainMessage(login_req, str));
+					Packet.handler.sendMessage(Packet.handler.obtainMessage(login_req, str));
 			}
-
-		
 			
 			@Override
 			public void tcp_disconnect() {
-				// TODO Auto-generated method stub
 				isConnected = false;
 				Loger.i("tcp_disconnect()");
 			}
@@ -151,8 +145,9 @@ public class Packet {
 				Loger.i("tcp_connect()");
 			}
 		});
-		
-		connect.setAddress(Constant.str_login_ip, Constant.login_port);
+		System.out.println(MyApplication.getPreferenceData("host"));
+		System.out.println(MyApplication.getPreferenceData("port"));
+		connect.setAddress(MyApplication.getPreferenceData("host"), Integer.parseInt(MyApplication.getPreferenceData("port")));
 		new Thread(connect).start();
 	}
 
@@ -164,9 +159,11 @@ public class Packet {
 		Packet.handler =handler;
 		Packet.userName = userName;
 		
+//			close();
 		if(!isConnected){
 			init();
 		}
+			
 		if(login_req!=0){
 			String tmp = XMLUtil.MakeXML(userName, passwd);
 			byte[] req =new Packet(Constant.REQ_LOGIN, tmp.length(), 1, tmp).getBuf();
@@ -210,8 +207,16 @@ public class Packet {
 				}
 				
 				//发送请求：获取 播放列表
+				String str="";
 				String tmp =  XMLUtil.MakeXML4SaveAdd(MyApplication.rsp_login.getUserId(), userName, channelName, channelNo,channelId);
-				byte[] req =new Packet(Constant.REQ_ADD_FAVORITES, tmp.length(), 1, tmp).getBuf();
+				try {
+					str = new String(tmp.getBytes("GBK"), "GBK");
+				} catch (UnsupportedEncodingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				byte[] req =new Packet(Constant.REQ_ADD_FAVORITES, str.length(), 1, str).getBuf();
 				connect.write(req);
 				Log.e("req", bytesToHexString(req));
 				login_req = 3;

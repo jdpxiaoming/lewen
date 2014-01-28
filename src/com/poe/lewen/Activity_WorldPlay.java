@@ -45,11 +45,11 @@ public class Activity_WorldPlay extends Activity implements OnItemClickListener 
 	private Handler handler;
 	private ListView listview;
 	private TreeAdapter adapter;
-	private Node root,selected_node ;
+	private Node root, selected_node;
 	private HashMap<String, List<channelOnLine>> hash_online = new HashMap<String, List<channelOnLine>>();
-//private List<channelOnLine> conlines ;
+	// private List<channelOnLine> conlines ;
 	private channelOnLine conline = null;
-	
+
 	/**
 	 * MapView 是地图主控件
 	 */
@@ -67,9 +67,9 @@ public class Activity_WorldPlay extends Activity implements OnItemClickListener 
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		
+
 		MyApplication app = (MyApplication) this.getApplication();
-		
+
 		if (app.mBMapManager == null) {
 			app.mBMapManager = new BMapManager(this);
 			/**
@@ -77,12 +77,13 @@ public class Activity_WorldPlay extends Activity implements OnItemClickListener 
 			 */
 			app.mBMapManager.init(MyApplication.strKey, new MyApplication.MyGeneralListener());
 		}
-		
+
 		setContentView(R.layout.layout_world_play);
 
 		init();
-		//test rtsp
-//	VideoPlayerActivity.start(Activity_WorldPlay.this, hubei_movie, false);
+		// test rtsp
+		// VideoPlayerActivity.start(Activity_WorldPlay.this, hubei_movie,
+		// false);
 	}
 
 	public void init() {
@@ -148,7 +149,7 @@ public class Activity_WorldPlay extends Activity implements OnItemClickListener 
 							}
 							// set adapter
 							setAdapter();
-						}else{
+						} else {
 							MyApplication.getInstance().throwTips("获取数据失败！");
 						}
 					} catch (UnsupportedEncodingException e) {
@@ -157,20 +158,20 @@ public class Activity_WorldPlay extends Activity implements OnItemClickListener 
 						e.printStackTrace();
 					}
 					break;
-				case 2://获取直播地址 的通道
+				case 2:// 获取直播地址 的通道
 					try {
-						
-						List<channelOnLine>	conlines = XmlToListService.GetVideoAddress(result_login);
-						
+
+						List<channelOnLine> conlines = XmlToListService.GetVideoAddress(result_login);
+
 						hash_online.put(selected_node.getText(), conlines);
-						
-						for(channelOnLine conline:conlines){
+
+						for (channelOnLine conline : conlines) {
 							Node lead = MakeNode(conline, selected_node);
 							selected_node.add(lead);
-//						adapter.notifyDataSetChanged();
+							// adapter.notifyDataSetChanged();
 							adapter.update();
 						}
-						
+
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -181,9 +182,9 @@ public class Activity_WorldPlay extends Activity implements OnItemClickListener 
 		};
 
 		// 获取数据命令
-		if(MyApplication.rsp_login!=null){
+		if (MyApplication.rsp_login != null) {
 			doSendTcpRequest();
-		}else{
+		} else {
 			MyApplication.getInstance().throwTips("请登陆后查看本通道信息！");
 		}
 
@@ -317,10 +318,10 @@ public class Activity_WorldPlay extends Activity implements OnItemClickListener 
 
 		return node;
 	}
-	
+
 	private Node MakeNode(channelOnLine c, Node parent) {
-		
-		Node node = new Node(c.getChannelName(), "" + Integer.parseInt(parent.getValue())+1);
+
+		Node node = new Node(c.getChannelName(), "" + Integer.parseInt(parent.getValue()) + 1);
 		node.setId(c.getChannelId());
 		node.setParentId(parent.getId());
 		node.setParent(parent);
@@ -512,64 +513,68 @@ public class Activity_WorldPlay extends Activity implements OnItemClickListener 
 		// 1.判断是否为 叶子节点
 		selected_node = (Node) ((TreeAdapter) parent.getAdapter()).getItem(position);
 		if (selected_node.isLeaf()) {
-			// 2.如果是叶子节点获取 详细播放地址 后 跳转进行播放
-			progress.setVisibility(View.VISIBLE);
-			
-			if(selected_node.getLevel()==3){//门店 次终点
+
+			if (selected_node.getLevel() == 3) {// 门店 次终点
+				progress.setVisibility(View.VISIBLE);
 				// 发送请求：获取 第一个直播地址
 				Packet.getVideoAddress(selected_node.getId(), handler);
-			}else{
-//				List<channelOnLine> conlines
-				for(channelOnLine c:hash_online.get(selected_node.getParent().getText())){
-					if(c.getChannelName().equals(selected_node.getText())){
-						conline =c ;
-						break;
-					}
-				}
-				//最终播放 摄像头
-				if(conline!=null&&conline.getPlayer_Addr()!=null){
-					System.out.println("直播地址："+conline.getPlayer_Addr());
-					MyApplication.ip_dahua = conline.getDevice_ipAddr();
-					MyApplication.prot_dahua	= Integer.parseInt(conline.getDevice_portNo());
-					MyApplication.username	=	conline.getUserName();
-					MyApplication.password	=	conline.getUserPsw();
-					MyApplication.selectChannel  = 0;
-					MyApplication.cOnline = conline;
-					
-					//可选择 1.直播  2.通道选择
-					MyApplication.getInstance().reLogin(new loaded4login() {
-						
-						@Override
-						public void done() {
-							progress.setVisibility(View.GONE);
-							AlertDialog.Builder ab=new AlertDialog.Builder(Activity_WorldPlay.this);
-							ab.setTitle("是否进入直播？选择否进入普通模式");
-							ab.setPositiveButton("高码流", new DialogInterface.OnClickListener(){
-								
-								@Override
-								public void onClick(DialogInterface dialog, int which) {
-									
-									VideoPlayerActivity.start(Activity_WorldPlay.this, conline.getPlayer_Addr(), false);
-								}
-								
-							});
-							
-							ab.setNegativeButton("低码流", new DialogInterface.OnClickListener() {
-								@Override
-								public void onClick(DialogInterface dialog, int which) {
-									
-									startActivity(new Intent(Activity_WorldPlay.this,Activity_Video.class));
-									
-								}
-							});
-							
-							ab.show();
-						}
-					});
+			} else {
+
+				if (null!=selected_node.getParent()&&null != hash_online.get(selected_node.getParent().getText()) && hash_online.get(selected_node.getParent().getText()).size() > 0) {
+					progress.setVisibility(View.VISIBLE);
+					doPlay();
 				}
 			}
 		}
 		// 这句话写在最后面
 		((TreeAdapter) parent.getAdapter()).ExpandOrCollapse(position);
+	}
+
+	private void doPlay() {
+		for (channelOnLine c : hash_online.get(selected_node.getParent().getText())) {
+			if (c.getChannelName().equals(selected_node.getText())) {
+				conline = c;
+				break;
+			}
+		}
+		// 最终播放 摄像头
+		if (conline != null && conline.getPlayer_Addr() != null) {
+			System.out.println("直播地址：" + conline.getPlayer_Addr());
+			MyApplication.ip_dahua = conline.getDevice_ipAddr();
+			MyApplication.prot_dahua = Integer.parseInt(conline.getDevice_portNo());
+			MyApplication.username = conline.getUserName();
+			MyApplication.password = conline.getUserPsw();
+			MyApplication.selectChannel = 0;
+			MyApplication.cOnline = conline;
+
+			// 可选择 1.直播 2.通道选择
+			MyApplication.getInstance().reLogin(new loaded4login() {
+
+				@Override
+				public void done() {
+					progress.setVisibility(View.GONE);
+					AlertDialog.Builder ab = new AlertDialog.Builder(Activity_WorldPlay.this);
+					ab.setTitle("是否进入直播？");
+					ab.setPositiveButton("低码流", new DialogInterface.OnClickListener() {
+
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+
+							VideoPlayerActivity.start(Activity_WorldPlay.this, conline.getPlayer_Addr(), false);
+						}
+
+					});
+
+					ab.setNegativeButton("高码流", new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+
+							startActivity(new Intent(Activity_WorldPlay.this, Activity_Video.class));
+						}
+					});
+					ab.show();
+				}
+			});
+		}
 	}
 }

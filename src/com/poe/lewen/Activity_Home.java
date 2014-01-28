@@ -1,8 +1,8 @@
 package com.poe.lewen;
 
+import com.mm.android.avnetsdk.AVNetSDK;
 import com.poe.lewen.adapter.adapter4MenueList;
 import com.poe.lewen.util.Packet;
-import com.poe.lewen.vlc.VideoPlayerActivity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -56,6 +56,18 @@ public class Activity_Home extends BaseActivity {
 					startActivity(new Intent(Activity_Home.this,HelpShowImageActivity.class));
 				}
 				
+				if(arg2 == 4){//log out
+//					if (realPlay != null) {
+//						AVNetSDK.AV_StopRealPlay(realPlay);
+//						realPlay = null;
+//					}
+					MyApplication.rsp_login=null;
+					if (MyApplication.log_handle != null) {
+						AVNetSDK.AV_Logout(MyApplication.log_handle);
+						MyApplication.log_handle = null;
+					}
+					MyApplication.getInstance().throwTips("登出账号！");
+				}
 			}
 		});
 		

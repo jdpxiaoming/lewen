@@ -120,8 +120,8 @@ public class XMLUtil {
 		sb.append("<userId>" +	userId +	"</userId>");
 		sb.append("<userName>" +userName +"</userName>");
 		sb.append("<channelName>" +channelName +"</channelName>");
-		sb.append("<channelNo>" +channelNo+	"</channelNo>");
-//		sb.append("<channelId>" +channelId+	"</channelId>");
+//	sb.append("<channelNo>" +channelNo+	"</channelNo>");
+		sb.append("<channelId>" +channelId+	"</channelId>");
 		sb.append("</JoyMon>");
 
 		return sb.toString();

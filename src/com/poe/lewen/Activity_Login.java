@@ -23,7 +23,7 @@ import android.widget.LinearLayout;
 
 public class Activity_Login extends Activity {
 
-	private Button back;
+	private Button back,btn_url_set;
 	private ImageView img_switch;
 	private boolean SAVE_STATE =false;
 	private ImageButton login;
@@ -53,14 +53,15 @@ public class Activity_Login extends Activity {
 		login			=	(ImageButton) findViewById(R.id.btn_loginOfLogin);
 		edit_user	=	(EditText) findViewById(R.id.editUserNameOfLogin);
 		edit_passwd	=	(EditText) findViewById(R.id.editPasswdOfLogin);
+		btn_url_set	=	(Button) findViewById(R.id.rightButtonOfToperBarLogin);
 		
 		edit_user.setText(sharedPreferences.getString("username", ""));
 		edit_passwd.setText(sharedPreferences.getString("password", ""));
 		
 //			edit_user.setText("SuperAdmin");
 //			edit_passwd.setText("123456");
-		edit_user.setText("cxm");//备用账号：cxm
-		edit_passwd.setText("111111");
+//		edit_user.setText("cxm");//备用账号：cxm
+//		edit_passwd.setText("111111");
 		
 		back.setOnClickListener(new OnClickListener() {
 			
@@ -83,6 +84,16 @@ public class Activity_Login extends Activity {
 				}else{
 					img_switch.setImageResource(R.drawable.icon_login_switch_off);
 				}
+			}
+		});
+		
+		btn_url_set.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				
+				startActivity(new Intent(Activity_Login.this,SystemUrlSet.class));
+				
 			}
 		});
 		
@@ -112,14 +123,6 @@ public class Activity_Login extends Activity {
 						editor.commit();// 提交修改
 					}
 					
-//					MyApplication.getInstance().reLogin(username, password, new loaded4login() {
-//						
-//						@Override
-//						public void done() {
-//							startActivity(new Intent(mActivity,Activity_Video.class));
-//						}
-//					});
-					
 					if(MyApplication.rsp_login!=null){
 						MyApplication.getInstance().throwTips("您已经登录了！");
 						startActivity(new Intent(Activity_Login.this,Activity_WorldPlay.class));
@@ -144,9 +147,13 @@ public class Activity_Login extends Activity {
 					MyApplication.rsp_login = XmlToListService.GetLogin(result_login);
 					if(MyApplication.rsp_login!=null){
 						System.out.println(MyApplication.rsp_login.getUserId());
-						MyApplication.getInstance().throwTips("登录成功，自动跳转到播放列表页面！");
-						
-						 startActivity(new Intent(Activity_Login.this,Activity_WorldPlay.class));
+						if(MyApplication.rsp_login.getUserId()!=null){
+							MyApplication.getInstance().throwTips("登录成功，自动跳转到播放列表页面！");
+							startActivity(new Intent(Activity_Login.this,Activity_WorldPlay.class));
+						}else{
+							MyApplication.getInstance().throwTips(MyApplication.rsp_login.getErr());
+							MyApplication.rsp_login = null;
+						}
 					}else{
 						MyApplication.getInstance().throwTips("登录失败！");
 					}
@@ -157,7 +164,6 @@ public class Activity_Login extends Activity {
 				}
 			}
 		};
-		
 	}
 	
 }

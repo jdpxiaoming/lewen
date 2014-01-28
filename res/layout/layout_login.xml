@@ -98,6 +98,14 @@
         		    		    		android:src="@drawable/icon_login_switch_off"
         		    		    		android:scaleType="centerInside"
         		    		    		/>
+        		    		<ImageView 
+										android:id="@+id/imgUrlSetOfLogin"        		    		    		
+        		    		    		android:layout_width="50dp"
+        		    		    		android:layout_height="50dp"
+        		    		    		android:src="@drawable/icon_login_switch_off"
+        		    		    		android:scaleType="centerInside"
+        		    		    		android:padding="10dp"
+        		    		    		/>
         		</LinearLayout>
     </LinearLayout>
 	<ImageButton 

@@ -54,6 +54,7 @@ public class Activity_Video extends BaseActivity  implements IAV_CaptureDataList
 	
 	private RelativeLayout relative_volume;
 	private LinearLayout linear_volume;
+	private int login_failed = 0;//加载失败次数
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -147,6 +148,8 @@ public class Activity_Video extends BaseActivity  implements IAV_CaptureDataList
 		if(bsView.getRenderer()==null){
 			bsView.init(Activity_Video.this);
 		}
+		
+			login_failed=0;
 			//start video defalut channel is 0
 			new playTask().execute();
 			super.onResume();
@@ -303,7 +306,9 @@ public class Activity_Video extends BaseActivity  implements IAV_CaptureDataList
 				MyApplication.getInstance().reLogin(new loaded4login() {
 					@Override
 					public void done() {
-						new playTask().execute();
+						login_failed++;
+						if(login_failed<3)
+							new playTask().execute();
 					}
 				});
 			}
@@ -350,7 +355,6 @@ public class Activity_Video extends BaseActivity  implements IAV_CaptureDataList
 			AVNetSDK.AV_StopCapture(av_capture_handler, arg1);
 			
 		}
-		
 	}
 	
 	private static Handler handler_toast = new Handler(){

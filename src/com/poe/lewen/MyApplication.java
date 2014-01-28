@@ -186,6 +186,12 @@ public class MyApplication extends Application {
 		MyApplication.username	=	"admin";
 		MyApplication.password	=	"admin";
 		MyApplication.selectChannel  = 0;
+		//初始化的时候 给一个默认的ip和端口号
+		if(MyApplication.getPreferenceData("host")==null){
+			MyApplication.pushPreferenceData("host", Constant.str_login_ip);
+			MyApplication.pushPreferenceData("port", Constant.login_port+"");
+		}
+		
     }
 	// 没有网络的提示
 	public  void NoNetWorkTips() {
@@ -205,6 +211,7 @@ public class MyApplication extends Application {
 					Toast.makeText(mInstance, str, 5000).show();
 					
 				}
+				
 		class loginTask extends AsyncTask<loaded4login, integer, String>{
 
 			private loaded4login login_interface = null;

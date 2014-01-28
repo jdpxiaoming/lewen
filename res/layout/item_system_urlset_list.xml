@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RelativeLayout
+		xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="50dip" 
+        android:background="#FFFFFF"
+        >
+
+        <TextView
+            android:id="@+id/txt1OfSystemUrlSetItem"
+            android:layout_width="fill_parent"
+            android:layout_height="50dip"
+            android:gravity="center_vertical"
+            android:text="苏州分公司"
+            android:textColor="@android:color/background_dark" 
+            android:padding="5dp"
+            />
+
+        <TextView
+            android:id="@+id/txt2OfSystemUrlSetItem"
+            android:layout_width="60dip"
+            android:layout_height="50dip"
+            android:layout_alignParentRight="true"
+            android:text="√"
+            android:gravity="center"
+            android:textSize="20dip" 
+            android:textColor="#0EA6EE"
+            android:visibility="gone"
+            />
+    </RelativeLayout>		

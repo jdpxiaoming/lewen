@@ -49,6 +49,7 @@
         <!-- <item>博客直通车</item> -->
         <item>我的收藏</item>
         <item>使用指南</item>
+        <item>退出登录</item>
     </string-array>
     <!-- Main VLC Interface -->
     <string name="widget_name" translatable="false">VLC mini player</string>
@@ -450,4 +451,12 @@
     <string name="vout_summary">Change the method that VLC uses to output video.</string>
     <string name="vout_android_surface">Android surface</string>
     <string name="vout_opengles2">OpenGL ES 2.0</string>
+    
+    <!-- 服务器列表 -->
+    <string name="host1">202.136.60.234</string>
+    <string name="port1">8888</string>
+    <string name="host2">219.146.251.189</string>
+    <string name="port2">8888</string>
+    
+    
 </resources>
