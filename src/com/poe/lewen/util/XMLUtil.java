@@ -36,7 +36,7 @@ public class XMLUtil {
 		sb.append("<JoyMon>");
 		sb.append("<type>req</type>");
 		sb.append("<cmd>0xE007</cmd>");
-		sb.append("<userId>" + userId + "</userName>");
+		sb.append("<userId>" + userId + "</userId>");
 		sb.append("</JoyMon>");
 
 		return sb.toString();
@@ -60,7 +60,7 @@ public class XMLUtil {
 		sb.append("<JoyMon>");
 		sb.append("<type>req</type>");
 		sb.append("<cmd>0XC002</cmd>");
-		sb.append("<userId>" + userId + "</userName>");
+		sb.append("<userId>" + userId + "</userId>");
 		sb.append("<userName>"+userName+	"</userName>");
 		sb.append("</JoyMon>");
 

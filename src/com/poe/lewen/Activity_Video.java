@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import com.mm.android.avnetsdk.AVNetSDK;
 import com.mm.android.avnetsdk.param.AV_HANDLE;
@@ -56,6 +57,10 @@ public class Activity_Video extends BaseActivity  implements IAV_CaptureDataList
 	private LinearLayout linear_volume;
 	private int login_failed = 0;//加载失败次数
 	
+	//开始、暂停
+	private ImageButton btn_play,btn_stop;
+	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -73,6 +78,11 @@ public class Activity_Video extends BaseActivity  implements IAV_CaptureDataList
 		loading	=	(LinearLayout) findViewById(R.id.loadingOfVideo);
 		btn_capture	=	(ImageButton) findViewById(R.id.imgScreenCaptureOfVideo);
 		btn_add_save	=	(ImageButton) findViewById(R.id.imgAddSaveOfVideo);
+		btn_play		=	(ImageButton) findViewById(R.id.imgPlayOfVideo);
+		btn_stop		=	(ImageButton) findViewById(R.id.imgStopOfVideo);
+		
+		btn_play.setOnClickListener(this);
+		btn_stop.setOnClickListener(this);
 		
 		btn_capture.setOnClickListener(this);
 		btn_add_save.setOnClickListener(this);
@@ -196,17 +206,54 @@ public class Activity_Video extends BaseActivity  implements IAV_CaptureDataList
 		case R.id.imgAddSaveOfVideo:
 			doSave();
 			break;
+		case R.id.imgPlayOfVideo:
+			play();
+			break;
+		case R.id.imgStopOfVideo:
+			stop();
+			break;
 		default: super.onClick(v);
 			break;
 		}
 	}
 
 	/**
+	 * 暂停
+	 */
+	private void stop() {
+		if(realPlay!=null)
+			AVNetSDK.AV_StopRealPlay(realPlay); // 停止实时监视		
+	}
+
+	/*
+	 * 开始监控
+	 */
+	private void play() {
+		new playTask().execute();
+	}
+
+	private Handler handler_save = new Handler(){
+
+		@Override
+		public void handleMessage(Message msg) {
+			super.handleMessage(msg);
+			//解析数据 错误提示 or 成功提示
+			if(msg!=null){
+				String result =(String) msg.obj;
+				System.out.println(result);
+				if(result!=null&&result.contains("errdesc")){
+					String tip =result.substring(result.indexOf("<errdesc>")+9,result.lastIndexOf("</errdesc>"));
+					MyApplication.getInstance().throwTips(tip);
+				}
+			}
+		}
+	};
+	/**
 	 * 增加收藏通道信息到服务器
 	 */
 	private void doSave() {
 		if(MyApplication.cOnline!=null){
-		Packet.SaveChannel(null, MyApplication.cOnline.getChannelName()
+		Packet.SaveChannel(handler_save, MyApplication.cOnline.getChannelName()
 				, MyApplication.cOnline.getChannelNo(),MyApplication.cOnline.getChannelId());
 		}else{
 			MyApplication.getInstance().throwTips("请先登录选择通道，再来收藏！");
