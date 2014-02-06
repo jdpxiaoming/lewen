@@ -29,7 +29,12 @@ public class Packet {
 	private static boolean isConnected = false;
 
 	public static String userName;// 缓存登陆 的用户名
+	
+	private static boolean isLogin = false;
+	
+	private static Handler heart_handler = new Handler();
 
+	private static Runnable r_heart;
 	/**
 	 * 将int转为低字节在前，高字节在后的byte数组
 	 */
@@ -92,6 +97,8 @@ public class Packet {
 		byte[] temp = null;
 
 		buf = new byte[packetBody.getBytes().length + 8];
+//		iLen	=	buf.length;
+		
 		temp = toLH2(iType);
 		System.arraycopy(temp, 0, buf, 0, temp.length);
 
@@ -156,7 +163,37 @@ public class Packet {
 		new Thread(connect).start();
 		
 	}
+	
+	public static void startPolling(){
+		
+		isLogin = true;
+		
+		if(r_heart==null){
+			r_heart =new Runnable() {
+				
+				@Override
+				public void run() {
+					if(isLogin){
+						
+						Packet.heartJump(MyApplication.username);
+						heart_handler.postDelayed(r_heart, 30*1000);
+					}
+				}
+			};
+		}
+		
+		heart_handler.postDelayed(r_heart, 30*1000);
+		
+	};
+	
+	/*
+	 * 停止停跳检测 （socket连接登陆后发送）
+	 */
+	public static void stopPolling(){
+		isLogin = false;
+	};
 
+	// ******************************************
 	// ******************************************
 	/**
 	 * 登录
@@ -172,6 +209,8 @@ public class Packet {
 
 		if (login_req != 0) {
 			String tmp = XMLUtil.MakeXML(userName, passwd);
+			System.out.println(tmp);
+			System.out.println("login长度："+tmp.length());
 			byte[] req = new Packet(Constant.REQ_LOGIN, tmp.length(), 1, tmp).getBuf();
 			connect.write(req);
 			Log.e("req", bytesToHexString(req));
@@ -214,18 +253,25 @@ public class Packet {
 		}
 
 		// 发送请求：获取 播放列表
-//		String str = "";
 		String tmp = XMLUtil.MakeXML4SaveAdd(MyApplication.rsp_login.getUserId(), userName, channelName, channelNo, channelId);
+
 //		try {
-//			tmp = new String(tmp.getBytes("utf-8"), "GBK");
+//			tmp = new String(tmp.getBytes(), "gb2312");
 //		} catch (UnsupportedEncodingException e) {
+//			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
-
 		System.out.println(tmp);
+		System.out.println("req字符串的长度为："+tmp.length());
 		byte[] req = new Packet(Constant.REQ_ADD_FAVORITES, tmp.length(), 1, tmp).getBuf();
 		connect.write(req);
-		Log.e("req", bytesToHexString(req));
+		
+		StringBuffer sb = new StringBuffer();
+		for(byte b : req){
+			sb.append(b);
+		}
+		Log.e("req 2进制", sb.toString());
+		String str = bytesToHexString(req);
 		login_req = 3;
 	}
 
@@ -251,10 +297,16 @@ public class Packet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		System.out.println(tmp);
+		System.out.println("req字符串的长度为："+tmp.length());
+		
 		byte[] req = new Packet(Constant.REQ_LIST_FAVORITES, tmp.length(), 1, tmp).getBuf();
 		connect.write(req);
-		Log.e("req", bytesToHexString(req));
+		Log.e("req 2进制", req.toString());
+		String str = bytesToHexString(req);
+		Log.e("req", str);
+		System.out.println("byte[]转化为16进制后长度："+str.length());
 		login_req = 1;
 
 	}
@@ -273,7 +325,6 @@ public class Packet {
 		connect.write(req);
 		Log.e("req", bytesToHexString(req));
 		login_req = 2;
-
 	}
 
 	/**
@@ -284,6 +335,7 @@ public class Packet {
 	 */
 	public static String bytesToHexString(byte[] src) {
 
+		System.out.println("byte[]转化为16进制前长度："+src.length);
 		StringBuilder stringBuilder = new StringBuilder("");
 
 		if (src == null || src.length <= 0) {
@@ -298,15 +350,40 @@ public class Packet {
 			}
 			stringBuilder.append(hv);
 		}
-		return stringBuilder.toString();
+		
+		String str=stringBuilder.toString();
+		Log.e("req", str);
+		System.out.println("byte[]转化为16进制后长度："+str.length());
+		
+		return str;
+	}
+	
+	/**
+	 * 保证心跳连接
+	 * @param userName
+	 */
+	public static void heartJump(String userName){
+		Packet.handler = null;
+		if (isConnected) {
+			String tmp = XMLUtil.MakeXML4Heart(userName);
+			byte[] req = new Packet(Constant.REQ_HEART, tmp.length(), 1, tmp).getBuf();
+			connect.write(req);
+			Log.e("req", bytesToHexString(req));
+			login_req = 2;
+		}
 	}
 
 	public static boolean isConnected() {
 		return isConnected;
 	}
 
+	/*
+	 * 暂时中断连接、等待下次继续
+	 */
 	public static void close() {
 		if (connect != null) {
+			isConnected=false;
+			stopPolling();
 			connect.disconnect();
 		}
 	}

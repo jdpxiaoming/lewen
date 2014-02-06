@@ -3,6 +3,8 @@ package com.poe.lewen.adapter;
 import com.poe.lewen.Activity_Save;
 import com.poe.lewen.R;
 import com.poe.lewen.bean.channel;
+import com.poe.lewen.bean.channelOnLine;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,9 +43,9 @@ public class adapter4Save extends BaseAdapter {
 		}
 		
 		TextView tv 	  = (TextView) convertView.findViewById(R.id.textOfSaveItem);
-		channel c =Activity_Save.list_channel.get(position);
+		channelOnLine c =Activity_Save.list_channel.get(position);
 		
-		tv.setText(c.getName());
+		tv.setText(c.getChannelName());
 		
 		return convertView;
 	}

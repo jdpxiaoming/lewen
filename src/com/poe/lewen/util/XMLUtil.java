@@ -1,5 +1,8 @@
 package com.poe.lewen.util;
 
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
+
 import com.poe.lewen.bean.Constant;
 
 public class XMLUtil {
@@ -21,6 +24,7 @@ public class XMLUtil {
 		sb.append("<loginIp>" + Constant.str_login_ip + "</loginIp>");
 		sb.append("<pcName>nyPcName</pcName>");
 		sb.append("</JoyMon>");
+		sb.append("\0");
 
 		return sb.toString();
 	}
@@ -38,6 +42,7 @@ public class XMLUtil {
 		sb.append("<cmd>0xE007</cmd>");
 		sb.append("<userId>" + userId + "</userId>");
 		sb.append("</JoyMon>");
+		sb.append("\0");
 
 		return sb.toString();
 	}
@@ -63,7 +68,8 @@ public class XMLUtil {
 		sb.append("<userId>" + userId + "</userId>");
 		sb.append("<userName>"+userName+	"</userName>");
 		sb.append("</JoyMon>");
-
+		sb.append("\0");
+		
 		return sb.toString();
 	}
 	
@@ -77,7 +83,8 @@ public class XMLUtil {
 		sb.append("<type>req</type>");
 		sb.append("<cmd>0XA000</cmd>");
 		sb.append("<userName>" + userName + "</userName>");
-		sb.append("</JoyMon>");
+		sb.append("</JoyMon>");	
+		sb.append("\0");
 
 		return sb.toString();
 	}
@@ -94,7 +101,7 @@ public class XMLUtil {
 		sb.append("<cmd>0XA000</cmd>");
 		sb.append("<nodeId>" + nodeId + "</nodeId>");
 		sb.append("</JoyMon>");
-
+		sb.append("\0");
 		return sb.toString();
 	}
 	
@@ -119,11 +126,19 @@ public class XMLUtil {
 		sb.append("<cmd>0XC001</cmd>");
 		sb.append("<userId>" +	userId +	"</userId>");
 		sb.append("<userName>" +userName +"</userName>");
+		
+		try {
+			channelName = new String(channelName.getBytes("utf-8"),"gb2312");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		sb.append("<channelName>" +channelName +"</channelName>");
-//	sb.append("<channelNo>" +channelNo+	"</channelNo>");
+//		sb.append("<channelName>testbyPoe</channelName>");
 		sb.append("<channelId>" +channelId+	"</channelId>");
 		sb.append("</JoyMon>");
-
+		sb.append("\0");
 		return sb.toString();
 	}
 	

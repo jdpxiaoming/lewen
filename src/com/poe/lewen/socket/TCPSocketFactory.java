@@ -3,6 +3,8 @@ package com.poe.lewen.socket;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
@@ -44,7 +46,8 @@ public class TCPSocketFactory {
 		SocketAddress address = new InetSocketAddress(ip, port);
 		mSocket.connect(address, timeOut);// 连接指定IP和端口
 		if (isConnected()) {
-			out = new DataOutputStream(mSocket.getOutputStream());// 获取网络输出流
+			OutputStream os =mSocket.getOutputStream();
+			out = new DataOutputStream(os);// 获取网络输出流
 			in = new DataInputStream(mSocket.getInputStream());// 获取网络输入流
 			if (isConnected()) {
 				callback.tcp_connected();

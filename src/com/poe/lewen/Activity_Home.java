@@ -68,6 +68,7 @@ public class Activity_Home extends BaseActivity {
 					}
 					MyApplication.getInstance().throwTips("登出账号！");
 				}
+				Packet.close();
 			}
 		});
 		
@@ -94,7 +95,6 @@ public class Activity_Home extends BaseActivity {
 	
 	@Override
 	protected void onDestroy() {
-		// TODO Auto-generated method stub
 		super.onDestroy();
 		MyApplication.rsp_login=null;
 		MyApplication.getInstance().defaultSDKParam();

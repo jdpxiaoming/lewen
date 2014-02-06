@@ -44,9 +44,9 @@ public class TCPSocketConnect implements Runnable {
 					mSocket.connect(ip, port);// 连接服务器
 				} catch (Exception e) {
 					try {
-						Loger.e(">TCP连接服务器失败, 6秒后重新连接<");
+						Loger.e(">TCP连接服务器失败, 10秒后重新连接<");
 						resetConnect();// 断开连接
-						lock.wait(6000);
+						lock.wait(10000);
 						continue;
 					} catch (InterruptedException e1) {
 						continue;
@@ -58,6 +58,8 @@ public class TCPSocketConnect implements Runnable {
 			new Thread(writeRunnable).start();// 在线程池启动发送线程
 			try {
 				mSocket.read();// 获取数据
+				//开启心跳连接 30s
+				
 			} catch (Exception e) {
 				Loger.e(">TCP连接异常<", e);
 			} finally {

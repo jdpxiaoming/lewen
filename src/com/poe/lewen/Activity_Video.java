@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 import com.mm.android.avnetsdk.AVNetSDK;
 import com.mm.android.avnetsdk.param.AV_HANDLE;
@@ -29,10 +28,13 @@ import android.R.integer;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.PointF;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
+import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -41,7 +43,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-public class Activity_Video extends BaseActivity  implements IAV_CaptureDataListener{
+public class Activity_Video extends BaseActivity  implements IAV_CaptureDataListener,OnTouchListener{
 
 //---------------------------通道一
 	private AV_IN_RealPlay playINParam = null; // 实时监视输入参数
@@ -60,6 +62,8 @@ public class Activity_Video extends BaseActivity  implements IAV_CaptureDataList
 	//开始、暂停
 	private ImageButton btn_play,btn_stop;
 	
+	//滑动
+	private GestureDetector gestureDetector;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -92,40 +96,70 @@ public class Activity_Video extends BaseActivity  implements IAV_CaptureDataList
 		text_video.setTextColor(Color.WHITE);
 		bsView = (BasicGLSurfaceView) findViewById(R.id.screenOfVideo);
 		
-		bsView.setOnTouchListener(new OnTouchListener() {
+//		MulitPointTouchListener gd = new MulitPointTouchListener(new VideoLoad() {
+//			
+//			@Override
+//			public void loadVideo() {
+//				new playTask().execute();				
+//			}
+//		});
+		
+//		gestureDetector = new GestureDetector(new cMyGesture(new VideoLoad() {
+//			@Override
+//			public void loadVideo() {
+//				new playTask().execute();				
+//			}
+//		}));
+		gestureDetector	=	new GestureDetector(new DefaultGestureDetector());
+		
+//		bsView.seton
+		/*bsView.setOnTouchListener(new OnTouchListener() {
 			
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				float y1=(float) 0.0,y2=(float) 0.0;
-				if(event.getAction()==MotionEvent.ACTION_DOWN){
-					y1 = event.getY();
-				}else if(event.getAction() == MotionEvent.ACTION_UP){
-					y2 =event.getY();
-					
-					System.out.println(y2-y1);
-					if(y2-y1>30.0){
-						MyApplication.selectChannel=MyApplication.selectChannel+1;
-					}
-					
-					if(y1-y2>30){
-						MyApplication.selectChannel=MyApplication.selectChannel-1;
-					}
-					
-					if(MyApplication.selectChannel<0){
-						MyApplication.selectChannel = 0;
-					}
-					
-					if(MyApplication.selectChannel>MyApplication.mChannelList.size()){
-						MyApplication.selectChannel = MyApplication.selectChannel%(MyApplication.mChannelList.size()==0?1:MyApplication.mChannelList.size());
-					}
-					
-					new playTask().execute();
-					
+				
+//				return gestureDetector.onTouchEvent(event);
+				PointF start = new PointF();
+				PointF end = new PointF();
+				System.out.println(event.getAction()+"");
+				switch (event.getAction()){
+					case MotionEvent.ACTION_DOWN:
+						System.out.println("ACTION_DOWN");
+						start = new PointF(event.getX(), event.getY());
+						break;
+					case MotionEvent.ACTION_MOVE:
+						System.out.println("ACTION_MOVE");
+						break;
+					case MotionEvent.ACTION_UP:
+						System.out.println("ACTION_UP");
+						end = new PointF(event.getX(), event.getY());
+						float x=end.x-start.x;
+						if(Math.abs(x)>10){
+							if (x > 0) {
+								MyApplication.selectChannel = MyApplication.selectChannel + 1;
+							} else {
+								MyApplication.selectChannel = MyApplication.selectChannel - 1;
+							}
+
+							// 数组边界验证
+							if (MyApplication.selectChannel < 0) {
+								MyApplication.selectChannel = 0;
+							}
+							if (MyApplication.selectChannel > MyApplication.mChannelList.size()) {
+								MyApplication.selectChannel = MyApplication.selectChannel % (MyApplication.mChannelList.size() == 0 ? 1 : MyApplication.mChannelList.size());
+							}
+							
+							new playTask().execute();		
+						}
+						break;
+						default:
+							System.out.println(event.getAction()+"");
+							break;
 				}
-				return true;
+				return false;
 			}
-		});
-		
+		});*/
+		bsView.setOnTouchListener(this);
 		//volume
 		relative_volume.setOnTouchListener(new OnTouchListener() {
 			
@@ -147,6 +181,16 @@ public class Activity_Video extends BaseActivity  implements IAV_CaptureDataList
 		});
 	}
 
+	
+	
+	@Override
+	public boolean dispatchTouchEvent(MotionEvent ev) {
+		// TODO Auto-generated method stub
+		System.out.println("Activity_video: motionEvent:"+ev.getAction());
+		return super.dispatchTouchEvent(ev);
+	}
+
+	 
 	@Override
 	public void refresh(Object... param) {
 		// TODO Auto-generated method stub
@@ -434,4 +478,54 @@ public class Activity_Video extends BaseActivity  implements IAV_CaptureDataList
             e.printStackTrace();
         }
     }
+    
+    
+    class DefaultGestureDetector extends GestureDetector.SimpleOnGestureListener {
+		DefaultGestureDetector() {
+		}
+
+		public boolean onDown(MotionEvent paramMotionEvent) {
+			System.out.println("onDonw");
+			return false;
+		}
+		
+		
+
+		@Override
+		public void onLongPress(MotionEvent e) {
+			System.out.println("onLongPress");
+			super.onLongPress(e);
+		}
+
+		@Override
+		public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+
+			System.out.println("onScroll");
+			return super.onScroll(e1, e2, distanceX, distanceY);
+		}
+
+		@Override
+		public boolean onSingleTapUp(MotionEvent e) {
+			System.out.println("onSingleTapUp");
+			return super.onSingleTapUp(e);
+		}
+
+		public boolean onFling(MotionEvent paramMotionEvent1, MotionEvent paramMotionEvent2, float paramFloat1, float paramFloat2) {
+			System.out.println("onFling...");
+				if ((paramMotionEvent1.getX() - paramMotionEvent2.getX() > 20.0F) && (Math.abs(paramFloat1) > 20.0F)) {
+
+					Log.e("mGallery.getSelected----end", "over now goto next activity");
+				}
+			return false;
+		}
+	}
+    public interface VideoLoad {
+		void loadVideo();
+	}
+
+	@Override
+	public boolean onTouch(View v, MotionEvent event) {
+		System.out.println("onTouch : "+event.getAction()+event.getFlags());
+		return false;
+	}
 }
