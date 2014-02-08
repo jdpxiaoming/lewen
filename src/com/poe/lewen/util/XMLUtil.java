@@ -127,15 +127,14 @@ public class XMLUtil {
 		sb.append("<userId>" +	userId +	"</userId>");
 		sb.append("<userName>" +userName +"</userName>");
 		
-		try {
-			channelName = new String(channelName.getBytes("utf-8"),"gb2312");
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		sb.append("<channelName>" +channelName +"</channelName>");
-//		sb.append("<channelName>testbyPoe</channelName>");
+//		try {
+//			channelName = new String(channelName.getBytes("utf-8"),"gb2312");
+//		} catch (UnsupportedEncodingException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		sb.append("<channelName>" +channelName +"</channelName>");
+		sb.append("<channelName>channelName</channelName>");
 		sb.append("<channelId>" +channelId+	"</channelId>");
 		sb.append("</JoyMon>");
 		sb.append("\0");

@@ -123,6 +123,7 @@ public class SystemUrlSetAdapter extends BaseAdapter {
 			txt1.setText(si.getServiceName());
 			
 		}
+		
 		if(si.getServiceUrl().equals(MyApplication.getPreferenceData("host"))){
 			txt2.setVisibility(View.VISIBLE);
 		}else{

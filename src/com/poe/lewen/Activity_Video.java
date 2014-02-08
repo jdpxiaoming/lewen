@@ -43,8 +43,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-public class Activity_Video extends BaseActivity  implements IAV_CaptureDataListener,OnTouchListener{
-
+public class Activity_Video extends BaseActivity  implements IAV_CaptureDataListener{
 //---------------------------通道一
 	private AV_IN_RealPlay playINParam = null; // 实时监视输入参数
 	private AV_OUT_RealPlay playOutParam = null; // 实时监视输出参数
@@ -55,8 +54,7 @@ public class Activity_Video extends BaseActivity  implements IAV_CaptureDataList
 	private AV_HANDLE av_capture_handler = null;//开启截屏的句柄
 	private ImageButton btn_capture,btn_add_save;
 	
-	private RelativeLayout relative_volume;
-	private LinearLayout linear_volume;
+	private LinearLayout linear_volue_parent,linear_volume;
 	private int login_failed = 0;//加载失败次数
 	
 	//开始、暂停
@@ -64,6 +62,10 @@ public class Activity_Video extends BaseActivity  implements IAV_CaptureDataList
 	
 	//滑动
 	private GestureDetector gestureDetector;
+	
+	
+	PointF start = new PointF();
+	PointF end = new PointF();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +78,7 @@ public class Activity_Video extends BaseActivity  implements IAV_CaptureDataList
 
 	@Override
 	public void init() {
-		relative_volume	=	(RelativeLayout) findViewById(R.id.relativeVolumeOfVideo);
+		linear_volue_parent	=	(LinearLayout) findViewById(R.id.linearVolume1);
 		linear_volume		=	(LinearLayout) findViewById(R.id.lin_voice);
 		
 		loading	=	(LinearLayout) findViewById(R.id.loadingOfVideo);
@@ -113,15 +115,13 @@ public class Activity_Video extends BaseActivity  implements IAV_CaptureDataList
 		gestureDetector	=	new GestureDetector(new DefaultGestureDetector());
 		
 //		bsView.seton
-		/*bsView.setOnTouchListener(new OnTouchListener() {
+		bsView.setOnTouchListener(new OnTouchListener() {
 			
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				
 //				return gestureDetector.onTouchEvent(event);
-				PointF start = new PointF();
-				PointF end = new PointF();
-				System.out.println(event.getAction()+"");
+				System.out.println(event.getAction()+"x:"+event.getX());
 				switch (event.getAction()){
 					case MotionEvent.ACTION_DOWN:
 						System.out.println("ACTION_DOWN");
@@ -136,8 +136,10 @@ public class Activity_Video extends BaseActivity  implements IAV_CaptureDataList
 						float x=end.x-start.x;
 						if(Math.abs(x)>10){
 							if (x > 0) {
+								System.out.println("+1："+x);
 								MyApplication.selectChannel = MyApplication.selectChannel + 1;
 							} else {
+								System.out.println("-1:"+x);
 								MyApplication.selectChannel = MyApplication.selectChannel - 1;
 							}
 
@@ -156,41 +158,27 @@ public class Activity_Video extends BaseActivity  implements IAV_CaptureDataList
 							System.out.println(event.getAction()+"");
 							break;
 				}
-				return false;
+				return true;
 			}
-		});*/
-		bsView.setOnTouchListener(this);
+		});
 		//volume
-		relative_volume.setOnTouchListener(new OnTouchListener() {
+		linear_volue_parent.setOnTouchListener(new OnTouchListener() {
 			
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				// TODO Auto-generated method stub
-				float x  = event.getX();
-				System.out.println("x:"+x);
-				if(x>0){
-//					if(x-0>relative_volume.getWidth()){
-//						linear_volume.setLayoutParams(new LinearLayout.LayoutParams((int)(relative_volume.getWidth()-10), 5));
-//						
-//					}else{
-//						linear_volume.setLayoutParams(new LinearLayout.LayoutParams((int)x, 5));
-//					}
+				
+				if(event.getAction()==MotionEvent.ACTION_MOVE){
+					float x  = event.getX();
+					linear_volume.setLayoutParams(new LinearLayout.LayoutParams((int)x, 5));
 				}
-				return false;
+				
+				return true;
 			}
 		});
 	}
 
 	
 	
-	@Override
-	public boolean dispatchTouchEvent(MotionEvent ev) {
-		// TODO Auto-generated method stub
-		System.out.println("Activity_video: motionEvent:"+ev.getAction());
-		return super.dispatchTouchEvent(ev);
-	}
-
-	 
 	@Override
 	public void refresh(Object... param) {
 		// TODO Auto-generated method stub
@@ -292,6 +280,7 @@ public class Activity_Video extends BaseActivity  implements IAV_CaptureDataList
 			}
 		}
 	};
+	
 	/**
 	 * 增加收藏通道信息到服务器
 	 */
@@ -524,8 +513,14 @@ public class Activity_Video extends BaseActivity  implements IAV_CaptureDataList
 	}
 
 	@Override
-	public boolean onTouch(View v, MotionEvent event) {
-		System.out.println("onTouch : "+event.getAction()+event.getFlags());
-		return false;
+	public boolean dispatchTouchEvent(MotionEvent ev) {
+		// TODO Auto-generated method stub
+		System.out.println("Activity_video: motionEvent:"+ev.getAction());
+//		if(ev.getAction()==MotionEvent.ACTION_UP){
+//			onTouchEvent(ev);
+//			return true;
+//		}
+		return super.dispatchTouchEvent(ev);
 	}
+	
 }

@@ -270,8 +270,11 @@ public class Packet {
 		for(byte b : req){
 			sb.append(b);
 		}
-		Log.e("req 2进制", sb.toString());
+	
+		Log.e("req 2进制", req.toString());
 		String str = bytesToHexString(req);
+		Log.e("req", str);
+		System.out.println("byte[]转化为16进制后长度："+str.length());
 		login_req = 3;
 	}
 
