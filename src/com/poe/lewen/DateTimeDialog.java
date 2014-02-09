@@ -9,6 +9,7 @@ import kankan.wheel.widget.adapters.ArrayWheelAdapter;
 import kankan.wheel.widget.adapters.NumericWheelAdapter;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
@@ -90,7 +91,12 @@ public class DateTimeDialog extends Activity {
 					Toast.makeText(DateTimeDialog.this, " 请选择结束时间", 300).show();
 				}else{
 					//filter empty input
-					Toast.makeText(DateTimeDialog.this, " 日期选择结束，回调回放接口！", 300).show();
+//					Toast.makeText(DateTimeDialog.this, " 日期选择结束，回调回放接口！", 300).show();
+					Intent intent = new Intent();
+					intent.putExtra("startTime", edit_star.getText().toString());
+					intent.putExtra("endTime", edit_end.getText().toString());
+					setResult(100, intent);
+					finish();
 				}
 				
 			}

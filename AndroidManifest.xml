@@ -68,17 +68,15 @@
             		android:launchMode="singleInstance"	
             		android:theme="@android:style/Theme.Black.NoTitleBar"
             		>
-            	
-            	
-        </activity>
-        <activity  android:name=".DateTimeDialog"
-            	   android:theme="@android:style/Theme.DeviceDefault.Dialog"
-            		>
-            		<intent-filter >
+            	<intent-filter >
             	    	<action  android:name="android.intent.action.MAIN"/>
             	    	
             	    	<category android:name="android.intent.category.LAUNCHER"/>
             	</intent-filter>
+        </activity>
+        <activity  android:name=".DateTimeDialog"
+            	   android:theme="@android:style/Theme.DeviceDefault.Dialog"
+            		>
         </activity>
         <activity android:name=".Activity_Video"  android:launchMode="singleInstance"	
             android:theme="@android:style/Theme.Black.NoTitleBar"></activity>
