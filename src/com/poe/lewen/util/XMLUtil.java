@@ -9,6 +9,7 @@ public class XMLUtil {
 
 	/**
 	 * 登录
+	 * 
 	 * @param userName
 	 * @param passwd
 	 * @return
@@ -28,9 +29,10 @@ public class XMLUtil {
 
 		return sb.toString();
 	}
-	
+
 	/**
 	 * 获取播放列表
+	 * 
 	 * @param userName
 	 * @param passwd
 	 * @return
@@ -46,35 +48,33 @@ public class XMLUtil {
 
 		return sb.toString();
 	}
-	
+
 	/**
 	 * 收藏列表的xml 请求
-	 * @param userId	用户id
-	 * @param userName 登陆用户名
-	 * @return 组织好的mxl
-	 * ex:
-	 * <JoyMon>
-		<type>req</type>
-		<cmd>0XC002</cmd>
-		<userId>10034</userId>
-		<userName>cxm</userName>
-	   </JoyMon>
+	 * 
+	 * @param userId
+	 *            用户id
+	 * @param userName
+	 *            登陆用户名
+	 * @return 组织好的mxl ex: <JoyMon> <type>req</type> <cmd>0XC002</cmd>
+	 *         <userId>10034</userId> <userName>cxm</userName> </JoyMon>
 	 */
-	public static String MakeXML4SaveList(String userId,String userName) {
+	public static String MakeXML4SaveList(String userId, String userName) {
 		StringBuffer sb = new StringBuffer();
 		sb.append("<JoyMon>");
 		sb.append("<type>req</type>");
 		sb.append("<cmd>0XC002</cmd>");
 		sb.append("<userId>" + userId + "</userId>");
-		sb.append("<userName>"+userName+	"</userName>");
+		sb.append("<userName>" + userName + "</userName>");
 		sb.append("</JoyMon>");
 		sb.append("\0");
-		
+
 		return sb.toString();
 	}
-	
+
 	/**
 	 * 心跳xml
+	 * 
 	 * @return
 	 */
 	public static String MakeXML4Heart(String userName) {
@@ -83,15 +83,15 @@ public class XMLUtil {
 		sb.append("<type>req</type>");
 		sb.append("<cmd>0XA000</cmd>");
 		sb.append("<userName>" + userName + "</userName>");
-		sb.append("</JoyMon>");	
+		sb.append("</JoyMon>");
 		sb.append("\0");
 
 		return sb.toString();
 	}
-	
+
 	/**
-	 * 获取指定编号处的直播地址
-	 * <nodeId>3</nodeId>;//
+	 * 获取指定编号处的直播地址 <nodeId>3</nodeId>;//
+	 * 
 	 * @return
 	 */
 	public static String MakeXML4PlayAddress(String nodeId) {
@@ -104,41 +104,56 @@ public class XMLUtil {
 		sb.append("\0");
 		return sb.toString();
 	}
-	
+
 	/**
 	 * 
 	 * @param nodeId
-	 * @return 
+	 * @return
 	 * 
-		<JoyMon>
-		<type>req</type>
-		<cmd>0XC001</cmd>
-		<userId>10034</userId>
-		<userName>cxm</userName>
-		<channelName>收藏的通道名字</channelName>
-		<channelNo>收藏的通道编号</channelNo>
-		</JoyMon>
+	 *         <JoyMon> <type>req</type> <cmd>0XC001</cmd>
+	 *         <userId>10034</userId> <userName>cxm</userName>
+	 *         <channelName>收藏的通道名字</channelName> <channelNo>收藏的通道编号</channelNo>
+	 *         </JoyMon>
 	 */
-	public static String MakeXML4SaveAdd(String userId,String userName,String channelName,String channelNo,String channelId) {
+	public static String MakeXML4SaveAdd(String userId, String userName, String channelName, String channelNo, String channelId) {
 		StringBuffer sb = new StringBuffer();
 		sb.append("<JoyMon>");
 		sb.append("<type>req</type>");
 		sb.append("<cmd>0XC001</cmd>");
-		sb.append("<userId>" +	userId +	"</userId>");
-		sb.append("<userName>" +userName +"</userName>");
-		
-//		try {
-//			channelName = new String(channelName.getBytes("utf-8"),"gb2312");
-//		} catch (UnsupportedEncodingException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		sb.append("<channelName>" +channelName +"</channelName>");
+		sb.append("<userId>" + userId + "</userId>");
+		sb.append("<userName>" + userName + "</userName>");
+
+		// try {
+		// channelName = new String(channelName.getBytes("utf-8"),"gb2312");
+		// } catch (UnsupportedEncodingException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
+		// sb.append("<channelName>" +channelName +"</channelName>");
 		sb.append("<channelName>channelName</channelName>");
-		sb.append("<channelId>" +channelId+	"</channelId>");
+		sb.append("<channelId>" + channelId + "</channelId>");
 		sb.append("</JoyMon>");
 		sb.append("\0");
 		return sb.toString();
 	}
-	
+
+	/**
+	 * 请求获取历史录像 
+	 * 
+	 * @return
+	 */
+	public static String makeXML4PlayVideoHistory(String deviceId, String channelId, String beginTime, String endTime) {
+		StringBuffer sb = new StringBuffer();
+		sb.append("<JoyMon>");
+		sb.append("<type>req</type>");
+		sb.append("<cmd>0xE0009</cmd>");
+		sb.append("<deviceId>" + deviceId + "</deviceId>");
+		sb.append("<channelId>" + channelId + "</channelId>");
+		sb.append("<beginTime>" + beginTime + "</beginTime>");
+		sb.append("<endTime>" + endTime + "</endTime>");
+		sb.append("</JoyMon>");
+		sb.append("\0");
+		return sb.toString();
+	}
+
 }

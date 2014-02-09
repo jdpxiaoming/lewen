@@ -19,12 +19,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class DateTimeDialog extends Activity {
 
 	private TextView textDate;
 	private WheelView month, year, day, hours, mins,seconds;
-	private Button submit;
+	private Button submit,btn_ok,btn_cancel;
 	private Calendar calendar = Calendar.getInstance();
 	private int curYear =-1 ;
 	
@@ -46,6 +47,8 @@ public class DateTimeDialog extends Activity {
 	private void init() {
 		edit_star	=	(EditText) findViewById(R.id.edit_start);
 		edit_end	=	(EditText) findViewById(R.id.edit_end);
+		btn_ok		=	(Button) findViewById(R.id.btn_okOfDateLayout);
+		btn_cancel	=	(Button) findViewById(R.id.btn_cancelOfDateLayout);
 		
 		linearDate1	=	(LinearLayout) findViewById(R.id.linearDate1OfDateLayout);
 		linearDate2	=	(LinearLayout) findViewById(R.id.linearDate2OfDateLayout);
@@ -76,6 +79,30 @@ public class DateTimeDialog extends Activity {
 			}
 		});
 		
+		btn_ok.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				
+				if(edit_star.getText().toString().isEmpty()){
+					Toast.makeText(DateTimeDialog.this, " 请选择开始时间", 300).show();
+				}else if(edit_end.getText().toString().isEmpty()){
+					Toast.makeText(DateTimeDialog.this, " 请选择结束时间", 300).show();
+				}else{
+					//filter empty input
+					Toast.makeText(DateTimeDialog.this, " 日期选择结束，回调回放接口！", 300).show();
+				}
+				
+			}
+		});
+		
+		btn_cancel.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				finish();
+			}
+		});	
 		
 		textDate = (TextView) findViewById(R.id.textOfDateLayout);
 		submit = (Button) findViewById(R.id.btn_submitOfDateLayout);

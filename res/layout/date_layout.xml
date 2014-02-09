@@ -27,6 +27,35 @@
 			        		android:layout_height="wrap_content"
 			        		android:hint="截止时间，长按选择"
 			        		/>
+			    <LinearLayout 
+			        			android:layout_width="fill_parent"
+			        			android:layout_height="wrap_content"
+			        			android:orientation="horizontal"	
+			        			>
+			        
+			    <Button
+			            android:id="@+id/btn_okOfDateLayout"
+			            android:layout_width="60dip"
+			            android:layout_height="50dip"
+			            android:layout_alignParentRight="true"
+			            android:background="@drawable/selector_blue_to_red"
+			            android:text="√"
+			            android:textColor="#fff"
+			            android:textSize="20sp" 
+			            />
+			    
+			    	<Button
+			            android:id="@+id/btn_cancelOfDateLayout"
+			            android:layout_width="60dip"
+			            android:layout_height="50dip"
+			            android:layout_alignParentRight="true"
+			            android:background="@drawable/selector_blue_to_red"
+			            android:text="x"
+			            android:textColor="#fff"
+			            android:textSize="20sp" 
+			            android:layout_marginLeft="30dp"
+			            />
+			    </LinearLayout>
     </LinearLayout>
 <LinearLayout 
      android:id="@+id/linearDate2OfDateLayout"

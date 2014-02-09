@@ -329,6 +329,22 @@ public class Packet {
 		Log.e("req", bytesToHexString(req));
 		login_req = 2;
 	}
+	
+	// ***************
+		// 历史录像回放
+		public static void getVideoHistory(String deviceId, String channelId, String beginTime, String endTime, Handler handler) {
+			Packet.handler = handler;
+			if (!isConnected) {
+				init();
+			}
+
+			// 发送请求：获取 第一个直播地址
+			String tmp = XMLUtil.makeXML4PlayVideoHistory(deviceId, channelId, beginTime, endTime);
+			byte[] req = new Packet(Constant.REQ_GET_VIDEO_HISTORY_REC, tmp.length(), 1, tmp).getBuf();
+			connect.write(req);
+			Log.e("req", bytesToHexString(req));
+			login_req = 1;
+		}
 
 	/**
 	 * bytes 转化为 0x 16进制格式

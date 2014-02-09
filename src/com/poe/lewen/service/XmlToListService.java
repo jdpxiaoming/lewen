@@ -7,6 +7,7 @@ import java.util.List;
 import org.xmlpull.v1.XmlPullParser;
 import com.poe.lewen.bean.channel;
 import com.poe.lewen.bean.channelOnLine;
+import com.poe.lewen.bean.history_video;
 import com.poe.lewen.bean.rsp_login;
 import android.util.Xml;
 
@@ -178,196 +179,49 @@ public class XmlToListService {
 		return lists;
 	}
 	
-//	
-//	public static List<Announcement> GetAnn(String str)throws Exception{
-//		if(str==null||"".equals(str))
-//			return null;
-//		List<Announcement> anns = null;
-//		Announcement ann = null;
-//		XmlPullParser parser = Xml.newPullParser();
-//		InputStream  inputStream   =   new   ByteArrayInputStream(str.getBytes());
-//		parser.setInput(inputStream, "utf-8");
-//		int eventType = parser.getEventType();
-//		while(eventType!=XmlPullParser.END_DOCUMENT){
-//			switch (eventType) {
-//			case XmlPullParser.START_DOCUMENT:
-//				anns = new ArrayList<Announcement>();
-//				break;
-//			case XmlPullParser.START_TAG:
-//				String name = parser.getName();
-//				if("article".equals(name)){
-//					ann = new Announcement();
-//				}
-//				if(ann!=null){
-//					if("id".equals(name))
-//						ann.setId(Integer.parseInt(parser.nextText()));
-//					if("title".equals(name)){
-//						ann.setTitle(parser.nextText());
-//					}
-//					if("content".equals(name)){
-//						ann.setContent(parser.nextText());
-//					}
-//					if("pub_date".equals(name)){
-//						ann.setDatetime(parser.nextText());
-//					}
-//					if("imgUris".equals(name)){
-//						ann.setImgurls(parser.nextText());
-//						if(!"".equals(ann.getImgurls())){
-//							String string[];
-//							int i = 0;
-//					        StringTokenizer tokenizer = new StringTokenizer(ann.getImgurls(), "|");
-//					        string = new String[tokenizer.countTokens()];
-//					         while (tokenizer.hasMoreTokens()) {
-//					            string[i] = new String();
-//					            string[i] = tokenizer.nextToken();
-//					            i++;
-//					        }
-//					         ann.setImgarr(string);
-//						}
-//					}
-//					if("url".equals(name)){
-//						ann.setUrl(parser.nextText());
-//					}
-//				}
-//				break;
-//			case XmlPullParser.END_TAG:
-//				if("article".equals(parser.getName())){
-//					anns.add(ann);
-//					ann = null;
-//				}
-//				break;
-//			}
-//			eventType = parser.next();
-//		}
-//		return anns;
-//	}
-//	
-//	public static List<HuoDong> GetAc(String str)throws Exception{
-//		if(str==null||"".equals(str))
-//			return null;
-//		List<HuoDong> huodongs = null;
-//		HuoDong huodong = null;
-//		XmlPullParser parser = Xml.newPullParser();
-//		InputStream  inputStream   =   new   ByteArrayInputStream(str.getBytes());
-//		parser.setInput(inputStream, "utf-8");
-//		int eventType = parser.getEventType();
-//		while(eventType!=XmlPullParser.END_DOCUMENT){
-//			switch (eventType) {
-//			case XmlPullParser.START_DOCUMENT:
-//				huodongs = new ArrayList<HuoDong>();
-//				break;
-//			case XmlPullParser.START_TAG:
-//				String name = parser.getName();
-//				if("article".equals(name)){
-//					huodong = new HuoDong();
-//				}
-//				if(huodong!=null){
-//					if("id".equals(name))
-//						huodong.setId(Integer.parseInt(parser.nextText()));
-//					if("title".equals(name)){
-//						huodong.setTitle(parser.nextText());
-//					}
-//					if ("content".equals(name)) {
-//						huodong.setContent(parser.nextText());
-//					}
-//					if("pub_date".equals(name)){
-//						huodong.setDatetime(parser.nextText());
-//					}
-//					if("imgUris".equals(name)){
-//						huodong.setImgurls(parser.nextText());
-//						if(!"".equals(huodong.getImgurls())){
-//							String string[];
-//							int i = 0;
-//					        StringTokenizer tokenizer = new StringTokenizer(huodong.getImgurls(), "|");
-//					        string = new String[tokenizer.countTokens()];
-//					         while (tokenizer.hasMoreTokens()) {
-//					            string[i] = new String();
-//					            string[i] = tokenizer.nextToken();
-//					            i++;
-//					        }
-//					        huodong.setImgarr(string);
-//						}
-//					}
-//					if("url".equals(name)){
-//						huodong.setUrl(parser.nextText());
-//					}
-//				}
-//				break;
-//			case XmlPullParser.END_TAG:
-//				if("article".equals(parser.getName())){
-//					huodongs.add(huodong);
-//					huodong = null;
-//				}
-//				break;
-//			}
-//			eventType = parser.next();
-//		}
-//		return huodongs;
-//	}
-//	
-//	public static List<Language> GetLan(String str)throws Exception{
-//		if(str==null||"".equals(str))
-//			return null;
-//		List<Language> lans = null;
-//		Language lan = null;
-//		XmlPullParser parser = Xml.newPullParser();
-//		InputStream  inputStream   =   new   ByteArrayInputStream(str.getBytes());
-//		parser.setInput(inputStream, "utf-8");
-//		int eventType = parser.getEventType();
-//		while(eventType!=XmlPullParser.END_DOCUMENT){
-//			switch (eventType) {
-//			case XmlPullParser.START_DOCUMENT:
-//				lans = new ArrayList<Language>();
-//				break;
-//			case XmlPullParser.START_TAG:
-//				String name = parser.getName();
-//				if("article".equals(name)){
-//					lan = new Language();
-//				}
-//				if(lan!=null){
-//					if("id".equals(name))
-//						lan.setId(Integer.parseInt(parser.nextText()));
-//					if("title".equals(name)){
-//						lan.setTitle(parser.nextText());
-//					}
-//					if ("content".equals(name)) {
-//						lan.setContent(parser.nextText());
-//					}
-//					if("desc".equals(name)){
-//						lan.setDesc(parser.nextText());
-//					}
-//					if("pub_date".equals(name)){
-//						lan.setDatetime(parser.nextText());
-//					}
-//					if("imgUris".equals(name)){
-//						lan.setImgurls(parser.nextText());
-//						if(!"".equals(lan.getImgurls())){
-//							String string[];
-//							int i = 0;
-//					        StringTokenizer tokenizer = new StringTokenizer(lan.getImgurls(), "|");
-//					        string = new String[tokenizer.countTokens()];
-//					         while (tokenizer.hasMoreTokens()) {
-//					            string[i] = new String();
-//					            string[i] = tokenizer.nextToken();
-//					            i++;
-//					        }
-//					        lan.setImgarr(string);
-//						}
-//					}
-//					if("url".equals(name)){
-//						lan.setUrl(parser.nextText());
-//					}
-//				}
-//				break;
-//			case XmlPullParser.END_TAG:
-//				if("article".equals(parser.getName())){
-//					lans.add(lan);
-//					lan = null;
-//				}
-//				break;
-//			}
-//			eventType = parser.next();
-//		}
-//		return lans;
-//	}
+	/*
+	 * 解析失败返回NUll
+	 */
+	public static history_video  GetPlayVideoHistory(String str)throws Exception{
+		if(str==null||"".equals(str))
+			return null;
+		history_video newInfo = null;
+		XmlPullParser parser = Xml.newPullParser();
+		InputStream  inputStream   =   new   ByteArrayInputStream(str.getBytes());
+		parser.setInput(inputStream, "utf-8");
+		int eventType = parser.getEventType();
+		while(eventType!=XmlPullParser.END_DOCUMENT){
+			switch (eventType) {
+			case XmlPullParser.START_DOCUMENT:
+				newInfo = new history_video();
+				break;
+			case XmlPullParser.START_TAG:
+				String name = parser.getName();
+				if(newInfo!=null){
+					
+					if("deviceId".equals(name))
+						newInfo.setDeviceId(parser.nextText());
+					if("channelId".equals(name)){
+						newInfo.setChannelId(parser.nextText());
+					}
+					if("playaddr".equals(name)){
+						newInfo.setPlayaddr(parser.nextText());
+					}
+					if("err".equals(name)){
+						newInfo.setErr(parser.nextText());
+					}
+					if("errdesc".equals(name)){
+						newInfo.setErrdesc(parser.nextText());
+					}
+				}
+				break;
+			case XmlPullParser.END_TAG:
+				break;
+			}
+			eventType = parser.next();
+		}
+		
+		return newInfo;
+	}
+	
 }
