@@ -1,10 +1,6 @@
 package com.poe.lewen;
 
-import java.io.IOException;
-import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
-
 import com.baidu.mapapi.BMapManager;
 import com.baidu.mapapi.MKGeneralListener;
 import com.baidu.mapapi.map.MKEvent;
@@ -16,7 +12,7 @@ import com.mm.android.avnetsdk.param.ConnectStatusListener;
 import com.poe.lewen.bean.Constant;
 import com.poe.lewen.bean.channelOnLine;
 import com.poe.lewen.bean.rsp_login;
-
+import com.poe.lewen.util.TcpUtil;
 import android.R.integer;
 import android.app.Application;
 import android.content.Context;
@@ -57,7 +53,8 @@ public class MyApplication extends Application {
 	 */
 	public static int selectChannel = 0;
 	
-	private Socket sock =null;
+	//packet tool
+	public static TcpUtil packet = new TcpUtil();
 	
 	@Override
 	public void onCreate() {
@@ -103,34 +100,6 @@ public class MyApplication extends Application {
 		editor.commit();
 	}
 	
-	public Socket getSocket(){
-		if(null==sock||sock.isClosed()){
-			try {
-				sock =new Socket(Constant.str_login_ip, Constant.login_port);
-				
-				//启动心跳线程执行 心跳发送 每分钟一次
-			} catch (UnknownHostException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		return sock;
-	}
-	
-	public void closeSocket(){
-		if(null!=sock){
-			try {
-				sock.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			sock = null;
-		}
-	}
 	public static MyApplication getInstance() {
 		return mInstance;
 	}

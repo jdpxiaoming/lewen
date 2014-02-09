@@ -47,7 +47,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class Activity_Video extends BaseActivity implements IAV_CaptureDataListener {
+public class Activity_Video_Online extends BaseActivity implements IAV_CaptureDataListener {
 	// ---------------------------通道一
 	private AV_IN_RealPlay playINParam = null; // 实时监视输入参数
 	private AV_OUT_RealPlay playOutParam = null; // 实时监视输出参数
@@ -183,7 +183,7 @@ public class Activity_Video extends BaseActivity implements IAV_CaptureDataListe
 	protected void onResume() {
 		
 		if (bsView.getRenderer() == null) {
-			bsView.init(Activity_Video.this);
+			bsView.init(Activity_Video_Online.this);
 		}
 
 		if(MyApplication.cOnline!=null){
@@ -234,21 +234,18 @@ public class Activity_Video extends BaseActivity implements IAV_CaptureDataListe
 		@Override
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
-			System.out.println("结果马上揭晓！");
 			// 接受登录返回数据
 			loading.setVisibility(View.GONE);
 
 			String result_login = (String) msg.obj;
 
-			if(null!=result_login)
-				System.out.println(result_login);
 			switch (msg.what) {
 			case 1:
 				try {
 					history_video hv = XmlToListService.GetPlayVideoHistory(result_login);
 					if(hv!=null){
 						if(hv.getPlayaddr().length()>4){
-							VideoPlayerActivity.start(Activity_Video.this,hv.getPlayaddr(), false);
+							VideoPlayerActivity.start(Activity_Video_Online.this,hv.getPlayaddr(), false);
 						}
 					}else{
 						// parse exception
@@ -283,7 +280,7 @@ public class Activity_Video extends BaseActivity implements IAV_CaptureDataListe
 			break;
 		case R.id.imgPlayHistoryOfVideo:
 			if (MyApplication.cOnline != null) {
-				startActivityForResult(new Intent(Activity_Video.this, DateTimeDialog.class), 0);
+				startActivityForResult(new Intent(Activity_Video_Online.this, DateTimeDialog.class), 100);
 			} else {
 				MyApplication.getInstance().throwTips("请先登录选择通道！");
 			}
@@ -303,12 +300,11 @@ public class Activity_Video extends BaseActivity implements IAV_CaptureDataListe
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//		super.onActivityResult(requestCode, resultCode, data);
-		System.out.println("回调值获取成功！");
-		System.out.println("req_code:"+requestCode+ " result_code:"+resultCode);
+		// TODO Auto-generated method stub
+		super.onActivityResult(requestCode, resultCode, data);
+
 		// 历史回放
-		if (requestCode == 0&&resultCode==2) {
-			System.out.println("回调值获取成功！");
+		if (requestCode == 100) {
 			String startTime = data.getStringExtra("startTime");
 			String endTime = data.getStringExtra("endTime");
 			channelOnLine co = MyApplication.cOnline;
@@ -341,8 +337,7 @@ public class Activity_Video extends BaseActivity implements IAV_CaptureDataListe
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
 			String result = (String) msg.obj;
-			if(null!=result)
-				System.out.println(result);
+			System.out.println(result);
 			
 			switch (msg.what) {
 			case 1:	//收藏
@@ -486,7 +481,7 @@ public class Activity_Video extends BaseActivity implements IAV_CaptureDataListe
 		System.out.println("test capture!");
 		// if(null==av_capture_handler){
 		AV_IN_Capture inParam = new AV_IN_Capture();
-		inParam.captureListener = Activity_Video.this;
+		inParam.captureListener = Activity_Video_Online.this;
 		inParam.channelId = 0;// MyApplication.cOnline!=null?Integer.parseInt(MyApplication.cOnline.getChannelId()):0;
 		inParam.imageSize = 100 * 100;
 		AV_OUT_Capture outParam = new AV_OUT_Capture();

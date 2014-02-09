@@ -24,8 +24,28 @@ public class channelOnLine {
 	
 	private String device_id;//设备编号
 
-	private String channelId;
+	private String channelId;//通道id
 	
+	private String watch;//现在观看
+	
+	private String praise;//点赞的人数
+	
+	public String getWatch() {
+		return watch;
+	}
+
+	public void setWatch(String watch) {
+		this.watch = watch;
+	}
+
+	public String getPraise() {
+		return praise;
+	}
+
+	public void setPraise(String praise) {
+		this.praise = praise;
+	}
+
 	public String getChannelId() {
 		return channelId;
 	}

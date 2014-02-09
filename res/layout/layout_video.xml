@@ -17,7 +17,8 @@
         <include
             android:layout_width="fill_parent"
             android:layout_height="60dp"
-            layout="@layout/toper_bar_yuntai" />
+            layout="@layout/toper_bar_yuntai"
+             />
         <RelativeLayout 
             		android:layout_width="fill_parent"
             		android:layout_height="fill_parent"

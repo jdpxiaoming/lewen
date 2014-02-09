@@ -59,7 +59,6 @@ public class TCPSocketConnect implements Runnable {
 			try {
 				mSocket.read();// 获取数据
 				//开启心跳连接 30s
-				
 			} catch (Exception e) {
 				Loger.e(">TCP连接异常<", e);
 			} finally {

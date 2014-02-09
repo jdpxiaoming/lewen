@@ -129,8 +129,8 @@ public class XMLUtil {
 		// // TODO Auto-generated catch block
 		// e.printStackTrace();
 		// }
-		// sb.append("<channelName>" +channelName +"</channelName>");
-		sb.append("<channelName>channelName</channelName>");
+		 sb.append("<channelName>" +channelName +"</channelName>");
+//		sb.append("<channelName>channelName</channelName>");
 		sb.append("<channelId>" + channelId + "</channelId>");
 		sb.append("</JoyMon>");
 		sb.append("\0");
@@ -155,5 +155,30 @@ public class XMLUtil {
 		sb.append("\0");
 		return sb.toString();
 	}
+	
+	/**
+	 * 请求赞此通道报文
+	 * 
+	 * @return
+	 */
+	public static String makeXML4Zan( String channelId) {
+		StringBuffer sb = new StringBuffer();
+		sb.append("<JoyMon>");
+		sb.append("<type>req</type>");
+		sb.append("<cmd>0XC004</cmd>");
+		sb.append("<channelId>" + channelId + "</channelId>");
+		sb.append("</JoyMon>");
+		sb.append("\0");
+		return sb.toString();
+	}
 
+	/**
+	 * 、请求获取演示地址
+	 * @return
+	 */
+	public static String makeXML4Demo(){
+		return "<JoyMon><type>req</type><cmd>0XC003</cmd></JoyMon>"	;
+	}
+	
+	
 }

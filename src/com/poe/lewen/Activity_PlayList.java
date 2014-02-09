@@ -34,8 +34,9 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class Activity_WorldPlay extends Activity implements OnItemClickListener {
+public class Activity_PlayList extends Activity implements OnItemClickListener {
 
+	private String hubei_movie = "http://live9.hbtv.com.cn/channels/zbk/hbys/flv:sd/live";
 	private Button back, btn_model;
 	private int RANKING_MODE = 1;// 0:普通排行 1：排行 2：地图模式
 	private List<channel> list_channel = null;// 全球演示组织架构
@@ -45,6 +46,7 @@ public class Activity_WorldPlay extends Activity implements OnItemClickListener 
 	private TreeAdapter adapter;
 	private Node root, selected_node;
 	private HashMap<String, List<channelOnLine>> hash_online = new HashMap<String, List<channelOnLine>>();
+	// private List<channelOnLine> conlines ;
 	private channelOnLine conline = null;
 
 	/**
@@ -191,7 +193,7 @@ public class Activity_WorldPlay extends Activity implements OnItemClickListener 
 	// ****************
 	// 配置无限级列表
 	private void setAdapter() {
-		adapter = new TreeAdapter(Activity_WorldPlay.this, makeDataNew());
+		adapter = new TreeAdapter(Activity_PlayList.this, makeDataNew());
 		// 设置展开和折叠时图标
 		adapter.setExpandedCollapsedIcon(R.drawable.icon_minus, R.drawable.icon_pus, R.drawable.icon_save_video);
 		// 设置默认展开级别
@@ -435,7 +437,7 @@ public class Activity_WorldPlay extends Activity implements OnItemClickListener 
 				String title = "";
 				if (mapPoiInfo != null) {
 					title = mapPoiInfo.strText;
-					Toast.makeText(Activity_WorldPlay.this, title, Toast.LENGTH_SHORT).show();
+					Toast.makeText(Activity_PlayList.this, title, Toast.LENGTH_SHORT).show();
 					mMapController.animateTo(mapPoiInfo.geoPt);
 				}
 			}
@@ -459,7 +461,7 @@ public class Activity_WorldPlay extends Activity implements OnItemClickListener 
 			 */
 			@Override
 			public void onMapLoadFinish() {
-				Toast.makeText(Activity_WorldPlay.this, "地图加载完成", Toast.LENGTH_SHORT).show();
+				Toast.makeText(Activity_PlayList.this, "地图加载完成", Toast.LENGTH_SHORT).show();
 
 			}
 		};
@@ -507,7 +509,6 @@ public class Activity_WorldPlay extends Activity implements OnItemClickListener 
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View arg1, int position, long id) {
-		System.out.println("item clicked!");
 		// 1.判断是否为 叶子节点
 		selected_node = (Node) ((TreeAdapter) parent.getAdapter()).getItem(position);
 		if (selected_node.isLeaf()) {
@@ -551,14 +552,14 @@ public class Activity_WorldPlay extends Activity implements OnItemClickListener 
 				@Override
 				public void done() {
 					progress.setVisibility(View.GONE);
-					AlertDialog.Builder ab = new AlertDialog.Builder(Activity_WorldPlay.this);
+					AlertDialog.Builder ab = new AlertDialog.Builder(Activity_PlayList.this);
 					ab.setTitle("是否进入直播？");
 					ab.setPositiveButton("低码流", new DialogInterface.OnClickListener() {
 
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
 
-							VideoPlayerActivity.start(Activity_WorldPlay.this, conline.getPlayer_Addr(), false);
+							VideoPlayerActivity.start(Activity_PlayList.this, conline.getPlayer_Addr(), false);
 						}
 
 					});
@@ -567,7 +568,7 @@ public class Activity_WorldPlay extends Activity implements OnItemClickListener 
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
 
-							startActivity(new Intent(Activity_WorldPlay.this, Activity_Video.class));
+							startActivity(new Intent(Activity_PlayList.this, Activity_Video.class));
 						}
 					});
 					ab.show();

@@ -6,8 +6,8 @@ import com.poe.lewen.MyApplication.loaded4login;
 import com.poe.lewen.adapter.adapter4Save;
 import com.poe.lewen.bean.channelOnLine;
 import com.poe.lewen.service.XmlToListService;
-import com.poe.lewen.util.Packet;
 import com.poe.lewen.vlc.VideoPlayerActivity;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -183,7 +183,7 @@ public class Activity_Save extends Activity {
 	 */
 	private void doSendTcpRequest() {
 		progress.setVisibility(View.VISIBLE);
-		Packet.getSaveList(handler);
+		MyApplication.packet.getSaveList(handler);
 	}
 
 }

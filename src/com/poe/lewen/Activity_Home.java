@@ -2,7 +2,6 @@ package com.poe.lewen;
 
 import com.mm.android.avnetsdk.AVNetSDK;
 import com.poe.lewen.adapter.adapter4MenueList;
-import com.poe.lewen.util.Packet;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -57,18 +56,14 @@ public class Activity_Home extends BaseActivity {
 				}
 				
 				if(arg2 == 4){//log out
-//					if (realPlay != null) {
-//						AVNetSDK.AV_StopRealPlay(realPlay);
-//						realPlay = null;
-//					}
 					MyApplication.rsp_login=null;
 					if (MyApplication.log_handle != null) {
 						AVNetSDK.AV_Logout(MyApplication.log_handle);
 						MyApplication.log_handle = null;
 					}
 					MyApplication.getInstance().throwTips("登出账号！");
+					MyApplication.packet.close();
 				}
-				Packet.close();
 			}
 		});
 		
@@ -99,6 +94,6 @@ public class Activity_Home extends BaseActivity {
 		MyApplication.rsp_login=null;
 		MyApplication.getInstance().defaultSDKParam();
 		MyApplication.cOnline =null;
-		Packet.close();
+		MyApplication.packet.close();
 	}
 }

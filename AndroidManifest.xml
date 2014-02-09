@@ -64,8 +64,7 @@
             		android:screenOrientation="portrait"
             		>
         </activity>
-        <activity android:name="Activity_Home"
-            		android:launchMode="singleInstance"	
+        <activity   android:name="Activity_Home"
             		android:theme="@android:style/Theme.Black.NoTitleBar"
             		>
             	<intent-filter >

@@ -163,7 +163,12 @@ public class XmlToListService {
 					if("channelId".equals(name)){
 						talkpic.setChannelId(parser.nextText());
 					}
-					
+					if("parise".equals(name)){
+						talkpic.setPraise(parser.nextText());
+					}
+					if("watch".equals(name)){
+						talkpic.setWatch(parser.nextText());
+					}
 				}
 				break;
 			case XmlPullParser.END_TAG:
@@ -214,6 +219,36 @@ public class XmlToListService {
 						newInfo.setErrdesc(parser.nextText());
 					}
 				}
+				break;
+			case XmlPullParser.END_TAG:
+				break;
+			}
+			eventType = parser.next();
+		}
+		
+		return newInfo;
+	}
+	
+	/*
+	 * 赞次通道的count总数
+	 */
+	public static String  GetCountOfZan(String str)throws Exception{
+		if(str==null||"".equals(str))
+			return null;
+		String newInfo = null;
+		XmlPullParser parser = Xml.newPullParser();
+		InputStream  inputStream   =   new   ByteArrayInputStream(str.getBytes());
+		parser.setInput(inputStream, "utf-8");
+		int eventType = parser.getEventType();
+		while(eventType!=XmlPullParser.END_DOCUMENT){
+			switch (eventType) {
+			case XmlPullParser.START_DOCUMENT:
+				break;
+			case XmlPullParser.START_TAG:
+				String name = parser.getName();
+					if("parise".equals(name)){
+						newInfo = parser.nextText();
+					}
 				break;
 			case XmlPullParser.END_TAG:
 				break;
