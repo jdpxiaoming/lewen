@@ -566,8 +566,10 @@ public class Activity_WorldPlay extends Activity implements OnItemClickListener 
 					ab.setNegativeButton("高码流", new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
-
-							startActivity(new Intent(Activity_WorldPlay.this, Activity_Video.class));
+//							startActivity(new Intent(Activity_WorldPlay.this, Activity_Video.class));
+							Intent intent =new Intent(Activity_WorldPlay.this, Activity_Video.class);
+							intent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+							startActivity(intent);
 						}
 					});
 					ab.show();

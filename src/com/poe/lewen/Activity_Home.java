@@ -44,7 +44,7 @@ public class Activity_Home extends BaseActivity {
 				}
 				
 				if(arg2==1){
-					startActivity(new Intent(Activity_Home.this,Activity_WorldPlay.class));
+					startActivity(new Intent(Activity_Home.this,Activity_WorldPlay2.class));
 				}
 				
 				if(arg2==2){

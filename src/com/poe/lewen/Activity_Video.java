@@ -186,11 +186,11 @@ public class Activity_Video extends BaseActivity implements IAV_CaptureDataListe
 			bsView.init(Activity_Video.this);
 		}
 
-		if(MyApplication.cOnline!=null){
-			text_now.setText(MyApplication.cOnline.getWatch());
-			
-			text_praise.setText(MyApplication.cOnline.getWatch());
-		}
+//		if(MyApplication.cOnline!=null){
+//			text_now.setText(MyApplication.cOnline.getWatch());
+//			
+//			text_praise.setText(MyApplication.cOnline.getWatch());
+//		}
 		login_failed = 0;
 		// start video defalut channel is 0
 		new playTask().execute();
@@ -290,7 +290,8 @@ public class Activity_Video extends BaseActivity implements IAV_CaptureDataListe
 			break;
 		case R.id.rightButtonOfToperBarYuntai:
 			if (MyApplication.cOnline != null) {
-				MyApplication.packet.praiseChannel(MyApplication.cOnline.getChannelId(), handler_save);
+//			MyApplication.packet.praiseChannel(MyApplication.cOnline.getChannelId(), handler_save);
+				MyApplication.getInstance().throwTips("本功能暂未实现，敬请期待！");
 			} else {
 				MyApplication.getInstance().throwTips("请先登录选择通道！");
 			}
@@ -316,6 +317,7 @@ public class Activity_Video extends BaseActivity implements IAV_CaptureDataListe
 			//get the rtmp address by tcp socketa
 			loading.setVisibility(View.VISIBLE);
 			MyApplication.packet.getVideoHistory(co.getDevice_id(), co.getChannelId(), startTime, endTime, handler);
+//			MyApplication.getInstance().throwTips("本功能暂未实现，敬请期待！");
 		}
 
 	}

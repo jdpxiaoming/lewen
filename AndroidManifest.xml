@@ -66,6 +66,7 @@
         </activity>
         <activity   android:name="Activity_Home"
             		android:theme="@android:style/Theme.Black.NoTitleBar"
+            		android:launchMode="singleInstance"
             		>
             	<intent-filter >
             	    	<action  android:name="android.intent.action.MAIN"/>
@@ -77,8 +78,10 @@
             	   android:theme="@android:style/Theme.DeviceDefault.Dialog"
             		>
         </activity>
-        <activity android:name=".Activity_Video"  android:launchMode="singleInstance"	
-            android:theme="@android:style/Theme.Black.NoTitleBar"></activity>
+        <activity android:name=".Activity_Video"  	
+            android:theme="@android:style/Theme.Black.NoTitleBar">
+            
+        </activity>
         <activity android:name=".Activity_Yuntai" android:launchMode="singleInstance"	
             android:theme="@android:style/Theme.Black.NoTitleBar"></activity>
         <activity android:name=".Activity_Map"    android:launchMode="singleInstance"	
@@ -86,6 +89,8 @@
         <activity android:name=".Activity_Login"    android:launchMode="singleInstance"	
             android:theme="@android:style/Theme.Black.NoTitleBar"></activity>
         <activity android:name=".Activity_WorldPlay"    android:launchMode="singleInstance"	
+            android:theme="@android:style/Theme.Black.NoTitleBar"></activity>
+        <activity android:name=".Activity_WorldPlay2"    android:launchMode="singleInstance"	
             android:theme="@android:style/Theme.Black.NoTitleBar"></activity>
          <activity android:name=".Activity_Save"    android:launchMode="singleInstance"	
             android:theme="@android:style/Theme.Black.NoTitleBar"></activity>

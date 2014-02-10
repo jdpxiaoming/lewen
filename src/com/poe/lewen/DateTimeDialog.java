@@ -96,7 +96,7 @@ public class DateTimeDialog extends Activity {
 					intent.putExtra("startTime", edit_star.getText().toString());
 					intent.putExtra("endTime", edit_end.getText().toString());
 					setResult(2, intent);
-//					finish();
+					finish();
 				}
 				
 			}

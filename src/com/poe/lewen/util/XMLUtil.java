@@ -146,7 +146,7 @@ public class XMLUtil {
 		StringBuffer sb = new StringBuffer();
 		sb.append("<JoyMon>");
 		sb.append("<type>req</type>");
-		sb.append("<cmd>0xE0009</cmd>");
+		sb.append("<cmd>0xE009</cmd>");
 		sb.append("<deviceId>" + deviceId + "</deviceId>");
 		sb.append("<channelId>" + channelId + "</channelId>");
 		sb.append("<beginTime>" + beginTime + "</beginTime>");

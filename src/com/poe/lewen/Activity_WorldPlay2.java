@@ -7,7 +7,6 @@ import com.poe.lewen.adapter.adapter4Save;
 import com.poe.lewen.bean.channelOnLine;
 import com.poe.lewen.service.XmlToListService;
 import com.poe.lewen.vlc.VideoPlayerActivity;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -23,9 +22,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
-//我的收藏
-public class Activity_Save extends Activity {
-
+public class Activity_WorldPlay2 extends Activity  {
 	private Button back;
 	private ListView listview;
 	private adapter4Save adapter;
@@ -38,15 +35,15 @@ public class Activity_Save extends Activity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.layout_save);
+		setContentView(R.layout.layout_world_play);
 		init();
 	}
 
 	public void init() {
-		progress = (LinearLayout) findViewById(R.id.progressbarOfSave);
-		back = (Button) findViewById(R.id.leftButtonOfToperBarSave);
+		progress = (LinearLayout) findViewById(R.id.progressbarOfWorldPlay);
+		back = (Button) findViewById(R.id.leftButtonOfToperBarWorldPlay);
 
-		listview = (ListView) findViewById(R.id.listviewOfSave);
+		listview = (ListView) findViewById(R.id.listviewOfWorldPlay);
 
 		back.setOnClickListener(new OnClickListener() {
 
@@ -103,14 +100,6 @@ public class Activity_Save extends Activity {
 					}
 					break;
 				case 2:
-					// try {
-					// final channelOnLine conline =
-					// XmlToListService.GetVideoAddress(result_login).get(0);
-					// doConnectChannel(conline);
-					// } catch (Exception e) {
-					// // TODO Auto-generated catch block
-					// e.printStackTrace();
-					// }
 					break;
 				}
 			}
@@ -118,11 +107,7 @@ public class Activity_Save extends Activity {
 		};
 
 		// 获取数据命令
-		if (MyApplication.rsp_login != null) {
 			doSendTcpRequest();
-		} else {
-			MyApplication.getInstance().throwTips("请登陆后查看本通道信息！");
-		}
 	}
 
 	private void doConnectChannel(final channelOnLine conline) {
@@ -144,14 +129,14 @@ public class Activity_Save extends Activity {
 					@Override
 					public void done() {
 						progress.setVisibility(View.GONE);
-						AlertDialog.Builder ab = new AlertDialog.Builder(Activity_Save.this);
+						AlertDialog.Builder ab = new AlertDialog.Builder(Activity_WorldPlay2.this);
 						ab.setTitle("是否进入直播？");
 						ab.setPositiveButton("低码流", new DialogInterface.OnClickListener() {
 
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
 
-								VideoPlayerActivity.start(Activity_Save.this, conline.getPlayer_Addr(), false);
+								VideoPlayerActivity.start(Activity_WorldPlay2.this, conline.getPlayer_Addr(), false);
 							}
 
 						});
@@ -160,7 +145,11 @@ public class Activity_Save extends Activity {
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
 
-								startActivity(new Intent(Activity_Save.this, Activity_Video.class));
+//								startActivity(new Intent(Activity_WorldPlay2.this, Activity_VidIntent intent =new Intent(Activity_WorldPlay.this, Activity_Video.class);
+								Intent intent =new Intent(Activity_WorldPlay2.this, Activity_Video.class);
+								intent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+								startActivity(intent);
+							
 							}
 						});
 						ab.show();
@@ -174,7 +163,7 @@ public class Activity_Save extends Activity {
 	}
 
 	private void setAdapter() {
-		adapter = new adapter4Save(Activity_Save.this,list_channel);
+		adapter = new adapter4Save(Activity_WorldPlay2.this,list_channel);
 		listview.setAdapter(adapter);
 	}
 
@@ -183,7 +172,6 @@ public class Activity_Save extends Activity {
 	 */
 	private void doSendTcpRequest() {
 		progress.setVisibility(View.VISIBLE);
-		MyApplication.packet.getSaveList(handler);
+		MyApplication.packet.getDemoList(handler);
 	}
-
 }

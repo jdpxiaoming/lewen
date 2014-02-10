@@ -80,7 +80,10 @@ public abstract class BaseActivity extends Activity implements OnClickListener, 
 			startActivity(new Intent(mContext, Activity_Home.class));
 			break;
 		case R.id.lin_video:
-			startActivity(new Intent(mContext, Activity_Video.class));
+//			startActivity(new Intent(mContext, Activity_Video.class));
+			Intent intent =new Intent(mContext, Activity_Video.class);
+			intent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+			startActivity(intent);
 			break;
 		case R.id.lin_yuntai:
 			startActivity(new Intent(mContext, Activity_Yuntai.class));

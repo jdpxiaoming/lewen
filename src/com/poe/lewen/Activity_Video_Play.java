@@ -11,9 +11,7 @@ import android.widget.Button;
 public class Activity_Video_Play extends Activity {
 
 	private Button back;
-//	private VideoView4VLC videoview;
-	private String hubei_movie = "http://live9.hbtv.com.cn/channels/zbk/hbys/flv:sd/live";
-
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -26,10 +24,7 @@ public class Activity_Video_Play extends Activity {
 
 	public void init() {
 
-//		videoview = (VideoView4VLC) findViewById(R.id.videoOfVideoPlay);
 		back = (Button) findViewById(R.id.leftButtonOfToperBarVideoPlay);
-		// get the rtmp address
-		// String rtsp =getIntent().getStringExtra("rtsp");
 
 		back.setOnClickListener(new OnClickListener() {
 

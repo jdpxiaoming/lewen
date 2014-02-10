@@ -268,6 +268,53 @@ public class TcpUtil {
 		login_req = 2;
 	}
 	
+	// 赞次通道
+			public static void getDemoList(final Handler handler) {
+//			  connect2 = new TCPSocketConnect(new TCPSocketCallback() {
+//	
+//					@Override
+//					public void tcp_receive(byte[] buffer) {
+//						String str = "";
+//						ByteArrayOutputStream ba = new ByteArrayOutputStream();
+//						try {
+//							ba.write(buffer);
+//							str = new String(ba.toByteArray(), "GBK");
+//						} catch (IOException e1) {
+//							e1.printStackTrace();
+//						}
+//	
+//						System.out.println(str);
+//						// 反馈工具类
+//						if (null != handler)
+//							handler.sendMessage(handler.obtainMessage(login_req, str));
+//					}
+//	
+//					@Override
+//					public void tcp_disconnect() {
+//						connect2.disconnect();
+//						connect2 = null;
+//					}
+//	
+//					@Override
+//					public void tcp_connected() {
+//						Loger.i("tcp_connect()");
+//					}
+//				});
+//	
+//				connect2.setAddress(MyApplication.getPreferenceData("host"), Integer.parseInt(MyApplication.getPreferenceData("port")));
+//				new Thread(connect2).start();
+				TcpUtil.handler = handler;
+				if (!isConnected) {
+					init();
+				}
+				// 发送请求：获取 第一个直播地址
+				String tmp = XMLUtil.makeXML4Demo();
+				byte[] req = new Packet(Constant.REQ_LIST_DEMO_ADDR, tmp.length(), 1, tmp).getBuf();
+				connect.write(req);
+				Log.e("req", bytesToHexString(req));
+				login_req = 1;
+			}
+	
 	/**
 	 * bytes 转化为 0x 16进制格式
 	 * 
@@ -293,7 +340,7 @@ public class TcpUtil {
 		}
 
 		String str = stringBuilder.toString();
-		Log.e("req", str);
+//		Log.e("req", str);
 		System.out.println("byte[]转化为16进制后长度：" + str.length());
 
 		return str;
