@@ -29,6 +29,9 @@ public class Constant {
 	
 	public static int REQ_GET_VIDEO_HISTORY_REC = 0xE009;     //请求获取历史录像
 	public static int RSP_GET_VIDEO_HISTORY_REC = 0xE00A;     //返回历史录像	
+	public static int REQ_ENTER_LEAVE_CHANNEL		= 0xA040;     //请求进入观看通道 
+	
+	
 	
 	public static int REQ_PRAISE_CHANNEL      = 0XC004;      //请求赞此通道报文
 	public static int RSP_PRAISE_CHANNEL       = 0XB305;      //响应赞此通道报文

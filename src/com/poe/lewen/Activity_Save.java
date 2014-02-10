@@ -135,6 +135,11 @@ public class Activity_Save extends Activity {
 				MyApplication.username = conline.getUserName();
 				MyApplication.password = conline.getUserPsw();
 				MyApplication.selectChannel = 0;
+				if(MyApplication.cOnline!=null&&
+						!MyApplication.cOnline.getChannelId().equals(conline.getChannelId())){
+					//send the user action to service 
+					MyApplication.packet.WatchChannel(MyApplication.cOnline.getChannelId(), "0");
+				}
 				MyApplication.cOnline = conline;
 
 				progress.setVisibility(View.VISIBLE);
@@ -161,6 +166,8 @@ public class Activity_Save extends Activity {
 							public void onClick(DialogInterface dialog, int which) {
 
 								startActivity(new Intent(Activity_Save.this, Activity_Video.class));
+								//send the user action to service 
+								MyApplication.packet.WatchChannel(conline.getChannelId(), "1");
 							}
 						});
 						ab.show();

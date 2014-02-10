@@ -32,8 +32,6 @@ public class TcpUtil {
 
 	private static Runnable r_heart;
 
-
-
 	/*
 	 * 初始化 tcp连接
 	 */
@@ -52,8 +50,32 @@ public class TcpUtil {
 					e1.printStackTrace();
 				}
 
-				System.out.println(str);
+				// 检测强制离线、命令
+				if (str != null && str.length() > 0) {
+					System.out.println(str);
 
+					/**
+					 * <JoyMon> <type>rsp</type> <cmd>0XB03A</cmd> <err>0</err>
+					 * <errdesc>成功</errdesc> </JoyMon>
+					 */
+					if (str.contains("cmd")) {
+						String cmd = str.substring(str.indexOf("<cmd>") + 5, str.indexOf("</cmd>"));
+						System.out.println("cmd:" + cmd);
+						if (cmd.equals("0XB03A")) {
+							close();
+							MyApplication.rsp_login = null;
+							// 强制下线
+							handler.post(new Runnable() {
+
+								@Override
+								public void run() {
+									// TODO Auto-generated method stub
+									MyApplication.getInstance().throwTips("您的账号在异地登陆，被迫下线！");
+								}
+							});
+						}
+					}
+				}
 				// 反馈工具类
 				if (null != handler)
 					TcpUtil.handler.sendMessage(TcpUtil.handler.obtainMessage(login_req, str));
@@ -62,8 +84,8 @@ public class TcpUtil {
 			@Override
 			public void tcp_disconnect() {
 				isConnected = false;
-//				if (null != handler)
-//					Packet.handler.sendMessage(Packet.handler.obtainMessage(login_req,null));
+				// if (null != handler)
+				// Packet.handler.sendMessage(Packet.handler.obtainMessage(login_req,null));
 				Loger.i("tcp_disconnect()");
 			}
 
@@ -251,7 +273,6 @@ public class TcpUtil {
 		login_req = 1;
 	}
 
-	
 	// ***************
 	// 赞次通道
 	public static void praiseChannel(String channelId, Handler handler) {
@@ -267,54 +288,37 @@ public class TcpUtil {
 		Log.e("req", bytesToHexString(req));
 		login_req = 2;
 	}
-	
+
 	// 赞次通道
-			public static void getDemoList(final Handler handler) {
-//			  connect2 = new TCPSocketConnect(new TCPSocketCallback() {
-//	
-//					@Override
-//					public void tcp_receive(byte[] buffer) {
-//						String str = "";
-//						ByteArrayOutputStream ba = new ByteArrayOutputStream();
-//						try {
-//							ba.write(buffer);
-//							str = new String(ba.toByteArray(), "GBK");
-//						} catch (IOException e1) {
-//							e1.printStackTrace();
-//						}
-//	
-//						System.out.println(str);
-//						// 反馈工具类
-//						if (null != handler)
-//							handler.sendMessage(handler.obtainMessage(login_req, str));
-//					}
-//	
-//					@Override
-//					public void tcp_disconnect() {
-//						connect2.disconnect();
-//						connect2 = null;
-//					}
-//	
-//					@Override
-//					public void tcp_connected() {
-//						Loger.i("tcp_connect()");
-//					}
-//				});
-//	
-//				connect2.setAddress(MyApplication.getPreferenceData("host"), Integer.parseInt(MyApplication.getPreferenceData("port")));
-//				new Thread(connect2).start();
-				TcpUtil.handler = handler;
-				if (!isConnected) {
-					init();
-				}
-				// 发送请求：获取 第一个直播地址
-				String tmp = XMLUtil.makeXML4Demo();
-				byte[] req = new Packet(Constant.REQ_LIST_DEMO_ADDR, tmp.length(), 1, tmp).getBuf();
-				connect.write(req);
-				Log.e("req", bytesToHexString(req));
-				login_req = 1;
-			}
-	
+	public static void getDemoList(final Handler handler) {
+		TcpUtil.handler = handler;
+		if (!isConnected) {
+			init();
+		}
+		// 发送请求：获取 第一个直播地址
+		String tmp = XMLUtil.makeXML4Demo();
+		byte[] req = new Packet(Constant.REQ_LIST_DEMO_ADDR, tmp.length(), 1, tmp).getBuf();
+		connect.write(req);
+		Log.e("req", bytesToHexString(req));
+		login_req = 1;
+	}
+
+	/**
+	 * 保证心跳连接
+	 * 
+	 * @param userName
+	 */
+	public static void WatchChannel(String channelId, String type) {
+		TcpUtil.handler = null;
+		if (isConnected) {
+			String tmp = XMLUtil.makeXML4WatchChannel(channelId, type);
+			byte[] req = new Packet(Constant.REQ_ENTER_LEAVE_CHANNEL, tmp.length(), 1, tmp).getBuf();
+			connect.write(req);
+			Log.e("req", bytesToHexString(req));
+			login_req = 1;
+		}
+	}
+
 	/**
 	 * bytes 转化为 0x 16进制格式
 	 * 
@@ -340,7 +344,7 @@ public class TcpUtil {
 		}
 
 		String str = stringBuilder.toString();
-//		Log.e("req", str);
+		// Log.e("req", str);
 		System.out.println("byte[]转化为16进制后长度：" + str.length());
 
 		return str;
@@ -377,5 +381,4 @@ public class TcpUtil {
 			connect.disconnect();
 		}
 	}
-
 }

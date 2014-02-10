@@ -26,10 +26,20 @@ public class channelOnLine {
 
 	private String channelId;//通道id
 	
+	private String history_watch;//历史观看人数
+	
 	private String watch;//现在观看
 	
 	private String praise;//点赞的人数
 	
+	public String getHistory_watch() {
+		return history_watch;
+	}
+
+	public void setHistory_watch(String history_watch) {
+		this.history_watch = history_watch;
+	}
+
 	public String getWatch() {
 		return watch;
 	}

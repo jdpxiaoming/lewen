@@ -129,8 +129,8 @@ public class XMLUtil {
 		// // TODO Auto-generated catch block
 		// e.printStackTrace();
 		// }
-		 sb.append("<channelName>" +channelName +"</channelName>");
-//		sb.append("<channelName>channelName</channelName>");
+		sb.append("<channelName>" + channelName + "</channelName>");
+		// sb.append("<channelName>channelName</channelName>");
 		sb.append("<channelId>" + channelId + "</channelId>");
 		sb.append("</JoyMon>");
 		sb.append("\0");
@@ -138,7 +138,7 @@ public class XMLUtil {
 	}
 
 	/**
-	 * 请求获取历史录像 
+	 * 请求获取历史录像
 	 * 
 	 * @return
 	 */
@@ -155,13 +155,13 @@ public class XMLUtil {
 		sb.append("\0");
 		return sb.toString();
 	}
-	
+
 	/**
 	 * 请求赞此通道报文
 	 * 
 	 * @return
 	 */
-	public static String makeXML4Zan( String channelId) {
+	public static String makeXML4Zan(String channelId) {
 		StringBuffer sb = new StringBuffer();
 		sb.append("<JoyMon>");
 		sb.append("<type>req</type>");
@@ -174,11 +174,23 @@ public class XMLUtil {
 
 	/**
 	 * 、请求获取演示地址
+	 * 
 	 * @return
 	 */
-	public static String makeXML4Demo(){
-		return "<JoyMon><type>req</type><cmd>0XC003</cmd></JoyMon>"	;
+	public static String makeXML4Demo() {
+		return "<JoyMon><type>req</type><cmd>0XC003</cmd></JoyMon>\0";
 	}
-	
-	
+
+	/**
+	 * 请求获取演示地址
+	 * 
+	 * @param channelId
+	 * @param type
+	 *            1：进入观看通道 0：退出观看通道
+	 * @return
+	 */
+	public static String makeXML4WatchChannel(String channelId, String type) {
+		return "<JoyMon><type>req</type><cmd>0xA040</cmd><type>" + type + "</type><channelId>" + channelId + "</channelId></JoyMon>\0";
+	}
+
 }

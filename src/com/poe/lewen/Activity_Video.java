@@ -186,11 +186,11 @@ public class Activity_Video extends BaseActivity implements IAV_CaptureDataListe
 			bsView.init(Activity_Video.this);
 		}
 
-//		if(MyApplication.cOnline!=null){
-//			text_now.setText(MyApplication.cOnline.getWatch());
-//			
-//			text_praise.setText(MyApplication.cOnline.getWatch());
-//		}
+		if(MyApplication.cOnline!=null){
+			text_all.setText(MyApplication.cOnline.getHistory_watch());
+			text_now.setText(MyApplication.cOnline.getWatch());
+			text_praise.setText(MyApplication.cOnline.getWatch());
+		}
 		login_failed = 0;
 		// start video defalut channel is 0
 		new playTask().execute();

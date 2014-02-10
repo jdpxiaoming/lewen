@@ -166,8 +166,11 @@ public class XmlToListService {
 					if("parise".equals(name)){
 						talkpic.setPraise(parser.nextText());
 					}
-					if("watch".equals(name)){
+					if("watchNum".equals(name)){
 						talkpic.setWatch(parser.nextText());
+					}
+					if("historyWatch".equals(name)){
+						talkpic.setHistory_watch(parser.nextText());
 					}
 				}
 				break;

@@ -17,7 +17,6 @@ public class Activity_Home extends BaseActivity {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.layout_main);
@@ -93,7 +92,10 @@ public class Activity_Home extends BaseActivity {
 		super.onDestroy();
 		MyApplication.rsp_login=null;
 		MyApplication.getInstance().defaultSDKParam();
-		MyApplication.cOnline =null;
+		if(null!=MyApplication.cOnline){
+			MyApplication.packet.WatchChannel(MyApplication.cOnline.getChannelId(), "0");
+			MyApplication.cOnline =null;
+		}
 		MyApplication.packet.close();
 	}
 }

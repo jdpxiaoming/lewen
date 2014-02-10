@@ -543,6 +543,11 @@ public class Activity_WorldPlay extends Activity implements OnItemClickListener 
 			MyApplication.username = conline.getUserName();
 			MyApplication.password = conline.getUserPsw();
 			MyApplication.selectChannel = 0;
+			if(MyApplication.cOnline!=null&&
+					!MyApplication.cOnline.getChannelId().equals(conline.getChannelId())){
+				//send the user action to service 
+				MyApplication.packet.WatchChannel(MyApplication.cOnline.getChannelId(), "0");
+			}
 			MyApplication.cOnline = conline;
 
 			// 可选择 1.直播 2.通道选择
@@ -570,6 +575,8 @@ public class Activity_WorldPlay extends Activity implements OnItemClickListener 
 							Intent intent =new Intent(Activity_WorldPlay.this, Activity_Video.class);
 							intent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
 							startActivity(intent);
+							//send the user action to service 
+							MyApplication.packet.WatchChannel(conline.getChannelId(), "1");
 						}
 					});
 					ab.show();
