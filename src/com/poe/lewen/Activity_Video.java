@@ -177,6 +177,7 @@ public class Activity_Video extends BaseActivity implements IAV_CaptureDataListe
 	}
 
 	private void WatchChannel() {
+		if(null!=MyApplication.cOnline)
 		MyApplication.packet.WatchChannel(MyApplication.cOnline.getChannelId(), "0");
 	}
 
