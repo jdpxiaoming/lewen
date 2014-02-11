@@ -41,6 +41,10 @@ public class TcpUtil {
 
 			@Override
 			public void tcp_receive(byte[] buffer) {
+				
+				if(buffer.length==0){
+					System.out.println("服务器断开！！！！！！");
+				}
 				String str = "";
 				ByteArrayOutputStream ba = new ByteArrayOutputStream();
 				try {

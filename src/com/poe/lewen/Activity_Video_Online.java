@@ -24,6 +24,7 @@ import com.mm.android.avplaysdk.render.BasicGLSurfaceView;
 import com.poe.lewen.MyApplication.loaded4login;
 import com.poe.lewen.bean.channelOnLine;
 import com.poe.lewen.bean.history_video;
+import com.poe.lewen.bean.resutl_parise;
 import com.poe.lewen.service.XmlToListService;
 import com.poe.lewen.util.DateUtil;
 import com.poe.lewen.util.Tool;
@@ -348,10 +349,11 @@ public class Activity_Video_Online extends BaseActivity implements IAV_CaptureDa
 				break;
 			case 2: //攒次通道
 				try {
-					String count =XmlToListService.GetCountOfZan(result);
-					if(null!=count){
+					resutl_parise  parise =XmlToListService.GetCountOfZan(result);
+					if(null!=parise){
+						MyApplication.getInstance().throwTips(parise.getErrdesc());
 						//set the count of zan on the top bar
-						text_praise.setText(count);
+						text_praise.setText(parise.getParise_count());
 					}
 				} catch (Exception e) {
 					// TODO Auto-generated catch block

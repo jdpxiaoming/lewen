@@ -8,6 +8,7 @@ import org.xmlpull.v1.XmlPullParser;
 import com.poe.lewen.bean.channel;
 import com.poe.lewen.bean.channelOnLine;
 import com.poe.lewen.bean.history_video;
+import com.poe.lewen.bean.resutl_parise;
 import com.poe.lewen.bean.rsp_login;
 import android.util.Xml;
 
@@ -212,13 +213,13 @@ public class XmlToListService {
 					if("channelId".equals(name)){
 						newInfo.setChannelId(parser.nextText());
 					}
-					if("playaddr".equals(name)){
+					if("playAddr".equals(name)){
 						newInfo.setPlayaddr(parser.nextText());
 					}
-					if("err".equals(name)){
+					if("ierrorCode".equals(name)){
 						newInfo.setErr(parser.nextText());
 					}
-					if("errdesc".equals(name)){
+					if("err".equals(name)){
 						newInfo.setErrdesc(parser.nextText());
 					}
 				}
@@ -235,10 +236,10 @@ public class XmlToListService {
 	/*
 	 * 赞次通道的count总数
 	 */
-	public static String  GetCountOfZan(String str)throws Exception{
+	public static resutl_parise  GetCountOfZan(String str)throws Exception{
 		if(str==null||"".equals(str))
 			return null;
-		String newInfo = null;
+		resutl_parise newInfo = null;
 		XmlPullParser parser = Xml.newPullParser();
 		InputStream  inputStream   =   new   ByteArrayInputStream(str.getBytes());
 		parser.setInput(inputStream, "utf-8");
@@ -246,12 +247,22 @@ public class XmlToListService {
 		while(eventType!=XmlPullParser.END_DOCUMENT){
 			switch (eventType) {
 			case XmlPullParser.START_DOCUMENT:
+				newInfo = new resutl_parise();
 				break;
 			case XmlPullParser.START_TAG:
 				String name = parser.getName();
-					if("parise".equals(name)){
-						newInfo = parser.nextText();
+				
+				if(newInfo!=null){
+					
+					if("parise".equals(name))
+						newInfo.setParise_count(parser.nextText());
+					if("err	".equals(name)){
+						newInfo.setErr(parser.nextText());
 					}
+					if("errdesc".equals(name)){
+						newInfo.setErrdesc(parser.nextText());
+					}
+				}
 				break;
 			case XmlPullParser.END_TAG:
 				break;

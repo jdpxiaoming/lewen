@@ -58,12 +58,12 @@ public class TCPSocketConnect implements Runnable {
 			new Thread(writeRunnable).start();// 在线程池启动发送线程
 			try {
 				mSocket.read();// 获取数据
-				//开启心跳连接 30s
 			} catch (Exception e) {
 				Loger.e(">TCP连接异常<", e);
 			} finally {
 				Loger.e(">TCP连接中断<");
 				resetConnect();// 断开连接
+				isConnect=false;
 			}
 		}
 		Loger.e(">=TCP结束连接线程=<");
@@ -157,7 +157,6 @@ public class TCPSocketConnect implements Runnable {
 
 		/**
 		 * 添加数据到发送队列
-		 * 
 		 * @param buffer
 		 *            数据字节
 		 */

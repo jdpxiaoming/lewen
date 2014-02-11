@@ -24,6 +24,7 @@ import com.mm.android.avplaysdk.render.BasicGLSurfaceView;
 import com.poe.lewen.MyApplication.loaded4login;
 import com.poe.lewen.bean.channelOnLine;
 import com.poe.lewen.bean.history_video;
+import com.poe.lewen.bean.resutl_parise;
 import com.poe.lewen.service.XmlToListService;
 import com.poe.lewen.util.DateUtil;
 import com.poe.lewen.util.Tool;
@@ -171,6 +172,12 @@ public class Activity_Video extends BaseActivity implements IAV_CaptureDataListe
 				return true;
 			}
 		});
+		
+		WatchChannel();
+	}
+
+	private void WatchChannel() {
+		MyApplication.packet.WatchChannel(MyApplication.cOnline.getChannelId(), "0");
 	}
 
 	@Override
@@ -189,7 +196,7 @@ public class Activity_Video extends BaseActivity implements IAV_CaptureDataListe
 		if(MyApplication.cOnline!=null){
 			text_all.setText(MyApplication.cOnline.getHistory_watch());
 			text_now.setText(MyApplication.cOnline.getWatch());
-			text_praise.setText(MyApplication.cOnline.getWatch());
+			text_praise.setText(MyApplication.cOnline.getPraise());
 		}
 		login_failed = 0;
 		// start video defalut channel is 0
@@ -199,8 +206,6 @@ public class Activity_Video extends BaseActivity implements IAV_CaptureDataListe
 
 	@Override
 	protected void onPause() {
-		// TODO Auto-generated method stub
-		// bsView.uninit();
 		super.onPause();
 	}
 
@@ -253,7 +258,6 @@ public class Activity_Video extends BaseActivity implements IAV_CaptureDataListe
 					}else{
 						// parse exception
 					}
-					
 				} catch (UnsupportedEncodingException e) {
 					e.printStackTrace();
 				} catch (Exception e) {
@@ -290,8 +294,8 @@ public class Activity_Video extends BaseActivity implements IAV_CaptureDataListe
 			break;
 		case R.id.rightButtonOfToperBarYuntai:
 			if (MyApplication.cOnline != null) {
-//			MyApplication.packet.praiseChannel(MyApplication.cOnline.getChannelId(), handler_save);
-				MyApplication.getInstance().throwTips("本功能暂未实现，敬请期待！");
+			MyApplication.packet.praiseChannel(MyApplication.cOnline.getChannelId(), handler_save);
+//				MyApplication.getInstance().throwTips("本功能暂未实现，敬请期待！");
 			} else {
 				MyApplication.getInstance().throwTips("请先登录选择通道！");
 			}
@@ -355,10 +359,11 @@ public class Activity_Video extends BaseActivity implements IAV_CaptureDataListe
 				break;
 			case 2: //攒次通道
 				try {
-					String count =XmlToListService.GetCountOfZan(result);
-					if(null!=count){
+					resutl_parise  parise =XmlToListService.GetCountOfZan(result);
+					if(null!=parise){
+						MyApplication.getInstance().throwTips(parise.getErrdesc());
 						//set the count of zan on the top bar
-						text_praise.setText(count);
+						text_praise.setText(parise.getParise_count());
 					}
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
