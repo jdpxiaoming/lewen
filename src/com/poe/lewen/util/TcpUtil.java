@@ -87,7 +87,8 @@ public class TcpUtil {
 
 			@Override
 			public void tcp_disconnect() {
-				isConnected = false;
+//				isConnected = false;
+				close();
 				// if (null != handler)
 				// Packet.handler.sendMessage(Packet.handler.obtainMessage(login_req,null));
 				Loger.i("tcp_disconnect()");
@@ -148,10 +149,10 @@ public class TcpUtil {
 
 		// close();
 		if (!isConnected) {
+			System.out.println("init tcputil connect");
 			init();
 		}
 
-		if (login_req != 0) {
 			String tmp = XMLUtil.MakeXML(userName, passwd);
 			System.out.println(tmp);
 			System.out.println("login长度：" + tmp.length());
@@ -159,7 +160,6 @@ public class TcpUtil {
 			connect.write(req);
 			Log.e("req", bytesToHexString(req));
 			login_req = 0;
-		}
 	}
 
 	// ************************************
@@ -377,11 +377,18 @@ public class TcpUtil {
 	/*
 	 * 暂时中断连接、等待下次继续
 	 */
-	public static void close() {
+	private static void close() {
 		System.out.println("退出登录 ：TcpUtil --close()");
 		if (connect != null) {
 			isConnected = false;
 			stopPolling();
+			connect = null;
+//			connect.disconnect();
+		}
+	}
+	
+	public static void  disconnect(){
+		if (connect != null) {
 			connect.disconnect();
 		}
 	}

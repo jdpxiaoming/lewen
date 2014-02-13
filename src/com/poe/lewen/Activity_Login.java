@@ -156,7 +156,7 @@ public class Activity_Login extends Activity {
 							System.out.println("登录错误，rsp_login滞空："+MyApplication.rsp_login.getErr());
 							MyApplication.getInstance().throwTips(MyApplication.rsp_login.getErr());
 							MyApplication.rsp_login = null;
-							MyApplication.packet.close();
+//							MyApplication.packet.close();
 						}
 					}else{
 						MyApplication.getInstance().throwTips("登录失败！");

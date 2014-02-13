@@ -1,7 +1,6 @@
 package com.poe.lewen;
 
 import java.util.List;
-
 import com.mm.android.avnetsdk.AVNetSDK;
 import com.mm.android.avnetsdk.param.AV_HANDLE;
 import com.mm.android.avnetsdk.param.AV_IN_PTZ;
@@ -24,7 +23,6 @@ import android.R.integer;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;

@@ -61,7 +61,7 @@ public class Activity_Home extends BaseActivity {
 						MyApplication.log_handle = null;
 					}
 					MyApplication.getInstance().throwTips("登出账号！");
-					MyApplication.packet.close();
+					MyApplication.packet.disconnect();
 				}
 			}
 		});
@@ -96,6 +96,6 @@ public class Activity_Home extends BaseActivity {
 			MyApplication.packet.WatchChannel(MyApplication.cOnline.getChannelId(), "0");
 			MyApplication.cOnline =null;
 		}
-		MyApplication.packet.close();
+		MyApplication.packet.disconnect();
 	}
 }

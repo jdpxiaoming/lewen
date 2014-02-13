@@ -23,7 +23,8 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 
 public class Activity_WorldPlay2 extends Activity  {
-	private Button back;
+	
+	private Button back, btn_model;
 	private ListView listview;
 	private adapter4Save adapter;
 	private LinearLayout progress;
@@ -42,9 +43,10 @@ public class Activity_WorldPlay2 extends Activity  {
 	public void init() {
 		progress = (LinearLayout) findViewById(R.id.progressbarOfWorldPlay);
 		back = (Button) findViewById(R.id.leftButtonOfToperBarWorldPlay);
-
+		btn_model = (Button) findViewById(R.id.rightButtonOfToperBarWorldPlay);
 		listview = (ListView) findViewById(R.id.listviewOfWorldPlay);
 
+		btn_model.setVisibility(View.GONE);
 		back.setOnClickListener(new OnClickListener() {
 
 			@Override

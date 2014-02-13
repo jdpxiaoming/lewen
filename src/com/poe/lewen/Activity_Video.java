@@ -103,7 +103,6 @@ public class Activity_Video extends BaseActivity implements IAV_CaptureDataListe
 		btn_play_history.setOnClickListener(this);
 		btn_play.setOnClickListener(this);
 		btn_stop.setOnClickListener(this);
-
 		btn_capture.setOnClickListener(this);
 		btn_add_save.setOnClickListener(this);
 
@@ -117,7 +116,6 @@ public class Activity_Video extends BaseActivity implements IAV_CaptureDataListe
 
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-
 				System.out.println(event.getAction() + "x:" + event.getX());
 				switch (event.getAction()) {
 				case MotionEvent.ACTION_DOWN:
@@ -158,6 +156,7 @@ public class Activity_Video extends BaseActivity implements IAV_CaptureDataListe
 				return true;
 			}
 		});
+		
 		// volume
 		linear_volue_parent.setOnTouchListener(new OnTouchListener() {
 
@@ -177,8 +176,10 @@ public class Activity_Video extends BaseActivity implements IAV_CaptureDataListe
 	}
 
 	private void WatchChannel() {
+		
 		if(null!=MyApplication.cOnline)
-		MyApplication.packet.WatchChannel(MyApplication.cOnline.getChannelId(), "0");
+			MyApplication.packet.WatchChannel(MyApplication.cOnline.getChannelId(), "0");
+		
 	}
 
 	@Override
@@ -255,6 +256,8 @@ public class Activity_Video extends BaseActivity implements IAV_CaptureDataListe
 					if(hv!=null){
 						if(hv.getPlayaddr().length()>4){
 							VideoPlayerActivity.start(Activity_Video.this,hv.getPlayaddr(), false);
+						}else{
+							MyApplication.getInstance().throwTips("当前时间段没有历史记录！");
 						}
 					}else{
 						// parse exception
@@ -381,7 +384,7 @@ public class Activity_Video extends BaseActivity implements IAV_CaptureDataListe
 	 * 增加收藏通道信息到服务器
 	 */
 	private void doSave() {
-		if (MyApplication.cOnline != null) {
+		if (MyApplication.cOnline != null&&null!=MyApplication.rsp_login) {
 			MyApplication.packet.SaveChannel(handler_save, MyApplication.cOnline.getChannelName(), MyApplication.cOnline.getChannelNo(), MyApplication.cOnline.getChannelId());
 		} else {
 			MyApplication.getInstance().throwTips("请先登录选择通道，再来收藏！");
@@ -550,7 +553,6 @@ public class Activity_Video extends BaseActivity implements IAV_CaptureDataListe
 				fos.close();
 
 				handler_toast.sendMessage(handler_toast.obtainMessage(0, strFileName));
-
 			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

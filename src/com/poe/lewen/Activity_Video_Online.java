@@ -77,7 +77,6 @@ public class Activity_Video_Online extends BaseActivity implements IAV_CaptureDa
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.layout_video);
-
 	}
 
 	@Override

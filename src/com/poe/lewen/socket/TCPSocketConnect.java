@@ -44,9 +44,11 @@ public class TCPSocketConnect implements Runnable {
 					mSocket.connect(ip, port);// 连接服务器
 				} catch (Exception e) {
 					try {
+						isConnect=false;
 						Loger.e(">TCP连接服务器失败, 10秒后重新连接<");
 						resetConnect();// 断开连接
 						lock.wait(10000);
+						
 						continue;
 					} catch (InterruptedException e1) {
 						continue;
