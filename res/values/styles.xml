@@ -38,4 +38,13 @@
      <style name="animStyle">
         <item name="android:indeterminateDrawable">@anim/progressbar</item>
     </style>
+    
+     <style name="str_recharge_title">
+         <item name="android:textSize">15sp</item>
+         <item name="android:gravity">center_vertical</item>
+         <item name="android:paddingLeft">5dp</item>
+         <item name="android:textColor">@color/black</item>
+         <item name="android:textStyle">normal</item>
+         
+     </style>
 </resources>

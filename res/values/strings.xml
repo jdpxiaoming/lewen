@@ -41,8 +41,18 @@
     <string name="pull_to_refresh_refreshing_label">加载中...</string>
     <string name="pull_to_refresh_tap_label">点击刷新</string>
     <string name="no_internet">网络不可用</string>
+    <string name="str_bank_reockrd">收银记录</string>
+    <string name="str_recharge_no">序号</string>
+    <string name="str_recharge_date">充值日期</string>
+    <string name="str_recharge_money">充值金额</string>
+    <string name="str_recharge_balance">余额</string>
+    <string name="str_user_list">在线用户列表</string>
     
-
+    <string-array name="bank_menue">
+        <item>充值记录</item>
+        <item>消费记录</item>
+    </string-array>
+    
     <string-array name="home_menue">
         <item>用户登录</item>
         <item>体验演示</item>
@@ -51,6 +61,15 @@
         <item>使用指南</item>
         <item>退出登录</item>
     </string-array>
+    
+    <!-- 服务器列表 -->
+    <string name="host1">202.136.60.234</string>
+    <string name="port1">8888</string>
+    <string name="host2">203.195.191.183</string>
+    <string name="port2">8888</string>
+    <string name="host3">192.168.1.100</string>
+    <string name="port3">8080</string>
+    
     <!-- Main VLC Interface -->
     <string name="widget_name" translatable="false">VLC mini player</string>
     <string name="ok">OK</string>
@@ -451,14 +470,6 @@
     <string name="vout_summary">Change the method that VLC uses to output video.</string>
     <string name="vout_android_surface">Android surface</string>
     <string name="vout_opengles2">OpenGL ES 2.0</string>
-    
-    <!-- 服务器列表 -->
-    <string name="host1">202.136.60.234</string>
-    <string name="port1">8888</string>
-    <string name="host2">203.195.191.183</string>
-    <string name="port2">8888</string>
-    <string name="host3">192.168.1.100</string>
-    <string name="port3">8080</string>
     
     
 </resources>

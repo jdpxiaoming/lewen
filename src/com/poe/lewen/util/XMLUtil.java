@@ -1,7 +1,5 @@
 package com.poe.lewen.util;
 
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
 
 import com.poe.lewen.bean.Constant;
 
@@ -193,4 +191,34 @@ public class XMLUtil {
 		return "<JoyMon><type>req</type><cmd>0xA040</cmd><type>" + type + "</type><channelId>" + channelId + "</channelId></JoyMon>\0";
 	}
 
+	
+	/**
+	 * 请求获取在线用户列表
+	 * 
+	 * @return
+	 */
+	public static String makeXML4OnlineUser() {
+		return "<JoyMon><type>req</type><cmd>0XC005</cmd></JoyMon>\0";
+	}
+	/**
+	 * 请求通话
+	 * 
+	 * @return
+	 */
+	public static String makeXML4Speak(String from,String to) {
+		return "<JoyMon><type>req</type><cmd>0XC007</cmd>" +
+				"<from>" +from +	"</<from>" +
+				"<to>" +	to +	"</to>" +
+				"</JoyMon>\0";
+	}
+	
+	
+	/**
+	 * 请求获取虫豸记录
+	 * 
+	 * @return
+	 */
+	public static String makeXML4RechargeRecord(String userId) {
+		return "<JoyMon><type>req</type><cmd>0XC00A</cmd><userId>" +		userId +	"</userId></JoyMon>\0";
+	}
 }

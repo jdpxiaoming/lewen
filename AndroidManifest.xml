@@ -82,6 +82,23 @@
             android:theme="@android:style/Theme.Black.NoTitleBar">
             
         </activity>
+        <activity android:name=".HelloBubblesActivity"  	
+            android:theme="@android:style/Theme.Black.NoTitleBar">
+            
+        </activity>
+        <activity android:name=".Activity_Recharge_Record"  	
+            android:theme="@android:style/Theme.Black.NoTitleBar">
+            
+        </activity>
+        <activity android:name=".Activity_Recharge_List"  	
+            android:theme="@android:style/Theme.Black.NoTitleBar">
+            
+        </activity>
+        <activity android:name=".Activity_User_List"  	
+            android:theme="@android:style/Theme.Black.NoTitleBar">
+            
+        </activity>
+        
         <activity android:name=".Activity_Yuntai" android:launchMode="singleInstance"	
             android:theme="@android:style/Theme.Black.NoTitleBar"></activity>
         <activity android:name=".Activity_Map"    android:launchMode="singleInstance"	

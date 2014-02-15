@@ -41,8 +41,8 @@ public class TcpUtil {
 
 			@Override
 			public void tcp_receive(byte[] buffer) {
-				
-				if(buffer.length==0){
+
+				if (buffer.length == 0) {
 					System.out.println("服务器断开！！！！！！");
 				}
 				String str = "";
@@ -87,7 +87,7 @@ public class TcpUtil {
 
 			@Override
 			public void tcp_disconnect() {
-//				isConnected = false;
+				// isConnected = false;
 				close();
 				// if (null != handler)
 				// Packet.handler.sendMessage(Packet.handler.obtainMessage(login_req,null));
@@ -153,13 +153,13 @@ public class TcpUtil {
 			init();
 		}
 
-			String tmp = XMLUtil.MakeXML(userName, passwd);
-			System.out.println(tmp);
-			System.out.println("login长度：" + tmp.length());
-			byte[] req = new Packet(Constant.REQ_LOGIN, tmp.length(), 1, tmp).getBuf();
-			connect.write(req);
-			Log.e("req", bytesToHexString(req));
-			login_req = 0;
+		String tmp = XMLUtil.MakeXML(userName, passwd);
+		System.out.println(tmp);
+		System.out.println("login长度：" + tmp.length());
+		byte[] req = new Packet(Constant.REQ_LOGIN, tmp.length(), 1, tmp).getBuf();
+		connect.write(req);
+		Log.e("req", bytesToHexString(req));
+		login_req = 0;
 	}
 
 	// ************************************
@@ -308,7 +308,7 @@ public class TcpUtil {
 	}
 
 	/**
-	 * 保证心跳连接
+	 * 观看某个视频+1
 	 * 
 	 * @param userName
 	 */
@@ -323,6 +323,44 @@ public class TcpUtil {
 		}
 	}
 
+	// 获取在线用户列表
+	public static void getUserList(final Handler handler) {
+
+		TcpUtil.handler = handler;
+		if (!isConnected) {
+			init();
+		}
+
+		// 发送请求：获取 第一个直播地址
+		String tmp = XMLUtil.makeXML4OnlineUser();
+		byte[] req = new Packet(Constant.REQ_ONLINE_USER, tmp.length(), 1, tmp).getBuf();
+		connect.write(req);
+		Log.e("req", bytesToHexString(req));
+		login_req = 1;
+
+	}
+
+	// 获取充值记录
+	public static void getRechargeRecord(String userId,final Handler handler) {
+
+		TcpUtil.handler = handler;
+		if (!isConnected) {
+			init();
+		}
+
+		// 发送请求：获取 第一个直播地址
+		String tmp = XMLUtil.makeXML4RechargeRecord(userId);
+		byte[] req = new Packet(Constant.REQ_BUY, tmp.length(), 1, tmp).getBuf();
+		connect.write(req);
+		Log.e("req", bytesToHexString(req));
+		login_req = 1;
+
+	}
+	
+	
+//----------------------------------------------------------------------------------------------------------------
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+//---------------------------------------------------------------------------------------------------------------
 	/**
 	 * bytes 转化为 0x 16进制格式
 	 * 
@@ -383,11 +421,10 @@ public class TcpUtil {
 			isConnected = false;
 			stopPolling();
 			connect = null;
-//			connect.disconnect();
 		}
 	}
-	
-	public static void  disconnect(){
+
+	public static void disconnect() {
 		if (connect != null) {
 			connect.disconnect();
 		}

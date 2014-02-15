@@ -7,6 +7,7 @@
 				android:background="@drawable/menue_head_bg"
 				>
     			<TextView 
+    			    		android:id="@+id/textTitleOfToperBarSave" 
     			    		android:layout_width="fill_parent"
     			    		android:layout_height="fill_parent"
     			    		android:text="@string/save_title"

@@ -24,7 +24,7 @@ import com.mm.android.avplaysdk.render.BasicGLSurfaceView;
 import com.poe.lewen.MyApplication.loaded4login;
 import com.poe.lewen.bean.channelOnLine;
 import com.poe.lewen.bean.history_video;
-import com.poe.lewen.bean.resutl_parise;
+import com.poe.lewen.bean.rsp_parise;
 import com.poe.lewen.service.XmlToListService;
 import com.poe.lewen.util.DateUtil;
 import com.poe.lewen.util.Tool;
@@ -63,7 +63,7 @@ public class Activity_Video extends BaseActivity implements IAV_CaptureDataListe
 	private int login_failed = 0;// 加载失败次数
 
 	// 开始、暂停
-	private ImageButton btn_play, btn_stop, btn_play_history;
+	private ImageButton btn_play, btn_stop, btn_play_history,btn_speak,btn_record;
 
 	PointF start = new PointF();
 	PointF end = new PointF();
@@ -85,8 +85,8 @@ public class Activity_Video extends BaseActivity implements IAV_CaptureDataListe
 		
 		//top bar
 		text_all		=	(TextView) findViewById(R.id.textCount1OfToperBarYuntai);
-		text_now		=	(TextView) findViewById(R.id.textCount2OfToperBarYuntai);
-		text_praise	=	(TextView) findViewById(R.id.textCount3OfToperBarYuntai);
+		text_now		=	(TextView) findViewById(R.id.textCount3OfToperBarYuntai);
+		text_praise	=	(TextView) findViewById(R.id.textCount2OfToperBarYuntai);
 		btn_praise	=	(Button) findViewById(R.id.rightButtonOfToperBarYuntai);
 		btn_praise.setOnClickListener(this);
 		
@@ -99,12 +99,16 @@ public class Activity_Video extends BaseActivity implements IAV_CaptureDataListe
 		btn_play = (ImageButton) findViewById(R.id.imgPlayOfVideo);
 		btn_stop = (ImageButton) findViewById(R.id.imgStopOfVideo);
 		btn_play_history = (ImageButton) findViewById(R.id.imgPlayHistoryOfVideo);
+		btn_speak		=	(ImageButton) findViewById(R.id.imgSpeakOfVideo);
+		btn_record		=	(ImageButton) findViewById(R.id.imgRecordBalanceOfVideo);
 
 		btn_play_history.setOnClickListener(this);
 		btn_play.setOnClickListener(this);
 		btn_stop.setOnClickListener(this);
 		btn_capture.setOnClickListener(this);
 		btn_add_save.setOnClickListener(this);
+		btn_speak.setOnClickListener(this);
+		btn_record.setOnClickListener(this);
 
 		lin_video.setBackgroundResource(R.drawable.btn_bg_press);
 		image_video.setImageResource(R.drawable.icon_video_press);
@@ -304,6 +308,17 @@ public class Activity_Video extends BaseActivity implements IAV_CaptureDataListe
 				MyApplication.getInstance().throwTips("请先登录选择通道！");
 			}
 			break;
+		case R.id.imgSpeakOfVideo://speak accord the userid
+			if(MyApplication.rsp_login!=null){
+				
+				startActivity(new Intent(Activity_Video.this,Activity_User_List.class));
+			}else{
+				MyApplication.getInstance().throwTips("请先登录！");
+			}
+			break;
+		case R.id.imgRecordBalanceOfVideo://收银记录
+			startActivity(new Intent(Activity_Video.this,Activity_Recharge_List.class));
+			break;
 		default:
 			super.onClick(v);
 			break;
@@ -312,7 +327,6 @@ public class Activity_Video extends BaseActivity implements IAV_CaptureDataListe
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//		super.onActivityResult(requestCode, resultCode, data);
 		System.out.println("回调值获取成功！");
 		System.out.println("req_code:"+requestCode+ " result_code:"+resultCode);
 		// 历史回放
@@ -363,7 +377,7 @@ public class Activity_Video extends BaseActivity implements IAV_CaptureDataListe
 				break;
 			case 2: //攒次通道
 				try {
-					resutl_parise  parise =XmlToListService.GetCountOfZan(result);
+					rsp_parise  parise =XmlToListService.GetCountOfZan(result);
 					if(null!=parise){
 						MyApplication.getInstance().throwTips(parise.getErrdesc());
 						//set the count of zan on the top bar

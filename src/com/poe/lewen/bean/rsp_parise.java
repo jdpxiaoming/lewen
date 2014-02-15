@@ -3,7 +3,7 @@ package com.poe.lewen.bean;
 /**
  * @author poe.Cai
  */
-public class resutl_parise {
+public class rsp_parise {
 
 	private String parise_count;
 	private String err;

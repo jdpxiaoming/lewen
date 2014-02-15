@@ -8,8 +8,10 @@ import org.xmlpull.v1.XmlPullParser;
 import com.poe.lewen.bean.channel;
 import com.poe.lewen.bean.channelOnLine;
 import com.poe.lewen.bean.history_video;
-import com.poe.lewen.bean.resutl_parise;
+import com.poe.lewen.bean.rsp_parise;
 import com.poe.lewen.bean.rsp_login;
+import com.poe.lewen.bean.rsp_recharge_record;
+
 import android.util.Xml;
 
 public class XmlToListService {
@@ -236,10 +238,10 @@ public class XmlToListService {
 	/*
 	 * 赞次通道的count总数
 	 */
-	public static resutl_parise  GetCountOfZan(String str)throws Exception{
+	public static rsp_parise  GetCountOfZan(String str)throws Exception{
 		if(str==null||"".equals(str))
 			return null;
-		resutl_parise newInfo = null;
+		rsp_parise newInfo = null;
 		XmlPullParser parser = Xml.newPullParser();
 		InputStream  inputStream   =   new   ByteArrayInputStream(str.getBytes());
 		parser.setInput(inputStream, "utf-8");
@@ -247,7 +249,7 @@ public class XmlToListService {
 		while(eventType!=XmlPullParser.END_DOCUMENT){
 			switch (eventType) {
 			case XmlPullParser.START_DOCUMENT:
-				newInfo = new resutl_parise();
+				newInfo = new rsp_parise();
 				break;
 			case XmlPullParser.START_TAG:
 				String name = parser.getName();
@@ -273,4 +275,96 @@ public class XmlToListService {
 		return newInfo;
 	}
 	
+	
+	/**
+	 * 获取在线用列表
+	 * @param str
+	 * @return
+	 * @throws Exception
+	 */
+	public static List<String> GetUserNameList(String str)throws Exception{
+		if(str==null||"".equals(str))
+			return null;
+		List<String> news = null;
+		String newInfo = null;
+		XmlPullParser parser = Xml.newPullParser();
+		InputStream  inputStream   =   new   ByteArrayInputStream(str.getBytes());
+		parser.setInput(inputStream, "utf-8");
+		int eventType = parser.getEventType();
+		while(eventType!=XmlPullParser.END_DOCUMENT){
+			switch (eventType) {
+			case XmlPullParser.START_DOCUMENT:
+				news = new ArrayList<String>();
+				break;
+			case XmlPullParser.START_TAG:
+				String name = parser.getName();
+					if("username".equals(name)){
+						newInfo=(parser.nextText());
+					}
+				break;
+			case XmlPullParser.END_TAG:
+				if("username".equals(parser.getName())){
+					news.add(newInfo);
+					newInfo = null;
+				}
+				break;
+			}
+			eventType = parser.next();
+		}
+		return news;
+	}
+	
+	
+	/**
+	 * 获取充值记录列表
+	 * @param str
+	 * @return
+	 * @throws Exception
+	 */
+	public static List<rsp_recharge_record> GetRechargeList(String str)throws Exception{
+		if(str==null||"".equals(str))
+			return null;
+		List<rsp_recharge_record> news = null;
+		rsp_recharge_record newInfo = null;
+		XmlPullParser parser = Xml.newPullParser();
+		InputStream  inputStream   =   new   ByteArrayInputStream(str.getBytes());
+		parser.setInput(inputStream, "utf-8");
+		int eventType = parser.getEventType();
+		while(eventType!=XmlPullParser.END_DOCUMENT){
+			switch (eventType) {
+			case XmlPullParser.START_DOCUMENT:
+				news = new ArrayList<rsp_recharge_record>();
+				break;
+			case XmlPullParser.START_TAG:
+				String name = parser.getName();
+				if("node".equals(name)){
+					newInfo = new rsp_recharge_record();
+				}
+				if(newInfo!=null){
+					
+					if("userId".equals(name)){
+						newInfo.setUserId(parser.nextText());
+					}else  if("buyid".equals(name)){
+						newInfo.setBuyId(parser.nextText());
+					}else  if("begintime".equals(name)){
+						newInfo.setBeginTime(parser.nextText());
+					}else  if("expiration".equals(name)){
+						newInfo.setExpiration(parser.nextText());
+					}else  if("channelId".equals(name)){
+						newInfo.setChannelId(parser.nextText());
+					}
+					
+				}
+				break;
+			case XmlPullParser.END_TAG:
+				if("username".equals(parser.getName())){
+					news.add(newInfo);
+					newInfo = null;
+				}
+				break;
+			}
+			eventType = parser.next();
+		}
+		return news;
+	}
 }

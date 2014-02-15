@@ -130,6 +130,7 @@
                             android:orientation="horizontal" >
 
                             <ImageButton
+                                android:id="@+id/imgSpeakOfVideo"
                                 android:layout_width="90dp"
                                 android:layout_height="30dp"
                                 android:background="@drawable/selector_btn_speak" />
@@ -143,6 +144,7 @@
                             android:orientation="horizontal" >
 
                             <ImageButton
+                                android:id="@+id/imgRecordBalanceOfVideo"
                                 android:layout_width="30dp"
                                 android:layout_height="30dp"
                                 android:background="@drawable/icon_video_clock" />

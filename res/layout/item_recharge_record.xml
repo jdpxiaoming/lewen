@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout 
+    		xmlns:android="http://schemas.android.com/apk/res/android"
+		    android:layout_width="fill_parent"
+		    android:layout_height="50dp"
+		    android:background="@drawable/home_list_item_bg"
+		    android:orientation="horizontal" 
+		    >
+
+			<TextView 
+            	    		android:id="@+id/textNoOfRechargeRecordItem"
+            	    		android:layout_width="fill_parent"
+            	    		android:layout_height="fill_parent"
+            	    		android:layout_weight="1"
+            	    		android:text="@string/str_recharge_no"
+            	    		style="@style/str_recharge_title"
+            	    		/>
+            	
+            	<TextView 
+            	    		android:id="@+id/textDateOfRechargeRecordItem"
+            	    		android:layout_width="fill_parent"
+            	    		android:layout_height="fill_parent"
+            	    		android:layout_weight="1"
+            	    		android:text="@string/str_recharge_date"
+            	    		style="@style/str_recharge_title"
+            	    		/>
+            	
+            	<TextView 
+            	    		android:id="@+id/textMoneyOfRechargeRecordItem"
+            	    		android:layout_width="fill_parent"
+            	    		android:layout_height="fill_parent"
+            	    		android:layout_weight="1"
+            	    		android:text="@string/str_recharge_money"
+            	    		style="@style/str_recharge_title"
+            	    		/>
+            	
+            	<TextView 
+            	    		android:id="@+id/textBalanceOfRechargeRecordItem"
+            	    		android:layout_width="fill_parent"
+            	    		android:layout_height="fill_parent"
+            	    		android:layout_weight="1"
+            	    		android:text="@string/str_recharge_balance"
+            	    		style="@style/str_recharge_title"
+            	    		/>
+</LinearLayout>

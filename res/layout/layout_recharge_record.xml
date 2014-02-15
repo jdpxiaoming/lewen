@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/home_bg"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical" >
+
+        <include
+            android:layout_width="fill_parent"
+            android:layout_height="60dp"
+            layout="@layout/toper_bar_save" 
+            />
+        <LinearLayout 
+            		android:layout_width="fill_parent"
+        			android:layout_height="40dp"
+        			android:background="#DDDDDD"
+        			android:orientation="horizontal"
+            		>
+            	<TextView 
+            	    		android:layout_width="fill_parent"
+            	    		android:layout_height="fill_parent"
+            	    		android:layout_weight="1"
+            	    		android:text="@string/str_recharge_no"
+            	    		style="@style/str_recharge_title"
+            	    		/>
+            	
+            	<TextView 
+            	    		android:layout_width="fill_parent"
+            	    		android:layout_height="fill_parent"
+            	    		android:layout_weight="1"
+            	    		android:text="@string/str_recharge_date"
+            	    		style="@style/str_recharge_title"
+            	    		/>
+            	
+            	<TextView 
+            	    		android:layout_width="fill_parent"
+            	    		android:layout_height="fill_parent"
+            	    		android:layout_weight="1"
+            	    		android:text="@string/str_recharge_money"
+            	    		style="@style/str_recharge_title"
+            	    		/>
+            	
+            	<TextView 
+            	    		android:layout_width="fill_parent"
+            	    		android:layout_height="fill_parent"
+            	    		android:layout_weight="1"
+            	    		android:text="@string/str_recharge_balance"
+            	    		style="@style/str_recharge_title"
+            	    		/>
+        </LinearLayout>
+        <LinearLayout 
+						 android:id="@+id/progressbarOfRechargeRecor"
+						 android:layout_width="fill_parent"
+						 android:layout_height="fill_parent"
+						 android:visibility="gone"
+						  >
+						<include layout="@layout/myprogress"/>
+   	 	</LinearLayout>
+        <ListView
+            android:id="@+id/listviewOfRechargeRecord"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
+    </LinearLayout>
+
+</LinearLayout>
