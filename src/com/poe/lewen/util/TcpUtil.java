@@ -41,48 +41,81 @@ public class TcpUtil {
 
 			@Override
 			public void tcp_receive(byte[] buffer) {
-
+				
+				System.out.println("login_req:"+login_req);
+				System.out.println("buffer长度："+buffer.length);
 				if (buffer.length == 0) {
 					System.out.println("服务器断开！！！！！！");
 				}
-				String str = "";
-				ByteArrayOutputStream ba = new ByteArrayOutputStream();
-				try {
-					ba.write(buffer);
-					str = new String(ba.toByteArray(), "GBK");
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
-
-				// 检测强制离线、命令
-				if (str != null && str.length() > 0) {
-					System.out.println(str);
-
-					/**
-					 * <JoyMon> <type>rsp</type> <cmd>0XB03A</cmd> <err>0</err>
-					 * <errdesc>成功</errdesc> </JoyMon>
-					 */
-					if (str.contains("cmd")) {
-						String cmd = str.substring(str.indexOf("<cmd>") + 5, str.indexOf("</cmd>"));
-						System.out.println("cmd:" + cmd);
-						if (cmd.equals("0XB03A")) {
-							close();
-							MyApplication.rsp_login = null;
-							// 强制下线
-							handler.post(new Runnable() {
-
-								@Override
-								public void run() {
-									// TODO Auto-generated method stub
-									MyApplication.getInstance().throwTips("您的账号在异地登陆，被迫下线！");
-								}
-							});
+				
+				
+				if(login_req==10){
+					byte[] result ;
+					String str2 = "";
+					System.out.println("语音返回byte:"+getStringFromBuff(buffer));
+					
+					ByteArrayOutputStream ba = new ByteArrayOutputStream();
+					try {
+						ba.write(buffer);
+						str2 = new String(ba.toByteArray());
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+					System.out.println("语音返回strs："+str2);
+					
+					if(str2!=null&&str2.contains(">")){
+						
+						String temp = str2.substring(0,str2.lastIndexOf(">")+1);
+						
+//						result = temp.getBytes();
+						System.out.println("temp:"+temp);
+						String s1=getStringFromBuff(new Packet(Constant.REQ_VOICE, temp.length(), 1, temp).getBuf());
+						System.out.println("s1:length"+s1.length()+s1);
+						int head = s1.length()-s1.indexOf("6074");
+						System.out.println("head:"+head +"start:"+s1.indexOf("6074"));
+						result = new byte[buffer.length-head];
+//						System.out.println("语音返回数据二进制码："+bytesToHexString(src));
+						System.arraycopy(buffer, str2.length(), result, 0, buffer.length-head);
+						if (null != handler)
+							TcpUtil.handler.sendMessage(TcpUtil.handler.obtainMessage(login_req, result));
+					}
+					
+				}else{
+					
+					String str = "";
+					ByteArrayOutputStream ba = new ByteArrayOutputStream();
+					try {
+						ba.write(buffer);
+						str = new String(ba.toByteArray(), "GBK");
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+					
+					// 检测强制离线、命令
+					if (str != null && str.length() > 0) {
+						System.out.println("检测强制离线："+str);
+						
+						/**
+						 * <JoyMon> <type>rsp</type> <cmd>0XB03A</cmd> <err>0</err>
+						 * <errdesc>成功</errdesc> </JoyMon>
+						 */
+						if (str.contains("cmd")) {
+							String cmd = str.substring(str.indexOf("<cmd>") + 5, str.indexOf("</cmd>"));
+							System.out.println("cmd:" + cmd);
+							if (cmd.equals("0XB03A")) {
+								close();
+								MyApplication.rsp_login = null;
+								// 强制下线
+							}
 						}
 					}
+					// 反馈工具类
+					if (null != handler)
+						TcpUtil.handler.sendMessage(TcpUtil.handler.obtainMessage(login_req, str));
 				}
-				// 反馈工具类
-				if (null != handler)
-					TcpUtil.handler.sendMessage(TcpUtil.handler.obtainMessage(login_req, str));
+				
+				
+				
 			}
 
 			@Override
@@ -108,6 +141,15 @@ public class TcpUtil {
 		new Thread(connect).start();
 
 	}
+	
+	public static String getStringFromBuff(byte[] buffer){
+		String str ="";
+		
+		for(byte b :buffer){
+			str+=b;
+		}
+		return str;
+	}
 
 	public static void startPolling() {
 
@@ -128,7 +170,6 @@ public class TcpUtil {
 		}
 
 		heart_handler.postDelayed(r_heart, 30 * 1000);
-
 	};
 
 	/*
@@ -339,6 +380,31 @@ public class TcpUtil {
 		login_req = 1;
 
 	}
+	
+	// 获取在线用户列表
+		public static void reqSpeak(String from,String to,byte[] content ,final Handler handler) {
+
+			TcpUtil.handler = handler;
+			if (!isConnected) {
+				init();
+			}
+
+			// 发送请求：获取 第一个直播地址
+			String tmp = XMLUtil.makeXML4Speak(from, to);
+			byte[] req = new Packet(Constant.REQ_VOICE, tmp.length()+content.length, 1, tmp).getBuf();
+		
+			Log.i("req_xml", getStringFromBuff(req));
+			//处理数据拼接
+			byte[] datas = new byte[req.length+content.length];
+			
+			System.arraycopy(req, 0, datas, 0, req.length);
+			System.arraycopy(content, 0, datas, req.length, content.length);
+			connect.write(datas);
+			
+			Log.i("req", getStringFromBuff(datas));
+			
+			login_req = 10;
+		}
 
 	// 获取充值记录
 	public static void getRechargeRecord(String userId,final Handler handler) {

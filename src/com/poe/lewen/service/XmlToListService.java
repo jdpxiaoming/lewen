@@ -299,18 +299,22 @@ public class XmlToListService {
 			case XmlPullParser.START_TAG:
 				String name = parser.getName();
 					if("username".equals(name)){
-						newInfo=(parser.nextText());
+						newInfo=parser.nextText();
+						System.out.println(newInfo);
+						news.add(newInfo);
+					}else if("userNum".equals(name)){
+						System.out.println("userNum:"+parser.nextText());
 					}
 				break;
 			case XmlPullParser.END_TAG:
 				if("username".equals(parser.getName())){
-					news.add(newInfo);
-					newInfo = null;
+//					news.add(newInfo);
 				}
 				break;
 			}
 			eventType = parser.next();
 		}
+		
 		return news;
 	}
 	
@@ -366,5 +370,23 @@ public class XmlToListService {
 			eventType = parser.next();
 		}
 		return news;
+	}
+	
+	/**
+	 * 获取在线用户发来的语音数据
+	 * @param str
+	 * @return
+	 */
+	public static byte[] getRspOfSpeak(String str){
+		byte[] result =null;
+		
+		if(str!=null&&str.contains(">")){
+			
+			String temp = str.substring(str.lastIndexOf(">")+1,str.length());
+			
+			result = temp.getBytes();
+		}
+		
+		return result;
 	}
 }

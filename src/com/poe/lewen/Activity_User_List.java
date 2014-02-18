@@ -31,13 +31,12 @@ public class Activity_User_List extends Activity {
 		public void handleMessage(Message msg) {
 			// TODO Auto-generated method stub
 			super.handleMessage(msg);
-			
-//			progressar.setVisibility(View.GONE);
-			
 			String result_login =(String) msg.obj;
+			System.out.println("获取在线用户列表结果："+result_login);
 			try {
 				userList = XmlToListService.GetUserNameList(result_login);
 				if(userList!=null){
+					System.out.println("set  adapter ："+userList.size());
 					//set adapter
 					setadapter();
 				}else{
@@ -82,9 +81,17 @@ public class Activity_User_List extends Activity {
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-				if(arg2==0){
-					startActivity(new Intent(Activity_User_List.this,Activity_Recharge_Record.class));
-				}
+				
+				String userName=userList.get(arg2);
+				
+//				if(userName.equals(MyApplication.rsp_login.getUserId())){
+//					MyApplication.getInstance().throwTips("您不可以和自己语音！");
+//				}else{
+					Intent intent = new Intent(Activity_User_List.this,HelloBubblesActivity.class);
+					intent.putExtra("toUserId", userName);
+					startActivity(intent);
+//				}
+				
 			}
 		});
 		

@@ -206,10 +206,10 @@ public class XMLUtil {
 	 * @return
 	 */
 	public static String makeXML4Speak(String from,String to) {
-		return "<JoyMon><type>req</type><cmd>0XC007</cmd>" +
+		return "<JoyMon><type>req</type><cmd>0XC00C</cmd>" +
 				"<from>" +from +	"</<from>" +
 				"<to>" +	to +	"</to>" +
-				"</JoyMon>\0";
+				"</JoyMon>";
 	}
 	
 	
@@ -219,6 +219,6 @@ public class XMLUtil {
 	 * @return
 	 */
 	public static String makeXML4RechargeRecord(String userId) {
-		return "<JoyMon><type>req</type><cmd>0XC00A</cmd><userId>" +		userId +	"</userId></JoyMon>\0";
+		return "<JoyMon><type>req</type><cmd>0XC00E</cmd><userId>" +		userId +	"</userId></JoyMon>\0";
 	}
 }

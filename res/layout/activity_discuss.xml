@@ -20,14 +20,14 @@
         android:layout_alignParentLeft="true"
         android:orientation="vertical" >
 
-        <EditText
-            android:id="@+id/editText1"
+        <Button
+            android:id="@+id/btnSpeakOfDiscuss"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
-            android:ems="10"
-            android:inputType="text" />
+            android:text="按住说话"
+            />
     </RelativeLayout>
 
 </RelativeLayout>

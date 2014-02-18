@@ -150,7 +150,7 @@ public class Activity_Login extends Activity {
 						System.out.println(MyApplication.rsp_login.getUserId());
 						if(MyApplication.rsp_login.getUserId()!=null&&MyApplication.rsp_login.getUserId().length()>1){
 							MyApplication.getInstance().throwTips("登录成功，自动跳转到播放列表页面！");
-							TcpUtil.startPolling();
+//							TcpUtil.startPolling();
 							startActivity(new Intent(Activity_Login.this,Activity_WorldPlay.class));
 						}else{
 							System.out.println("登录错误，rsp_login滞空："+MyApplication.rsp_login.getErr());

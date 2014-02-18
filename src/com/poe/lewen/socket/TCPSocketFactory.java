@@ -19,7 +19,7 @@ public class TCPSocketFactory {
 	private Socket mSocket;// socket连接对象
 	private DataOutputStream out;
 	private DataInputStream in;// 输入流
-	private byte[] buffer = new byte[1024*1];// 缓冲区字节数组，信息不能大于此缓冲区
+	private byte[] buffer = new byte[1024*8];// 缓冲区字节数组，信息不能大于此缓冲区
 	private byte[] tmpBuffer;// 临时缓冲区
 	private TCPSocketCallback callback;// 信息回调接口
 	private int timeOut = 1000 * 30;

@@ -39,10 +39,10 @@ public class Constant {
 	public static int REQ_ONLINE_USER      = 0XC005;      //获取在线用户列表
 	public static int RSP_ONLINE_USER      = 0XC006;      //响应获取在线用户
 	
-	public static int REQ_VOICE      = 0XC007;      //主动上发请求语音对讲
-	public static int RSP_VOICE      = 0XC008;      //目标用户收到语音包后，响应语音请求
+	public static int REQ_VOICE      = 0XC00C;      //主动上发请求语音对讲
+	public static int RSP_VOICE      = 0XC00D;      //目标用户收到语音包后，响应语音请求
 	
-	public static int REQ_BUY     = 0XC00A;      //获取某个用户的充值记录
-	public static int RSP_BUY      = 0XC00B;      //返回充值记录
+	public static int REQ_BUY     = 0XC00E;      //获取某个用户的充值记录
+	public static int RSP_BUY      = 0XC00F;      //返回充值记录
 	
 }
