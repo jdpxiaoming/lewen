@@ -10,6 +10,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
@@ -17,6 +18,7 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
@@ -27,6 +29,10 @@ public class SystemUrlSet extends Activity {
 //	public static int selected_item = -1;
 	private SystemUrlSetAdapter adapter =null;
 	private ListView listView = null;
+	
+	//用户自己添加服务器地址
+	private EditText edit_ip;
+	private Button btn_add;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +46,36 @@ public class SystemUrlSet extends Activity {
 	}
 
 	public void init() {
+		
+		//add ip
+		edit_ip			=	(EditText) findViewById(R.id.editIPOfWebServiceSet);
+		btn_add			=	(Button) findViewById(R.id.btn_addOfWebServiceSet);
+		btn_add.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				
+				if(!TextUtils.isEmpty(edit_ip.getText().toString())){
+					
+					ServiceInfo s1 = new ServiceInfo();
+					s1.setServiceName(edit_ip.getText().toString());
+					s1.setServiceUrl(edit_ip.getText().toString());
+					s1.setPort(SystemUrlSet.this.getApplication().getString(R.string.port1));
+					
+					if(!filter(edit_ip.getText().toString())){
+						
+						if(null!=adapter){
+							adapter.add(s1);
+						}
+					}else{
+						MyApplication.getInstance().throwTips("此地址已存在！");
+					}
+				}else{
+					MyApplication.getInstance().throwTips("请输入服务器ip！");
+				}
+				
+			}
+		});
 
 		btn_back		=	(Button) findViewById(R.id.btn_backOfSystemToperBar);
 		
@@ -145,16 +181,21 @@ public class SystemUrlSet extends Activity {
 			super.onPostExecute(result);
 				// 采用 备用的 本地服务器地址 列表 默认是 2个
 				ServiceInfo s1 = new ServiceInfo();
-				s1.setServiceName("联通网址一");
+				s1.setServiceName("联通:"+SystemUrlSet.this.getApplication().getString(R.string.host1));
 				s1.setServiceUrl(SystemUrlSet.this.getApplication().getString(R.string.host1));
 				s1.setPort(SystemUrlSet.this.getApplication().getString(R.string.port1));
 				serviceInfoList.add(s1);
 				
 				ServiceInfo s2 = new ServiceInfo();
-				s2.setServiceName("电信网址二");
+				s2.setServiceName("电信:"+SystemUrlSet.this.getApplication().getString(R.string.host2));
 				s2.setServiceUrl(SystemUrlSet.this.getApplication().getString(R.string.host2));
 				s2.setPort(SystemUrlSet.this.getApplication().getString(R.string.port2));
 				serviceInfoList.add(s2);
+				
+				ServiceInfo s3 = MyApplication.getInstance().getServiceInfo();
+				if(!filter(s3.getServiceUrl())){
+					serviceInfoList.add(s3);
+				}
 				
 //				ServiceInfo s3 = new ServiceInfo();
 //				s3.setServiceName("本地测试byPoe");
@@ -170,5 +211,20 @@ public class SystemUrlSet extends Activity {
 			progressbar.setVisibility(View.GONE);
 			
 		}
+	}
+	
+	/*
+	 * list 列表中是否已经存在当前ip
+	 */
+	private boolean filter(String ip){
+		boolean isExists = false;
+		
+		for(ServiceInfo s:serviceInfoList){
+			if(ip.equals(s.getServiceUrl())){
+				isExists = true;
+				break;
+			}
+		}
+		return isExists;
 	}
 }

@@ -2,7 +2,6 @@ package com.poe.lewen;
 
 import java.io.IOException;
 import com.poe.lewen.adapter.DiscussArrayAdapter;
-import com.poe.lewen.service.XmlToListService;
 import com.poe.lewen.util.Common;
 import com.poe.lewen.util.TcpUtil;
 import android.app.Activity;

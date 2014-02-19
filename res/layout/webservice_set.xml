@@ -8,7 +8,8 @@
 
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content" 
+        >
 
         <include
             android:layout_width="fill_parent"
@@ -38,7 +39,29 @@
         			android:orientation="vertical"
         			android:background="@drawable/system_set_bg"
         			>
-        
+     
+    <LinearLayout 
+        		android:layout_width="fill_parent"
+        		android:layout_height="wrap_content"
+        		android:orientation="horizontal"
+        		>
+        <EditText 
+            		android:id="@+id/editIPOfWebServiceSet"
+            		android:layout_width="fill_parent"
+            		android:layout_height="50dp"
+            		android:layout_weight="1"
+            		android:hint="ip"
+            		/>
+        <Button
+            android:id="@+id/btn_addOfWebServiceSet"
+            android:layout_width="50dip"
+            android:layout_height="45dip"
+            android:background="@drawable/selector_blue_to_red"
+            android:text="+"
+            android:textColor="#fff"
+            android:textSize="20dip" 
+            />
+    </LinearLayout>    
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -52,25 +75,6 @@
         android:background="@drawable/iphone_table_lne_bg"
         android:orientation="vertical" 
         >
-       <!--  <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:baselineAligned="false"
-            android:orientation="horizontal"
-            android:padding="5dp" >
-            
-               <EditText android:id="@+id/inputSearch"
-					     android:layout_width="fill_parent"
-					     android:layout_height="wrap_content"
-					     android:inputType="textShortMessage"
-					     android:hint=""
-					     />
-        </LinearLayout> 
-        <LinearLayout 
-				    			android:layout_width="fill_parent"
-				    			android:layout_height="2dp"
-				    			android:background="#0EA6EE"
-				    			/>-->
        <ListView 
            			android:id="@+id/listViewOfWebServiceSet"
            			android:layout_width="fill_parent"

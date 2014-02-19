@@ -17,18 +17,24 @@ import com.mm.android.avnetsdk.param.IAV_PlayerEventListener;
 import com.mm.android.avnetsdk.param.RecordInfo;
 import com.mm.android.avplaysdk.render.BasicGLSurfaceView;
 import com.poe.lewen.MyApplication.loaded4login;
+import com.poe.lewen.bean.rsp_parise;
+import com.poe.lewen.service.XmlToListService;
 import com.poe.lewen.util.Tool;
 
 import android.R.integer;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 public class Activity_Yuntai extends BaseActivity {
 	//---------------------------通道一
@@ -45,6 +51,10 @@ public class Activity_Yuntai extends BaseActivity {
 		private ImageButton btn_minus1,btn_minus2,btn_minus3;
 		private ImageButton btn_plus1,btn_plus2,btn_plus3;
 		
+		//top bar praise
+		private TextView text_all,text_now,text_praise;
+		private Button btn_praise;
+		
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -56,6 +66,13 @@ public class Activity_Yuntai extends BaseActivity {
 
 	@Override
 	public void init() {
+		
+		//top bar
+		text_all		=	(TextView) findViewById(R.id.textCount1OfToperBarYuntai);
+		text_now		=	(TextView) findViewById(R.id.textCount3OfToperBarYuntai);
+		text_praise	=	(TextView) findViewById(R.id.textCount2OfToperBarYuntai);
+		btn_praise	=	(Button) findViewById(R.id.rightButtonOfToperBarYuntai);
+		btn_praise.setOnClickListener(this);
 		
 		relativeSpeed	=	(RelativeLayout) findViewById(R.id.relativeSpeedOfYuntai);
 		imgSwitch	=	(ImageView) findViewById(R.id.imgSpeedOfYuntai);
@@ -116,6 +133,12 @@ public class Activity_Yuntai extends BaseActivity {
 	protected void onResume() {
 	if(bsView.getRenderer()==null){
 		bsView.init(Activity_Yuntai.this);
+	}
+	
+	if(MyApplication.cOnline!=null){
+		text_all.setText(MyApplication.cOnline.getHistory_watch());
+		text_now.setText(MyApplication.cOnline.getWatch());
+		text_praise.setText(MyApplication.cOnline.getPraise());
 	}
 	
 	//start video defalut channel is 0
@@ -205,7 +228,14 @@ public void onClick(View v) {
 	case R.id.btn_minus3OfYuntai:
 		cloudInParam.nType=AV_PTZ_Type.AV_PTZ_Aperture_Dec;
 		break;
-		
+	case R.id.rightButtonOfToperBarYuntai:
+		if (MyApplication.cOnline != null) {
+		MyApplication.packet.praiseChannel(MyApplication.cOnline.getChannelId(), handler_save);
+//			MyApplication.getInstance().throwTips("本功能暂未实现，敬请期待！");
+		} else {
+			MyApplication.getInstance().throwTips("请先登录选择通道！");
+		}
+		break;
 	default:
 		cloudInParam.bStop=true;
 		break;
@@ -217,6 +247,40 @@ public void onClick(View v) {
 	super.onClick(v);
 }
 
+private Handler handler_save = new Handler() {
+
+	@Override
+	public void handleMessage(Message msg) {
+		super.handleMessage(msg);
+		String result = (String) msg.obj;
+		if(null!=result)
+			System.out.println(result);
+		
+		switch (msg.what) {
+		case 1:	//收藏
+//			if (result != null && result.contains("errdesc")) {
+//				String tip = result.substring(result.indexOf("<errdesc>") + 9, result.lastIndexOf("</errdesc>"));
+//				MyApplication.getInstance().throwTips(tip);
+//			}
+			break;
+		case 2: //攒次通道
+			try {
+				rsp_parise  parise =XmlToListService.GetCountOfZan(result);
+				if(null!=parise){
+					MyApplication.getInstance().throwTips(parise.getErrdesc());
+					//set the count of zan on the top bar
+					text_praise.setText(parise.getParise_count());
+				}
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			break;
+		default:
+			break;
+		}
+	}
+};
 
 class playTask extends AsyncTask<Void, integer, String>{
 	

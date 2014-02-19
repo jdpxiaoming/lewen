@@ -1,12 +1,9 @@
 package com.poe.lewen.adapter;
 
-import java.util.ArrayList;
 import java.util.List;
-
 import com.poe.lewen.MyApplication;
 import com.poe.lewen.R;
 import com.poe.lewen.bean.ServiceInfo;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +14,6 @@ import android.widget.TextView;
 public class SystemUrlSetAdapter extends BaseAdapter {
 
 	
-	private List<ServiceInfo> serviceList ;//总的服务器集合
 	private List<ServiceInfo> searchList ;//满足搜索条件的集合
 	
 	private LayoutInflater lin;
@@ -25,34 +21,15 @@ public class SystemUrlSetAdapter extends BaseAdapter {
 	
 	public SystemUrlSetAdapter(Context c, List<ServiceInfo> serviceList) {
 		super();
-		this.searchList=this.serviceList = serviceList;
+		this.searchList= serviceList;
 		lin =LayoutInflater.from(c);
 	}
 
-	//过滤文字匹配的条件
-	public void Filter(CharSequence cs){
-		
-		if(null!=cs){
-			
-			searchList=new ArrayList<ServiceInfo>();
-			
-			//筛选
-			for(int i=0;i<serviceList.size();i++){
-				
-				if(serviceList.get(i).getServiceName().contains(cs)){
-					
-					searchList.add(serviceList.get(i));
-					
-				}
-			}
-			
-		}
-		
-		//刷新adapter
+
+	public void add(ServiceInfo service){
+		searchList.add(service);
 		this.notifyDataSetChanged();
-		
 	}
-	
 	/**
 	 * 
 	 * 根据点击的位置获取对应的 数据对象
@@ -79,9 +56,10 @@ public class SystemUrlSetAdapter extends BaseAdapter {
 	 */
 	public void setSelectdObject(int arg0){
 		
-		MyApplication.pushPreferenceData("hostname",  searchList.get(arg0).getServiceName()) ;
-		MyApplication.pushPreferenceData("host",  searchList.get(arg0).getServiceUrl()) ;
-		MyApplication.pushPreferenceData("port",  searchList.get(arg0).getPort()) ;
+//		MyApplication.pushPreferenceData("hostname",  searchList.get(arg0).getServiceName()) ;
+//		MyApplication.pushPreferenceData("host",  searchList.get(arg0).getServiceUrl()) ;
+//		MyApplication.pushPreferenceData("port",  searchList.get(arg0).getPort()) ;
+		MyApplication.getInstance().setHost(searchList.get(arg0));
 		
 		this.notifyDataSetChanged();
 	}

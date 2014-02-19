@@ -470,7 +470,7 @@ public class TcpUtil {
 			byte[] req = new Packet(Constant.REQ_HEART, tmp.length(), 1, tmp).getBuf();
 			connect.write(req);
 			Log.e("req", bytesToHexString(req));
-			login_req = 2;
+//			login_req = 2;
 		}
 	}
 

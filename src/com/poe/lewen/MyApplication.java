@@ -10,6 +10,7 @@ import com.mm.android.avnetsdk.param.AV_IN_Login;
 import com.mm.android.avnetsdk.param.AV_OUT_Login;
 import com.mm.android.avnetsdk.param.ConnectStatusListener;
 import com.poe.lewen.bean.Constant;
+import com.poe.lewen.bean.ServiceInfo;
 import com.poe.lewen.bean.channelOnLine;
 import com.poe.lewen.bean.rsp_login;
 import com.poe.lewen.util.TcpUtil;
@@ -111,6 +112,22 @@ public class MyApplication extends Application {
 	 */
 	public static String getPreferenceData(String tag){
 		return mPref.getString(tag, null);
+	}
+	
+	public void setHost(ServiceInfo service){
+		
+		MyApplication.pushPreferenceData("hostname",  service.getServiceName()) ;
+		MyApplication.pushPreferenceData("host",  service.getServiceUrl()) ;
+		MyApplication.pushPreferenceData("port",  service.getPort()) ;
+	}
+	public ServiceInfo getServiceInfo(){
+		ServiceInfo service = new ServiceInfo();
+		service.setServiceName(MyApplication.getPreferenceData("hostname"));
+		service.setServiceUrl(MyApplication.getPreferenceData("host"));
+		service.setPort(MyApplication.getPreferenceData("port"));
+		
+		return service;
+		
 	}
 	
 	// 常用事件监听，用来处理通常的网络错误，授权验证错误等

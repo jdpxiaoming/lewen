@@ -341,7 +341,7 @@ public class XmlToListService {
 				break;
 			case XmlPullParser.START_TAG:
 				String name = parser.getName();
-				if("node".equals(name)){
+				if("buy".equals(name)){
 					newInfo = new rsp_recharge_record();
 				}
 				if(newInfo!=null){
@@ -361,7 +361,7 @@ public class XmlToListService {
 				}
 				break;
 			case XmlPullParser.END_TAG:
-				if("username".equals(parser.getName())){
+				if("buy".equals(parser.getName())){
 					news.add(newInfo);
 					newInfo = null;
 				}
