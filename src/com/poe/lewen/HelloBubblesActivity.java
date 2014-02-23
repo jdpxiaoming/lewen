@@ -1,5 +1,6 @@
 package com.poe.lewen;
 
+import java.io.File;
 import java.io.IOException;
 import com.poe.lewen.adapter.DiscussArrayAdapter;
 import com.poe.lewen.util.Common;
@@ -37,6 +38,8 @@ public class HelloBubblesActivity extends Activity {
 	//语音数据
 	private byte[] temp = null;
 	
+	private long startTime,endTime;
+	
 	private Handler handler = new Handler(){
 
 		@Override
@@ -46,21 +49,23 @@ public class HelloBubblesActivity extends Activity {
 			if(null!=msg.obj){
 				temp = (byte[]) msg.obj;
 			}
-//			String result =(String) msg.obj;
-//			
-//			System.out.println("hanler内部："+result);
-//			temp =XmlToListService.getRspOfSpeak(result);
-			
 			if(temp!=null){
-				System.out.println("handler内部语音长度："+temp.length);
-				System.out.println("语音数据："+TcpUtil.getStringFromBuff(temp));
+				System.out.println("temp size:"+temp.length);
 				Common.saveFile(mFileName2, temp);
 				startPlaying();
+				new Handler().postDelayed(new Runnable() {
+					
+					@Override
+					public void run() {
+						TestDiff();
+					}
+				}, 5000);
 			}
 		}
 	};
 	
 	private void startRecording() {
+		startTime  = System.currentTimeMillis();
 		mRecorder = new MediaRecorder();
 		// 设置音源为Micphone
 		mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
@@ -80,25 +85,36 @@ public class HelloBubblesActivity extends Activity {
 	}
 
 	private void stopRecording() {
+		endTime = System.currentTimeMillis();
 		mRecorder.stop();
 		mRecorder.release();
 		mRecorder = null;
 		//转化 文件为 byte 数组
-		System.out.println(Common.readFileData(mFileName));
-		
-		temp	=	Common.readFileDataBytes(mFileName);
-		
-		System.out.println("制作语音byte[]:"+temp.length+">>"+TcpUtil.getStringFromBuff(temp));
-		TcpUtil.reqSpeak(MyApplication.rsp_login.getUserId(), toUserId, temp, handler);
-//		Common.saveFile(mFileName2, temp);
-//		startPlaying();
+
+		if(endTime-startTime<1.1*1000){
+			MyApplication.getInstance().throwTips("时间太短！");
+		}else{
+			//1.删除已经存在的缓存
+			temp	=	Common.readFileDataBytes(mFileName);
+			new Thread(new Runnable() {
+				
+				@Override
+				public void run() {
+					File f = new File(mFileName2);
+					System.out.println(f.delete());
+					
+					System.out.println("制作语音byte[]:"+temp.length+">>"+TcpUtil.getStringFromBuff(temp));
+					TcpUtil.reqSpeak(MyApplication.rsp_login.getUserId(), toUserId, temp, handler);
+				}
+			}).start();
+		}
 	}
 	
 	private void startPlaying() {
 		mPlayer = new MediaPlayer();
 		try {
 			// 设置要播放的文件
-			mPlayer.setDataSource(mFileName2);
+			mPlayer.setDataSource(mFileName);
 			mPlayer.prepare();
 			// 播放之
 			mPlayer.start();
@@ -152,5 +168,24 @@ public class HelloBubblesActivity extends Activity {
 //				return false;
 //			}
 //		});
+		
+		
+		TestDiff();
+	}
+
+	private void TestDiff() {
+		// TODO Auto-generated method stub
+		byte[] b1 = Common.readFileDataBytes(mFileName);
+		byte[] b2 = Common.readFileDataBytes(mFileName2);
+		if(b2!=null){
+		for(int i=0;i<b1.length;i++){
+			if(i<b2.length){
+				
+				if(b1[i]!=b2[i]){
+					System.out.println("postion:"+i+" b1:"+b1[i] +"b2: "+b2[i]);
+				}
+			}
+		}
+		}
 	}
 }

@@ -9,7 +9,7 @@ public class Common {
 
 	public static void saveFile(String fileName, byte[] data) {
 		try {
-			FileOutputStream out = new FileOutputStream(fileName);
+			FileOutputStream out = new FileOutputStream(fileName,true);
 			out.write(data);
 			out.flush();
 			out.close();

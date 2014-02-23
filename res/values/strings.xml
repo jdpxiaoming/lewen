@@ -46,6 +46,9 @@
     <string name="str_recharge_date">充值日期</string>
     <string name="str_recharge_money">充值金额</string>
     <string name="str_recharge_balance">余额</string>
+    <string name="str_consume_money">消费金额</string>
+    <string name="str_consume_date">消费日期</string>
+    
     <string name="str_user_list">在线用户列表</string>
     
     <string-array name="bank_menue">

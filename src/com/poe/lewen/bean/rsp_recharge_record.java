@@ -2,18 +2,10 @@ package com.poe.lewen.bean;
 
 public class rsp_recharge_record {
 
-	private String userId;
 	private String buyId;
 	private String beginTime;
-	private String expiration;//有效期结束时间
-	private String channelId;
-	
-	public String getUserId() {
-		return userId;
-	}
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
+	private String amount;//有效期结束时间
+	private String balance;
 	public String getBuyId() {
 		return buyId;
 	}
@@ -26,16 +18,17 @@ public class rsp_recharge_record {
 	public void setBeginTime(String beginTime) {
 		this.beginTime = beginTime;
 	}
-	public String getExpiration() {
-		return expiration;
+	public String getAmount() {
+		return amount;
 	}
-	public void setExpiration(String expiration) {
-		this.expiration = expiration;
+	public void setAmount(String amount) {
+		this.amount = amount;
 	}
-	public String getChannelId() {
-		return channelId;
+	public String getBalance() {
+		return balance;
 	}
-	public void setChannelId(String channelId) {
-		this.channelId = channelId;
+	public void setBalance(String balance) {
+		this.balance = balance;
 	}
+	
 }

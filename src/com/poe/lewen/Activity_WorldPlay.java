@@ -301,7 +301,7 @@ public class Activity_WorldPlay extends Activity implements OnItemClickListener 
 	 * @return
 	 */
 	private Node MakeNode(channel c, int i, Node parent) {
-		Node node = new Node(c.getName(), "" + i);
+		Node node = new Node(c.getName(), c.getType());
 		node.setId(c.getId());
 		node.setParentId(c.getParent_id());
 		node.setParent(parent);
@@ -512,7 +512,7 @@ public class Activity_WorldPlay extends Activity implements OnItemClickListener 
 		selected_node = (Node) ((TreeAdapter) parent.getAdapter()).getItem(position);
 		if (selected_node.isLeaf()) {
 
-			if (selected_node.getLevel() == 3) {// 门店 次终点
+			if (selected_node.getValue().equals("1")) {// 门店 次终点
 				progress.setVisibility(View.VISIBLE);
 				// 发送请求：获取 第一个直播地址
 				MyApplication.packet.getVideoAddress(selected_node.getId(), handler);

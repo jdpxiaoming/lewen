@@ -13,7 +13,7 @@
             	    		android:layout_height="fill_parent"
             	    		android:layout_weight="1"
             	    		android:text="@string/str_recharge_no"
-            	    		style="@style/str_recharge_title"
+            	    		style="@style/str_recharge_txt"
             	    		/>
             	
             	<TextView 
@@ -22,7 +22,7 @@
             	    		android:layout_height="fill_parent"
             	    		android:layout_weight="1"
             	    		android:text="@string/str_recharge_date"
-            	    		style="@style/str_recharge_title"
+            	    		style="@style/str_recharge_txt"
             	    		/>
             	
             	<TextView 
@@ -31,7 +31,7 @@
             	    		android:layout_height="fill_parent"
             	    		android:layout_weight="1"
             	    		android:text="@string/str_recharge_money"
-            	    		style="@style/str_recharge_title"
+            	    		style="@style/str_recharge_txt"
             	    		/>
             	
             	<TextView 
@@ -40,6 +40,6 @@
             	    		android:layout_height="fill_parent"
             	    		android:layout_weight="1"
             	    		android:text="@string/str_recharge_balance"
-            	    		style="@style/str_recharge_title"
+            	    		style="@style/str_recharge_txt"
             	    		/>
 </LinearLayout>

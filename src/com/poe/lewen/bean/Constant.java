@@ -45,4 +45,8 @@ public class Constant {
 	public static int REQ_BUY     = 0XC00E;      //获取某个用户的充值记录
 	public static int RSP_BUY      = 0XC00F;      //返回充值记录
 	
+	public static int REQ_CONSUME 	= 0XC010;      //获取某个用户的消费记录
+	public static int RSP_CONSUME      = 0XC011 ;  //返回某个用户的消费记录
+	
+	
 }

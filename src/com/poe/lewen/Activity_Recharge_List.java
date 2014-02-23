@@ -52,6 +52,9 @@ public class Activity_Recharge_List extends Activity {
 				if(arg2==0){
 					startActivity(new Intent(Activity_Recharge_List.this,Activity_Recharge_Record.class));
 				}
+				if(arg2==1){
+					startActivity(new Intent(Activity_Recharge_List.this,Activity_Consume_Record.class));
+				}
 			}
 		});
 		

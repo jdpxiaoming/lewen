@@ -221,4 +221,7 @@ public class XMLUtil {
 	public static String makeXML4RechargeRecord(String userId) {
 		return "<JoyMon><type>req</type><cmd>0XC00E</cmd><userId>" +		userId +	"</userId></JoyMon>\0";
 	}
+	public static String makeXML4ConsumeRecord(String userId) {
+		return "<JoyMon><type>req</type><cmd>0XC010</cmd><userId>" +		userId +	"</userId></JoyMon>\0";
+	}
 }

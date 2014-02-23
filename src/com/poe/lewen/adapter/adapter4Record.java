@@ -1,16 +1,15 @@
 package com.poe.lewen.adapter;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
-
 import com.poe.lewen.R;
 import com.poe.lewen.bean.rsp_recharge_record;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 public class adapter4Record extends BaseAdapter {
@@ -54,8 +53,17 @@ public class adapter4Record extends BaseAdapter {
 		rsp_recharge_record rsp=datasets.get(position);
 		
 
-		tv1.setText(rsp.getBuyId());
-		tv2.setText(rsp.getBeginTime());
+		tv1.setText(position+"");
+		
+		String str = rsp.getBeginTime();
+		str  = str.substring(0,8);
+		System.out.println("beginTime:"+str);
+//		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+//		String date = formatter.format(new Date(str));
+//		formatter = null;
+		tv2.setText(str);
+		tv3.setText(rsp.getAmount());
+		tv4.setText(rsp.getBalance());
 //		tv1.setText(rsp.get)
 		
 		return convertView;

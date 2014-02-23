@@ -92,6 +92,10 @@
             android:theme="@android:style/Theme.Black.NoTitleBar">
             
         </activity>
+        <activity android:name=".Activity_Consume_Record"  	
+            android:theme="@android:style/Theme.Black.NoTitleBar">
+            
+        </activity>
         <activity android:name=".Activity_Recharge_List"  	
             android:theme="@android:style/Theme.Black.NoTitleBar">
             

@@ -88,9 +88,9 @@ public class XmlToListService {
 					if("parent".equals(name)){
 						newInfo.setParent_id(parser.nextText());
 					}
-//					if("channelId".equals(name)){
-//						newInfo.setChannel_id(parser.nextText());
-//					}
+					if("type".equals(name)){
+						newInfo.setType(parser.nextText());
+					}
 					
 				}
 				break;
@@ -346,16 +346,14 @@ public class XmlToListService {
 				}
 				if(newInfo!=null){
 					
-					if("userId".equals(name)){
-						newInfo.setUserId(parser.nextText());
-					}else  if("buyid".equals(name)){
+					 if("buyid".equals(name)){
 						newInfo.setBuyId(parser.nextText());
 					}else  if("begintime".equals(name)){
 						newInfo.setBeginTime(parser.nextText());
-					}else  if("expiration".equals(name)){
-						newInfo.setExpiration(parser.nextText());
-					}else  if("channelId".equals(name)){
-						newInfo.setChannelId(parser.nextText());
+					}else  if("amount".equals(name)){
+						newInfo.setAmount(parser.nextText());
+					}else  if("balance".equals(name)){
+						newInfo.setBalance(parser.nextText());
 					}
 					
 				}
