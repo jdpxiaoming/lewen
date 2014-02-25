@@ -2,15 +2,11 @@ package com.poe.lewen;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
-import com.poe.lewen.MyApplication.loaded4login;
 import com.poe.lewen.adapter.adapter4Save;
 import com.poe.lewen.bean.channelOnLine;
 import com.poe.lewen.service.XmlToListService;
 import com.poe.lewen.vlc.VideoPlayerActivity;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -29,7 +25,7 @@ public class Activity_WorldPlay2 extends Activity  {
 	private adapter4Save adapter;
 	private LinearLayout progress;
 	private Handler handler;
-	public  List<channelOnLine> list_channel = null;// 收藏的组织架构
+	public  List<channelOnLine> list_channel = null;// demo List
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -128,41 +124,6 @@ public class Activity_WorldPlay2 extends Activity  {
 					MyApplication.packet.WatchChannel(MyApplication.cOnline.getChannelId(), "0");
 				}
 				MyApplication.cOnline = conline;
-
-				progress.setVisibility(View.VISIBLE);
-				// 可选择 1.直播 2.通道选择
-				MyApplication.getInstance().reLogin(new loaded4login() {
-
-					@Override
-					public void done() {
-						progress.setVisibility(View.GONE);
-						AlertDialog.Builder ab = new AlertDialog.Builder(Activity_WorldPlay2.this);
-						ab.setTitle("是否进入直播？");
-						ab.setPositiveButton("低码流", new DialogInterface.OnClickListener() {
-
-							@Override
-							public void onClick(DialogInterface dialog, int which) {
-
-								VideoPlayerActivity.start(Activity_WorldPlay2.this, conline.getPlayer_Addr(), false);
-							}
-
-						});
-
-						ab.setNegativeButton("高码流", new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialog, int which) {
-
-//								startActivity(new Intent(Activity_WorldPlay2.this, Activity_VidIntent intent =new Intent(Activity_WorldPlay.this, Activity_Video.class);
-								Intent intent =new Intent(Activity_WorldPlay2.this, Activity_Video.class);
-								intent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-								startActivity(intent);
-								//send the user action to service 
-								MyApplication.packet.WatchChannel(conline.getChannelId(), "1");
-							}
-						});
-						ab.show();
-					}
-				});
 			}
 		} catch (Exception e) {
 			progress.setVisibility(View.GONE);
@@ -181,5 +142,12 @@ public class Activity_WorldPlay2 extends Activity  {
 	private void doSendTcpRequest() {
 		progress.setVisibility(View.VISIBLE);
 		MyApplication.packet.getDemoList(handler);
+	}
+	
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+//		progress.setVisibility(View.GONE);
 	}
 }

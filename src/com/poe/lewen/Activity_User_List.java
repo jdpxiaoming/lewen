@@ -90,9 +90,9 @@ public class Activity_User_List extends Activity {
 //				if(userName.equals(MyApplication.rsp_login.getUserId())){
 //					MyApplication.getInstance().throwTips("您不可以和自己语音！");
 //				}else{
-					Intent intent = new Intent(Activity_User_List.this,ChatActivity.class);
-					intent.putExtra("toUserId", userName);
-					startActivity(intent);
+//					Intent intent = new Intent(Activity_User_List.this,ChatActivity.class);
+//					intent.putExtra("toUserId", userName);
+//					startActivity(intent);
 //				}
 				
 			}

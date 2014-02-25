@@ -71,6 +71,8 @@ public class Activity_Video extends BaseActivity implements IAV_CaptureDataListe
 	//top bar praise
 	private TextView text_all,text_now,text_praise;
 	private Button btn_praise;
+	private Button back;
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +91,9 @@ public class Activity_Video extends BaseActivity implements IAV_CaptureDataListe
 		text_praise	=	(TextView) findViewById(R.id.textCount2OfToperBarYuntai);
 		btn_praise	=	(Button) findViewById(R.id.rightButtonOfToperBarYuntai);
 		btn_praise.setOnClickListener(this);
+		
+		back		=	(Button) findViewById(R.id.leftButtonOfToperBarYuntai);
+		back.setOnClickListener(this);
 		
 		linear_volue_parent = (LinearLayout) findViewById(R.id.linearVolume1);
 		linear_volume = (LinearLayout) findViewById(R.id.lin_voice);
@@ -180,7 +185,6 @@ public class Activity_Video extends BaseActivity implements IAV_CaptureDataListe
 	}
 
 	private void WatchChannel() {
-		
 		if(null!=MyApplication.cOnline)
 			MyApplication.packet.WatchChannel(MyApplication.cOnline.getChannelId(), "0");
 		
@@ -307,6 +311,9 @@ public class Activity_Video extends BaseActivity implements IAV_CaptureDataListe
 			} else {
 				MyApplication.getInstance().throwTips("请先登录选择通道！");
 			}
+			break;
+		case R.id.leftButtonOfToperBarYuntai:
+			finish();
 			break;
 		case R.id.imgSpeakOfVideo://speak accord the userid
 			if(MyApplication.rsp_login!=null){
@@ -495,7 +502,7 @@ public class Activity_Video extends BaseActivity implements IAV_CaptureDataListe
 					@Override
 					public void done() {
 						login_failed++;
-						if (login_failed < 3)
+						if (login_failed < 2)
 							new playTask().execute();
 					}
 				});

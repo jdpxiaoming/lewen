@@ -350,7 +350,7 @@ class playTask extends AsyncTask<Void, integer, String>{
 			}
 		};
 		//构造实时监视输出参数
-		playOutParam = new AV_OUT_RealPlay();
+		playOutParam = new AV_OUT_RealPlay(); 
 	}
 
 	@Override

@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 public class Activity_Login extends Activity {
 
@@ -30,6 +31,9 @@ public class Activity_Login extends Activity {
 	private SharedPreferences sharedPreferences;
 	private LinearLayout progress;
 	private Handler handler ;
+	
+	//show demo
+	private TextView text_show;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -57,8 +61,19 @@ public class Activity_Login extends Activity {
 		edit_user.setText(sharedPreferences.getString("username", ""));
 		edit_passwd.setText(sharedPreferences.getString("password", ""));
 		
-//			edit_user.setText("SuperAdmin");
-//			edit_passwd.setText("123456");
+		
+		text_show 	=	(TextView) findViewById(R.id.text_show_displayOfLogin);
+		text_show.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				startActivity(new Intent(Activity_Login.this,Activity_Home.class));
+				finish();
+			}
+		});
+		
+//		edit_user.setText("SuperAdmin");
+//		edit_passwd.setText("123456");
 //		edit_user.setText("cxm");//备用账号：cxm
 //		edit_passwd.setText("111111");
 		
@@ -124,7 +139,8 @@ public class Activity_Login extends Activity {
 					
 					if(MyApplication.rsp_login!=null){
 						MyApplication.getInstance().throwTips("您已经登录了！");
-						startActivity(new Intent(Activity_Login.this,Activity_WorldPlay.class));
+						startActivity(new Intent(Activity_Login.this,Activity_Home.class));
+						finish();
 					}else{
 						progress.setVisibility(View.VISIBLE);
 						MyApplication.packet.login(username, password,handler);
@@ -147,9 +163,9 @@ public class Activity_Login extends Activity {
 					if(MyApplication.rsp_login!=null){
 						System.out.println(MyApplication.rsp_login.getUserId());
 						if(MyApplication.rsp_login.getUserId()!=null&&MyApplication.rsp_login.getUserId().length()>1){
-							MyApplication.getInstance().throwTips("登录成功，自动跳转到播放列表页面！");
+//							MyApplication.getInstance().throwTips("登录成功，自动跳转到播放列表页面！");
 //							TcpUtil.startPolling();
-							startActivity(new Intent(Activity_Login.this,Activity_WorldPlay.class));
+							startActivity(new Intent(Activity_Login.this,Activity_Home.class));
 						}else{
 							System.out.println("登录错误，rsp_login滞空："+MyApplication.rsp_login.getErr());
 							MyApplication.getInstance().throwTips(MyApplication.rsp_login.getErr());
@@ -168,6 +184,13 @@ public class Activity_Login extends Activity {
 				}
 			}
 		};
+		
+		
+		//如果首次登陆 进入 登陆界面 ，否则 直接结束当前页面
+		 if(MyApplication.getPreferenceData("first")==null){
+			 MyApplication.pushPreferenceData("first", "yes");
+				startActivity(new Intent(Activity_Login.this,HelpShowImageActivity.class));
+		 }
 	}
 	
 }

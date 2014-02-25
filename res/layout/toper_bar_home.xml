@@ -7,7 +7,7 @@
 				android:background="@drawable/menue_head_bg"
 				>
     			<TextView 
-    			    		android:id="@+id/titleOfToperBarDetail"
+    			    		android:id="@+id/titleOfToperBarHome"
     			    		android:layout_width="fill_parent"
     			    		android:layout_height="fill_parent"
     			    		android:text="@string/menue_title"
@@ -15,6 +15,16 @@
     			    		android:textSize="22sp"
     			    		android:textStyle="bold"
     			    		android:layout_centerInParent="true"
+    			    		android:gravity="center"
+    			    		/>
+    			<Button
+    			    		android:id="@+id/rightButtonOfToperBarHome"
+    			    		android:layout_width="55dp"
+    			    		android:layout_height="55dp"
+    			    		android:background="@drawable/actionbar_add_icon"
+    			    		android:layout_centerVertical="true"
+    			    		android:layout_alignParentRight="true"
+    			    		android:textColor="@android:color/background_light"
     			    		android:gravity="center"
     			    		/>
 </RelativeLayout>

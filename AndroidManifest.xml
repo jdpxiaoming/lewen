@@ -70,11 +70,7 @@
             		android:theme="@android:style/Theme.Black.NoTitleBar"
             		android:launchMode="singleInstance"
             		>
-            	<intent-filter >
-            	    	<action  android:name="android.intent.action.MAIN"/>
-            	    	
-            	    	<category android:name="android.intent.category.LAUNCHER"/>
-            	</intent-filter>
+            	
         </activity>
         <activity  android:name=".DateTimeDialog"
             	   android:theme="@android:style/Theme.Dialog"
@@ -115,7 +111,15 @@
         <activity android:name=".Activity_Map"    android:launchMode="singleInstance"	
             android:theme="@android:style/Theme.Black.NoTitleBar"></activity>
         <activity android:name=".Activity_Login"    android:launchMode="singleInstance"	
-            android:theme="@android:style/Theme.Black.NoTitleBar"></activity>
+            android:theme="@android:style/Theme.Black.NoTitleBar">
+            
+            	<intent-filter >
+            	    	<action  android:name="android.intent.action.MAIN"/>
+            	    	
+            	    	<category android:name="android.intent.category.LAUNCHER"/>
+            	</intent-filter>
+            	
+        </activity>
         <activity android:name=".Activity_WorldPlay"    android:launchMode="singleInstance"	
             android:theme="@android:style/Theme.Black.NoTitleBar"></activity>
         <activity android:name=".Activity_WorldPlay2"    android:launchMode="singleInstance"	

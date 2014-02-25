@@ -260,9 +260,8 @@ public class MyApplication extends Application {
 			protected void onPostExecute(String result) {
 				if(null!=result){
 					throwTips("通道连接成功~@！");
-					
 				}else{
-					throwTips("通道连接失败~@！");
+//					throwTips("通道连接失败~@！");
 				}
 				
 				if(null!=login_interface)

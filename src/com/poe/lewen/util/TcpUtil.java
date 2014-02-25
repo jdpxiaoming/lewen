@@ -369,7 +369,7 @@ public class TcpUtil {
 
 	// 赞次通道
 	public static void getDemoList(final Handler handler) {
-		setLoginReq("getDemoList", 1);
+		setLoginReq("getDemoList", 3);
 		TcpUtil.handler = handler;
 		if (!isConnected) {
 			init();
