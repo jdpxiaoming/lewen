@@ -269,7 +269,7 @@ public class Activity_Map extends BaseActivity {
 		@Override
 		protected void onPreExecute() {
 			playINParam = new AV_IN_RealPlay();
-			playINParam.nChannelID = 7; // 测试零号通道
+			playINParam.nChannelID = MyApplication.selectChannel; // 测试零号通道
 			playINParam.nSubType = 1;
 			playINParam.playView = bsView;
 			playINParam.dataListener = new IAV_DataListener() {

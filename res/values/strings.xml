@@ -70,8 +70,8 @@
     <string name="port1">8888</string>
     <string name="host2">203.195.191.183</string>
     <string name="port2">8888</string>
-    <!-- <string name="host3">192.168.1.100</string>
-    <string name="port3">8080</string> -->
+    <string name="host3">192.168.1.100</string>
+    <string name="port3">8080</string> 
     
     <!-- Main VLC Interface -->
     <string name="widget_name" translatable="false">VLC mini player</string>

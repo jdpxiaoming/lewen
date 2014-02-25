@@ -41,19 +41,18 @@ public class TcpUtil {
 
 			@Override
 			public void tcp_receive(byte[] buffer) {
-				
-				System.out.println("login_req:"+login_req);
-				System.out.println("buffer长度："+buffer.length);
+
+				System.out.println("login_req:" + login_req);
+				System.out.println("buffer长度：" + buffer.length);
 				if (buffer.length == 0) {
 					System.out.println("服务器断开！！！！！！");
 				}
-				
-				
-				if(login_req==10){
-					byte[] result ;
+
+				if (login_req == 10) {
+					byte[] result;
 					String str2 = "";
-					System.out.println("语音返回byte:"+getStringFromBuff(buffer));
-					
+					System.out.println("语音返回byte:" + getStringFromBuff(buffer));
+
 					ByteArrayOutputStream ba = new ByteArrayOutputStream();
 					try {
 						ba.write(buffer);
@@ -61,33 +60,36 @@ public class TcpUtil {
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}
-					System.out.println("语音返回strs："+str2);
-					
-					if(str2!=null&&str2.contains(">")){
-						
-						int iLast=0;
-						for(int i=0;i<buffer.length;i++){// 60 :<  62:>
-							if(Integer.parseInt(buffer[i]+"")==62){
-								//判断是不是 <JoyMon>结尾 n:110
-								if(Integer.parseInt(buffer[i-1]+"")==110){
-									iLast = i+1;
-//									break;
-									System.out.println("iLast: "+iLast);
+					System.out.println("语音返回strs：" + str2);
+
+					if (str2 != null && str2.contains(">")) {
+
+						int iLast = 0;
+						for (int i = 0; i < buffer.length; i++) {// 60 :< 62:>
+							if (Integer.parseInt(buffer[i] + "") == 62) {
+								// 判断是不是 <JoyMon>结尾 n:110
+								if (Integer.parseInt(buffer[i - 1] + "") == 110) {
+									iLast = i + 1;
+									// break;
+									System.out.println("iLast: " + iLast);
 								}
 							}
 						}
-					
-						result = new byte[buffer.length-iLast];
-						System.arraycopy(buffer, iLast, result, 0, buffer.length-iLast);
-						
-						System.out.println("处理后的result[]:"+getStringFromBuff(result));
-						
+
+						result = new byte[buffer.length - iLast];
+						System.arraycopy(buffer, iLast, result, 0,
+								buffer.length - iLast);
+
+						System.out.println("处理后的result[]:"
+								+ getStringFromBuff(result));
+
 						if (null != handler)
-							TcpUtil.handler.sendMessage(TcpUtil.handler.obtainMessage(login_req, result));
+							TcpUtil.handler.sendMessage(TcpUtil.handler
+									.obtainMessage(login_req, result));
 					}
-					
-				}else{
-					
+
+				} else {
+
 					String str = "";
 					ByteArrayOutputStream ba = new ByteArrayOutputStream();
 					try {
@@ -96,17 +98,19 @@ public class TcpUtil {
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}
-					
+
 					// 检测强制离线、命令
 					if (str != null && str.length() > 0) {
-						System.out.println("检测强制离线："+str);
-						
+						System.out.println("检测强制离线：" + str);
+
 						/**
-						 * <JoyMon> <type>rsp</type> <cmd>0XB03A</cmd> <err>0</err>
-						 * <errdesc>成功</errdesc> </JoyMon>
+						 * <JoyMon> <type>rsp</type> <cmd>0XB03A</cmd>
+						 * <err>0</err> <errdesc>成功</errdesc> </JoyMon>
 						 */
 						if (str.contains("cmd")) {
-							String cmd = str.substring(str.indexOf("<cmd>") + 5, str.indexOf("</cmd>"));
+							String cmd = str.substring(
+									str.indexOf("<cmd>") + 5,
+									str.indexOf("</cmd>"));
 							System.out.println("cmd:" + cmd);
 							if (cmd.equals("0XB03A")) {
 								close();
@@ -117,11 +121,10 @@ public class TcpUtil {
 					}
 					// 反馈工具类
 					if (null != handler)
-						TcpUtil.handler.sendMessage(TcpUtil.handler.obtainMessage(login_req, str));
+						TcpUtil.handler.sendMessage(TcpUtil.handler
+								.obtainMessage(login_req, str));
 				}
-				
-				
-				
+
 			}
 
 			@Override
@@ -142,23 +145,24 @@ public class TcpUtil {
 
 		System.out.println(MyApplication.getPreferenceData("host"));
 		System.out.println(MyApplication.getPreferenceData("port"));
-		connect.setAddress(MyApplication.getPreferenceData("host"), Integer.parseInt(MyApplication.getPreferenceData("port")));
+		connect.setAddress(MyApplication.getPreferenceData("host"),
+				Integer.parseInt(MyApplication.getPreferenceData("port")));
 
 		new Thread(connect).start();
 	}
-	
-	public static String getStringFromBuff(byte[] buffer){
-		String str ="";
-		
-		for(byte b :buffer){
-			str+=b;
+
+	public static String getStringFromBuff(byte[] buffer) {
+		String str = "";
+
+		for (byte b : buffer) {
+			str += b;
 		}
 		return str;
 	}
-	
-//	public static byte[] getBuffFromString(String str){
-//		return str.getBytes();
-//	}
+
+	// public static byte[] getBuffFromString(String str){
+	// return str.getBytes();
+	// }
 
 	public static void startPolling() {
 
@@ -181,11 +185,11 @@ public class TcpUtil {
 		heart_handler.postDelayed(r_heart, 30 * 1000);
 	};
 
-	
-	private static void setLoginReq(String method,int request){
-		System.out.println("req:"+request +"from :" +method);
+	private static void setLoginReq(String method, int request) {
+		System.out.println("req:" + request + "from :" + method);
 		login_req = request;
 	}
+
 	/*
 	 * 停止停跳检测 （socket连接登陆后发送）
 	 */
@@ -198,8 +202,9 @@ public class TcpUtil {
 	/**
 	 * 登录
 	 */
-	public static void login(final String userName, final String passwd, Handler handler) {
-		setLoginReq("login",0);
+	public static void login(final String userName, final String passwd,
+			Handler handler) {
+		setLoginReq("login", 0);
 		TcpUtil.handler = handler;
 		TcpUtil.userName = userName;
 
@@ -212,7 +217,8 @@ public class TcpUtil {
 		String tmp = XMLUtil.MakeXML(userName, passwd);
 		System.out.println(tmp);
 		System.out.println("login长度：" + tmp.length());
-		byte[] req = new Packet(Constant.REQ_LOGIN, tmp.length(), 1, tmp).getBuf();
+		byte[] req = new Packet(Constant.REQ_LOGIN, tmp.length(), 1, tmp)
+				.getBuf();
 		connect.write(req);
 		Log.e("req", bytesToHexString(req));
 	}
@@ -233,7 +239,8 @@ public class TcpUtil {
 
 		// 发送请求：获取 播放列表
 		String tmp = XMLUtil.MakeXML4List(MyApplication.rsp_login.getUserId());
-		byte[] req = new Packet(Constant.REQ_GET_ORG_STRUCTURE, tmp.length(), 1, tmp).getBuf();
+		byte[] req = new Packet(Constant.REQ_GET_ORG_STRUCTURE, tmp.length(),
+				1, tmp).getBuf();
 		connect.write(req);
 		Log.e("req", bytesToHexString(req));
 	}
@@ -244,8 +251,9 @@ public class TcpUtil {
 	 * 
 	 * @param handler
 	 */
-	public static void SaveChannel(Handler handler, String channelName, String channelNo, String channelId) {
-		setLoginReq("SaveChannel",1);
+	public static void SaveChannel(Handler handler, String channelName,
+			String channelNo, String channelId) {
+		setLoginReq("SaveChannel", 1);
 
 		TcpUtil.handler = handler;
 		if (!isConnected) {
@@ -253,10 +261,13 @@ public class TcpUtil {
 		}
 
 		// 发送请求：获取 播放列表
-		String tmp = XMLUtil.MakeXML4SaveAdd(MyApplication.rsp_login.getUserId(), userName, channelName, channelNo, channelId);
+		String tmp = XMLUtil.MakeXML4SaveAdd(
+				MyApplication.rsp_login.getUserId(), userName, channelName,
+				channelNo, channelId);
 		System.out.println(tmp);
 		System.out.println("req字符串的长度为：" + tmp.length());
-		byte[] req = new Packet(Constant.REQ_ADD_FAVORITES, tmp.length(), 1, tmp).getBuf();
+		byte[] req = new Packet(Constant.REQ_ADD_FAVORITES, tmp.length(), 1,
+				tmp).getBuf();
 		connect.write(req);
 
 		StringBuffer sb = new StringBuffer();
@@ -278,19 +289,21 @@ public class TcpUtil {
 	 */
 	public static void getSaveList(Handler handler) {
 
-		setLoginReq("getSaveList",1);
+		setLoginReq("getSaveList", 1);
 		TcpUtil.handler = handler;
 		if (!isConnected) {
 			init();
 		}
 
 		// 发送请求：获取 播放列表
-		String tmp = XMLUtil.MakeXML4SaveList(MyApplication.rsp_login.getUserId(), TcpUtil.userName);
+		String tmp = XMLUtil.MakeXML4SaveList(
+				MyApplication.rsp_login.getUserId(), TcpUtil.userName);
 
 		System.out.println(tmp);
 		System.out.println("req字符串的长度为：" + tmp.length());
 
-		byte[] req = new Packet(Constant.REQ_LIST_FAVORITES, tmp.length(), 1, tmp).getBuf();
+		byte[] req = new Packet(Constant.REQ_LIST_FAVORITES, tmp.length(), 1,
+				tmp).getBuf();
 		connect.write(req);
 		Log.e("req 2进制", req.toString());
 		String str = bytesToHexString(req);
@@ -302,7 +315,7 @@ public class TcpUtil {
 	// ***************
 	// 获取某个摄像头的具体播放地址信息
 	public static void getVideoAddress(String nodeId, Handler handler) {
-		setLoginReq("getVideoAddress",2);
+		setLoginReq("getVideoAddress", 2);
 		TcpUtil.handler = handler;
 		if (!isConnected) {
 			init();
@@ -310,24 +323,28 @@ public class TcpUtil {
 
 		// 发送请求：获取 第一个直播地址
 		String tmp = XMLUtil.MakeXML4PlayAddress(nodeId);
-		byte[] req = new Packet(Constant.REQ_GET_VIDEO_ADDR, tmp.length(), 1, tmp).getBuf();
+		byte[] req = new Packet(Constant.REQ_GET_VIDEO_ADDR, tmp.length(), 1,
+				tmp).getBuf();
 		connect.write(req);
 		Log.e("req", bytesToHexString(req));
 	}
 
 	// ***************
 	// 历史录像回放
-	public static void getVideoHistory(String deviceId, String channelId, String beginTime, String endTime, Handler handler) {
-		setLoginReq("getVideoHistory",1);
+	public static void getVideoHistory(String deviceId, String channelId,
+			String beginTime, String endTime, Handler handler) {
+		setLoginReq("getVideoHistory", 1);
 		TcpUtil.handler = handler;
 		if (!isConnected) {
 			init();
 		}
 
 		// 发送请求：获取 第一个直播地址
-		String tmp = XMLUtil.makeXML4PlayVideoHistory(deviceId, channelId, beginTime, endTime);
+		String tmp = XMLUtil.makeXML4PlayVideoHistory(deviceId, channelId,
+				beginTime, endTime);
 		System.out.println(tmp);
-		byte[] req = new Packet(Constant.REQ_GET_VIDEO_HISTORY_REC, tmp.length(), 1, tmp).getBuf();
+		byte[] req = new Packet(Constant.REQ_GET_VIDEO_HISTORY_REC,
+				tmp.length(), 1, tmp).getBuf();
 		connect.write(req);
 		Log.e("req", bytesToHexString(req));
 	}
@@ -335,7 +352,7 @@ public class TcpUtil {
 	// ***************
 	// 赞次通道
 	public static void praiseChannel(String channelId, Handler handler) {
-		setLoginReq("praiseChannel",2);
+		setLoginReq("praiseChannel", 2);
 		TcpUtil.handler = handler;
 		if (!isConnected) {
 			init();
@@ -343,25 +360,27 @@ public class TcpUtil {
 
 		// 发送请求：获取 第一个直播地址
 		String tmp = XMLUtil.makeXML4Zan(channelId);
-		byte[] req = new Packet(Constant.REQ_PRAISE_CHANNEL, tmp.length(), 1, tmp).getBuf();
+		byte[] req = new Packet(Constant.REQ_PRAISE_CHANNEL, tmp.length(), 1,
+				tmp).getBuf();
 		connect.write(req);
 		Log.e("req", bytesToHexString(req));
-		
+
 	}
 
 	// 赞次通道
 	public static void getDemoList(final Handler handler) {
-		setLoginReq("getDemoList",1);
+		setLoginReq("getDemoList", 1);
 		TcpUtil.handler = handler;
 		if (!isConnected) {
 			init();
 		}
 		// 发送请求：获取 第一个直播地址
 		String tmp = XMLUtil.makeXML4Demo();
-		byte[] req = new Packet(Constant.REQ_LIST_DEMO_ADDR, tmp.length(), 1, tmp).getBuf();
+		byte[] req = new Packet(Constant.REQ_LIST_DEMO_ADDR, tmp.length(), 1,
+				tmp).getBuf();
 		connect.write(req);
 		Log.e("req", bytesToHexString(req));
-		
+
 	}
 
 	/**
@@ -373,7 +392,8 @@ public class TcpUtil {
 		TcpUtil.handler = null;
 		if (isConnected) {
 			String tmp = XMLUtil.makeXML4WatchChannel(channelId, type);
-			byte[] req = new Packet(Constant.REQ_ENTER_LEAVE_CHANNEL, tmp.length(), 1, tmp).getBuf();
+			byte[] req = new Packet(Constant.REQ_ENTER_LEAVE_CHANNEL,
+					tmp.length(), 1, tmp).getBuf();
 			connect.write(req);
 			Log.e("req", bytesToHexString(req));
 			login_req = 1;
@@ -382,7 +402,7 @@ public class TcpUtil {
 
 	// 获取在线用户列表
 	public static void getUserList(final Handler handler) {
-		setLoginReq("getUserList",1);
+		setLoginReq("getUserList", 1);
 		TcpUtil.handler = handler;
 		if (!isConnected) {
 			init();
@@ -390,42 +410,43 @@ public class TcpUtil {
 
 		// 发送请求：获取 第一个直播地址
 		String tmp = XMLUtil.makeXML4OnlineUser();
-		byte[] req = new Packet(Constant.REQ_ONLINE_USER, tmp.length(), 1, tmp).getBuf();
+		byte[] req = new Packet(Constant.REQ_ONLINE_USER, tmp.length(), 1, tmp)
+				.getBuf();
 		connect.write(req);
 		Log.e("req", bytesToHexString(req));
 	}
-	
-	// 获取在线用户列表
-		public static void reqSpeak(String from,String to,byte[] content ,final Handler handler) {
-			setLoginReq("reqSpeak",10);
-			TcpUtil.handler = handler;
-			if (!isConnected) {
-				init();
-			}
 
-			// 发送请求：获取 第一个直播地址
-			String tmp = XMLUtil.makeXML4Speak(from, to);
-			byte[] req = new Packet(Constant.REQ_VOICE, tmp.length()+content.length, 1, tmp).getBuf();
-		
-			
-			Log.i("req_xml:",+req.length+">>"+ getStringFromBuff(req));
-			//处理数据拼接
-			byte[] datas = new byte[req.length+content.length];
-			
-			System.arraycopy(req, 0, datas, 0, req.length);
-			System.arraycopy(content, 0, datas, req.length, content.length);
-			
-			Log.e("req", datas.length+">>"+getStringFromBuff(datas));
-			connect.write(datas);
-			
-			
-			Log.i("req", getStringFromBuff(datas));
-			
-			
+	// 获取在线用户列表
+	public static void reqSpeak(String from, String to, byte[] content,
+			final Handler handler) {
+		setLoginReq("reqSpeak", 10);
+		TcpUtil.handler = handler;
+		if (!isConnected) {
+			init();
 		}
+
+		// 发送请求：获取 第一个直播地址
+		String tmp = XMLUtil.makeXML4Speak(from, to);
+		byte[] req = new Packet(Constant.REQ_VOICE, tmp.length()
+				+ content.length, 1, tmp).getBuf();
+
+		Log.i("req_xml:", +req.length + ">>" + getStringFromBuff(req));
+		// 处理数据拼接
+		byte[] datas = new byte[req.length + content.length];
+
+		System.arraycopy(req, 0, datas, 0, req.length);
+		System.arraycopy(content, 0, datas, req.length, content.length);
+
+		System.out.println("16進制語音數據："+bytesToHexString(datas));
+		Log.e("req", datas.length + ">>" + getStringFromBuff(datas));
+		connect.write(datas);
+
+		Log.i("req", getStringFromBuff(datas));
+
+	}
 
 	// 获取充值记录
-	public static void getRechargeRecord(String userId,final Handler handler) {
+	public static void getRechargeRecord(String userId, final Handler handler) {
 
 		TcpUtil.handler = handler;
 		if (!isConnected) {
@@ -434,32 +455,34 @@ public class TcpUtil {
 
 		// 发送请求：获取 第一个直播地址
 		String tmp = XMLUtil.makeXML4RechargeRecord(userId);
-		byte[] req = new Packet(Constant.REQ_BUY, tmp.length(), 1, tmp).getBuf();
+		byte[] req = new Packet(Constant.REQ_BUY, tmp.length(), 1, tmp)
+				.getBuf();
 		connect.write(req);
 		Log.e("req", bytesToHexString(req));
-		setLoginReq("getRechargeRecord",1);
+		setLoginReq("getRechargeRecord", 1);
 
 	}
+
 	// 获取消费记录
-	public static void getConsumeRecord(String userId,final Handler handler) {
-		
+	public static void getConsumeRecord(String userId, final Handler handler) {
+
 		TcpUtil.handler = handler;
 		if (!isConnected) {
 			init();
 		}
-		
+
 		// 发送请求：获取 第一个直播地址
 		String tmp = XMLUtil.makeXML4RechargeRecord(userId);
-		byte[] req = new Packet(Constant.REQ_CONSUME, tmp.length(), 1, tmp).getBuf();
+		byte[] req = new Packet(Constant.REQ_CONSUME, tmp.length(), 1, tmp)
+				.getBuf();
 		connect.write(req);
 		Log.e("req", bytesToHexString(req));
-		setLoginReq("getConsumeRecord",1);
+		setLoginReq("getConsumeRecord", 1);
 	}
-	
-	
-//----------------------------------------------------------------------------------------------------------------
-//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
-//---------------------------------------------------------------------------------------------------------------
+
+	// ----------------------------------------------------------------------------------------------------------------
+	// &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+	// ---------------------------------------------------------------------------------------------------------------
 	/**
 	 * bytes 转化为 0x 16进制格式
 	 * 
@@ -500,10 +523,11 @@ public class TcpUtil {
 		TcpUtil.handler = null;
 		if (isConnected) {
 			String tmp = XMLUtil.MakeXML4Heart(userName);
-			byte[] req = new Packet(Constant.REQ_HEART, tmp.length(), 1, tmp).getBuf();
+			byte[] req = new Packet(Constant.REQ_HEART, tmp.length(), 1, tmp)
+					.getBuf();
 			connect.write(req);
 			Log.e("req", bytesToHexString(req));
-//			login_req = 2;
+			// login_req = 2;
 		}
 	}
 
