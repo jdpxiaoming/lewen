@@ -535,6 +535,7 @@ public class Activity_WorldPlay extends Activity implements OnItemClickListener 
 				break;
 			}
 		}
+		
 		// 最终播放 摄像头
 		if (conline != null && conline.getPlayer_Addr() != null) {
 			System.out.println("直播地址：" + conline.getPlayer_Addr());
@@ -549,7 +550,9 @@ public class Activity_WorldPlay extends Activity implements OnItemClickListener 
 //				MyApplication.packet.WatchChannel(MyApplication.cOnline.getChannelId(), "0");
 //			}
 			MyApplication.cOnline = conline;
-
+			//直接播放rtmp
+//			VideoPlayerActivity.start(Activity_WorldPlay.this, conline.getPlayer_Addr(), false);
+			
 			// 可选择 1.直播 2.通道选择
 			MyApplication.getInstance().reLogin(new loaded4login() {
 

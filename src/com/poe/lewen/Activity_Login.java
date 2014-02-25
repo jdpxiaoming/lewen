@@ -3,8 +3,6 @@ package com.poe.lewen;
 import java.io.UnsupportedEncodingException;
 import com.poe.lewen.service.XmlToListService;
 import com.poe.lewen.util.HttpUtil;
-import com.poe.lewen.util.TcpUtil;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;

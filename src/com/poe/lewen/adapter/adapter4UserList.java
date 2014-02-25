@@ -41,6 +41,7 @@ public class adapter4UserList extends BaseAdapter {
 		}
 		
 		TextView tv 	  = (TextView) convertView.findViewById(R.id.textOfMenueItem);
+		tv.setTextSize(16);
 		tv.setText(datasets.get(position));
 		
 		return convertView;

@@ -2,11 +2,11 @@ package com.poe.lewen;
 
 import java.util.Calendar;
 import java.util.Locale;
-
 import kankan.wheel.widget.OnWheelChangedListener;
 import kankan.wheel.widget.WheelView;
 import kankan.wheel.widget.adapters.ArrayWheelAdapter;
 import kankan.wheel.widget.adapters.NumericWheelAdapter;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -82,6 +82,7 @@ public class DateTimeDialog extends Activity {
 		
 		btn_ok.setOnClickListener(new OnClickListener() {
 			
+			@SuppressLint("NewApi")
 			@Override
 			public void onClick(View v) {
 				

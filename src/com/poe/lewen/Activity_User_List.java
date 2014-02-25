@@ -2,8 +2,11 @@ package com.poe.lewen;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
+
 import com.poe.lewen.adapter.adapter4UserList;
+import com.poe.lewen.chat.ChatActivity;
 import com.poe.lewen.service.XmlToListService;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -87,7 +90,7 @@ public class Activity_User_List extends Activity {
 //				if(userName.equals(MyApplication.rsp_login.getUserId())){
 //					MyApplication.getInstance().throwTips("您不可以和自己语音！");
 //				}else{
-					Intent intent = new Intent(Activity_User_List.this,HelloBubblesActivity.class);
+					Intent intent = new Intent(Activity_User_List.this,ChatActivity.class);
 					intent.putExtra("toUserId", userName);
 					startActivity(intent);
 //				}

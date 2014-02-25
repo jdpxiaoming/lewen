@@ -34,12 +34,12 @@ public class HelloBubblesActivity extends Activity {
 	// 回放按钮
 	private MediaPlayer mPlayer = null;
 
-	private String toUserId ;
 	//语音数据
 	private byte[] temp = null;
 	
 	private long startTime,endTime;
 	
+	private String toUserId ;
 	private Handler handler = new Handler(){
 
 		@Override
