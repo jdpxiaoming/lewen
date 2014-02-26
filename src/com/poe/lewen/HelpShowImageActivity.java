@@ -101,7 +101,7 @@ public class HelpShowImageActivity extends Activity {
 	}
 
 	private void jumpActivity() {
-		startActivity(new Intent(this, Activity_Home.class));
+		startActivity(new Intent(this, Activity_Login.class));
 		finish();
 	}
 
