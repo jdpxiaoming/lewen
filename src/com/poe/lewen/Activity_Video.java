@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
+
 import com.mm.android.avnetsdk.AVNetSDK;
 import com.mm.android.avnetsdk.param.AV_HANDLE;
 import com.mm.android.avnetsdk.param.AV_IN_Capture;
@@ -29,6 +30,7 @@ import com.poe.lewen.service.XmlToListService;
 import com.poe.lewen.util.DateUtil;
 import com.poe.lewen.util.Tool;
 import com.poe.lewen.vlc.VideoPlayerActivity;
+
 import android.R.integer;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -84,7 +86,7 @@ public class Activity_Video extends BaseActivity implements IAV_CaptureDataListe
 
 	@Override
 	public void init() {
-		
+		 
 		//top bar
 		text_all		=	(TextView) findViewById(R.id.textCount1OfToperBarYuntai);
 		text_now		=	(TextView) findViewById(R.id.textCount3OfToperBarYuntai);
