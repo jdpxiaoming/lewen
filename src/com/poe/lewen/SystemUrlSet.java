@@ -192,11 +192,11 @@ public class SystemUrlSet extends Activity {
 				s2.setPort(SystemUrlSet.this.getApplication().getString(R.string.port2));
 				serviceInfoList.add(s2);
 				
-				ServiceInfo s3 = new ServiceInfo();
-				s3.setServiceName("本地测试byPoe");
-				s3.setServiceUrl(SystemUrlSet.this.getApplication().getString(R.string.host3));
-				s3.setPort(SystemUrlSet.this.getApplication().getString(R.string.port3));
-				serviceInfoList.add(s3);
+//				ServiceInfo s3 = new ServiceInfo();
+//				s3.setServiceName("本地测试byPoe");
+//				s3.setServiceUrl(SystemUrlSet.this.getApplication().getString(R.string.host3));
+//				s3.setPort(SystemUrlSet.this.getApplication().getString(R.string.port3));
+//				serviceInfoList.add(s3);
 
 				
 				ServiceInfo s4 = MyApplication.getInstance().getServiceInfo();

@@ -57,8 +57,8 @@
     </string-array>
     
     <string-array name="home_menue">
-        <item>用户登录</item>
-        <item>体验演示</item>
+        <item>切换用户</item>
+        <!-- <item>体验演示</item> -->
         <!-- <item>博客直通车</item> -->
         <item>我的收藏</item>
         <item>使用指南</item>

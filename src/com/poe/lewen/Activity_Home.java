@@ -192,21 +192,22 @@ public class Activity_Home extends BaseActivity implements OnItemClickListener {
 					pw.dismiss();
 					if(position==0){
 						startActivity(new Intent(Activity_Home.this,Activity_Login.class));
+						finish();
 					}
+					
+//					if(position==1){
+//						startActivity(new Intent(Activity_Home.this,Activity_WorldPlay2.class));
+//					}
 					
 					if(position==1){
-						startActivity(new Intent(Activity_Home.this,Activity_WorldPlay2.class));
-					}
-					
-					if(position==2){
 						startActivity(new Intent(Activity_Home.this,Activity_Save.class));
 					}
 					
-					if(position ==3){
+					if(position ==2){
 						startActivity(new Intent(Activity_Home.this,HelpShowImageActivity.class));
 					}
 					
-					if(position == 4){//log out
+					if(position == 3){//log out
 						MyApplication.rsp_login=null;
 						if (MyApplication.log_handle != null) {
 							AVNetSDK.AV_Logout(MyApplication.log_handle);
@@ -331,28 +332,30 @@ public class Activity_Home extends BaseActivity implements OnItemClickListener {
 		 * 获取直播组织架构
 		 */
 		private void doSendTcpRequest() {
+			
+			
 			if (MyApplication.rsp_login != null) {
-				progress.setVisibility(View.VISIBLE);
-				listview.setVisibility(View.VISIBLE);
-				listviewDemo.setVisibility(View.GONE);
-				MyApplication.packet.getPlayingList(handler);
+				
+				if(list_channel==null||list_channel.size()==0){
+					
+					progress.setVisibility(View.VISIBLE);
+					listview.setVisibility(View.VISIBLE);
+					listviewDemo.setVisibility(View.GONE);
+					MyApplication.packet.getPlayingList(handler);
+				}
 			} else {//未登录获取demo地址
 //				text_tip.setVisibility(View.VISIBLE);
-				progress.setVisibility(View.VISIBLE);
-				listview.setVisibility(View.GONE);
-				listviewDemo.setVisibility(View.VISIBLE);
-				MyApplication.packet.getDemoList(handler);
+				if(list_channelOnLine==null||list_channelOnLine.size()==0){
+					
+					progress.setVisibility(View.VISIBLE);
+					listview.setVisibility(View.GONE);
+					listviewDemo.setVisibility(View.VISIBLE);
+					MyApplication.packet.getDemoList(handler);
+				}
 			}
+			
 		}
 		
-	@Override
-	protected void onResume() {
-		// TODO Auto-generated method stub
-		super.onResume();
-		if(list_channel==null||list_channel.size()<=0){
-			doSendTcpRequest();
-		}
-	}
 	@Override
 	public void refresh(Object... param) {
 
@@ -421,32 +424,9 @@ public class Activity_Home extends BaseActivity implements OnItemClickListener {
 		
 	}
 	
-//	private void doPlay() {
-//		for (channelOnLine c : hash_online.get(selected_node.getParent().getText())) {
-//			if (c.getChannelName().equals(selected_node.getText())) {
-//				conline = c;
-//				break;
-//			}
-//		}
-//		
-//		// 最终播放 摄像头
-//		if (conline != null && conline.getPlayer_Addr() != null) {
-//			System.out.println("直播地址：" + conline.getPlayer_Addr());
-//			MyApplication.ip_dahua = conline.getDevice_ipAddr();
-//			MyApplication.prot_dahua = Integer.parseInt(conline.getDevice_portNo());
-//			MyApplication.username = conline.getUserName();
-//			MyApplication.password = conline.getUserPsw();
-//			MyApplication.selectChannel = 0;
-//			MyApplication.cOnline = conline;
-//			
-//			//直接播放rtmp
-//			VideoPlayerActivity.start(Activity_Home.this, conline.getPlayer_Addr(), false);
-//		}
-//	}
-	
 	private void doConnectChannel(channelOnLine conline) {
 		try {
-			progress.setVisibility(View.VISIBLE);
+//			progress.setVisibility(View.VISIBLE);
 			if (conline != null && conline.getPlayer_Addr() != null) {
 				System.out.println("直播地址：" + conline.getPlayer_Addr());
 				MyApplication.ip_dahua = conline.getDevice_ipAddr();

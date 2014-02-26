@@ -20,8 +20,8 @@ import com.poe.lewen.MyApplication.loaded4login;
 import com.poe.lewen.bean.rsp_parise;
 import com.poe.lewen.service.XmlToListService;
 import com.poe.lewen.util.Tool;
-
 import android.R.integer;
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -61,7 +61,6 @@ public class Activity_Yuntai extends BaseActivity {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.layout_yuntai);
-
 	}
 
 	@Override
@@ -93,6 +92,7 @@ public class Activity_Yuntai extends BaseActivity {
 		
 		relativeSpeed.setOnTouchListener(new OnTouchListener() {
 			
+			@SuppressLint("NewApi")
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				// TODO Auto-generated method stub
