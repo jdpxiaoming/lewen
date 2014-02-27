@@ -32,6 +32,7 @@ public class TcpUtil {
 
 	private static Runnable r_heart;
 
+	private  static String str_cache="";
 	/*
 	 * 初始化 tcp连接
 	 */
@@ -89,7 +90,7 @@ public class TcpUtil {
 					}
 
 				} else {
-
+					
 					String str = "";
 					ByteArrayOutputStream ba = new ByteArrayOutputStream();
 					try {
@@ -99,6 +100,7 @@ public class TcpUtil {
 						e1.printStackTrace();
 					}
 
+					str_cache +=str;
 					// 检测强制离线、命令
 					if (str != null && str.length() > 0) {
 						System.out.println("检测强制离线：" + str);
@@ -118,11 +120,13 @@ public class TcpUtil {
 								// 强制下线
 							}
 						}
+						
+						if(str.contains("</JoyMon>")){
+							// 反馈工具类
+							if (null != handler)
+								TcpUtil.handler.sendMessage(TcpUtil.handler.obtainMessage(login_req, str_cache));
+						}
 					}
-					// 反馈工具类
-					if (null != handler)
-						TcpUtil.handler.sendMessage(TcpUtil.handler
-								.obtainMessage(login_req, str));
 				}
 
 			}
@@ -188,6 +192,7 @@ public class TcpUtil {
 	private static void setLoginReq(String method, int request) {
 		System.out.println("req:" + request + "from :" + method);
 		login_req = request;
+		str_cache = "";
 	}
 
 	/*
@@ -230,7 +235,7 @@ public class TcpUtil {
 	 * @param handler
 	 */
 	public static void getPlayingList(Handler handler) {
-		login_req = 1;
+		setLoginReq("getPlayingList",1);
 
 		TcpUtil.handler = handler;
 		if (!isConnected) {

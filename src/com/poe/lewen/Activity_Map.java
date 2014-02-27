@@ -63,6 +63,7 @@ public class Activity_Map extends BaseActivity {
 	// top bar praise
 	private TextView text_all, text_now, text_praise;
 	private Button btn_praise;
+	private Button back;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +92,10 @@ public class Activity_Map extends BaseActivity {
 		btn_praise = (Button) findViewById(R.id.rightButtonOfToperBarYuntai);
 		btn_praise.setOnClickListener(this);
 
+		
+		back		=	(Button) findViewById(R.id.leftButtonOfToperBarYuntai);
+		back.setOnClickListener(this);
+		
 		bsView = (BasicGLSurfaceView) findViewById(R.id.screenOfMap);
 		// footer select index default
 		lin_map.setBackgroundResource(R.drawable.btn_bg_press);
@@ -366,6 +371,9 @@ public class Activity_Map extends BaseActivity {
 			} else {
 				MyApplication.getInstance().throwTips("请先登录选择通道！");
 			}
+			break;
+		case R.id.leftButtonOfToperBarYuntai:
+			finish();
 			break;
 		default:
 			super.onClick(v);

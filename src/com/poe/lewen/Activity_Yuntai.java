@@ -54,6 +54,7 @@ public class Activity_Yuntai extends BaseActivity {
 		//top bar praise
 		private TextView text_all,text_now,text_praise;
 		private Button btn_praise;
+		private Button back;
 		
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +73,8 @@ public class Activity_Yuntai extends BaseActivity {
 		text_praise	=	(TextView) findViewById(R.id.textCount2OfToperBarYuntai);
 		btn_praise	=	(Button) findViewById(R.id.rightButtonOfToperBarYuntai);
 		btn_praise.setOnClickListener(this);
-		
+		back		=	(Button) findViewById(R.id.leftButtonOfToperBarYuntai);
+		back.setOnClickListener(this);
 		relativeSpeed	=	(RelativeLayout) findViewById(R.id.relativeSpeedOfYuntai);
 		imgSwitch	=	(ImageView) findViewById(R.id.imgSpeedOfYuntai);
 		btn_minus1	=	(ImageButton) findViewById(R.id.btn_minus1OfYuntai);
@@ -235,6 +237,9 @@ public void onClick(View v) {
 		} else {
 			MyApplication.getInstance().throwTips("请先登录选择通道！");
 		}
+		break;
+	case R.id.leftButtonOfToperBarYuntai:
+		finish();
 		break;
 	default:
 		cloudInParam.bStop=true;
