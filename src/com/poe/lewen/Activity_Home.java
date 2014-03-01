@@ -430,7 +430,7 @@ public class Activity_Home extends BaseActivity implements OnItemClickListener {
 			if (conline != null && conline.getPlayer_Addr() != null) {
 				System.out.println("直播地址：" + conline.getPlayer_Addr());
 				MyApplication.ip_dahua = conline.getDevice_ipAddr();
-				MyApplication.prot_dahua = Integer.parseInt(conline.getDevice_portNo());
+				MyApplication.prot_dahua = Integer.parseInt(conline.getDevice_portNo().equals("1")?"37777":conline.getDevice_portNo());
 				MyApplication.username = conline.getUserName();
 				MyApplication.password = conline.getUserPsw();
 				MyApplication.selectChannel = 0;

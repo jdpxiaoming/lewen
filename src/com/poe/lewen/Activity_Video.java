@@ -32,11 +32,13 @@ import com.poe.lewen.util.Tool;
 import com.poe.lewen.vlc.VideoPlayerActivity;
 
 import android.R.integer;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PointF;
+import android.media.AudioManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -46,6 +48,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -75,7 +80,10 @@ public class Activity_Video extends BaseActivity implements IAV_CaptureDataListe
 	private Button btn_praise;
 	private Button back;
 	
-
+	//audio
+	private CheckBox checkbox_audo_switch;
+	AudioManager audioMa = null;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -177,9 +185,29 @@ public class Activity_Video extends BaseActivity implements IAV_CaptureDataListe
 				if (event.getAction() == MotionEvent.ACTION_MOVE) {
 					float x = event.getX();
 					linear_volume.setLayoutParams(new LinearLayout.LayoutParams((int) x, 5));
+					
+					float degree =(x/linear_volume.getWidth());
+					setVolume(degree);
 				}
 
 				return true;
+			}
+
+		});
+		
+		
+		//audio
+		checkbox_audo_switch	=	(CheckBox) findViewById(R.id.cb_audioOfVideo);
+		checkbox_audo_switch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+			
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				// TODO Auto-generated method stub
+				if(isChecked){
+					AVNetSDK.AV_OpenAudio(realPlay);
+				}else{
+					AVNetSDK.AV_CloseAudio(realPlay);
+				}
 			}
 		});
 		
@@ -192,6 +220,19 @@ public class Activity_Video extends BaseActivity implements IAV_CaptureDataListe
 		
 	}
 
+	
+	private void setVolume(float degree) {
+		
+		if(null==audioMa){
+			audioMa = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
+		}
+		int max = audioMa.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+		int dest = (int) (max*degree);
+		System.out.println("volume : "+dest);
+		audioMa.setStreamVolume(AudioManager.STREAM_MUSIC, dest, 1);
+//		audioMa.ad
+	}
+	
 	@Override
 	public void refresh(Object... param) {
 		// TODO Auto-generated method stub
