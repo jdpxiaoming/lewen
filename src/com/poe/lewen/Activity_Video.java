@@ -6,7 +6,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
-
 import com.mm.android.avnetsdk.AVNetSDK;
 import com.mm.android.avnetsdk.param.AV_HANDLE;
 import com.mm.android.avnetsdk.param.AV_IN_Capture;
@@ -30,7 +29,6 @@ import com.poe.lewen.service.XmlToListService;
 import com.poe.lewen.util.DateUtil;
 import com.poe.lewen.util.Tool;
 import com.poe.lewen.vlc.VideoPlayerActivity;
-
 import android.R.integer;
 import android.content.Context;
 import android.content.Intent;
@@ -83,6 +81,9 @@ public class Activity_Video extends BaseActivity implements IAV_CaptureDataListe
 	//audio
 	private CheckBox checkbox_audo_switch;
 	AudioManager audioMa = null;
+	
+	//录像回放
+	public static List<history_video> HList = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -301,9 +302,11 @@ public class Activity_Video extends BaseActivity implements IAV_CaptureDataListe
 			if(null!=result_login)
 				System.out.println(result_login);
 			switch (msg.what) {
-			case 1:
+			case 1://录像回放
 				try {
-					history_video hv = XmlToListService.GetPlayVideoHistory(result_login);
+					
+					/*history_video hv = XmlToListService.GetPlayVideoHistory(result_login);
+					
 					if(hv!=null){
 						if(hv.getPlayaddr().length()>4){
 							VideoPlayerActivity.start(Activity_Video.this,hv.getPlayaddr(), false);
@@ -312,7 +315,16 @@ public class Activity_Video extends BaseActivity implements IAV_CaptureDataListe
 						}
 					}else{
 						// parse exception
+					}*/
+					
+					HList	=	XmlToListService.GetPlayVideoHistoryCollection(result_login);
+					
+					if(HList!=null&&HList.size()>0){
+						startActivity(new Intent(Activity_Video.this,Activity_Recharge_List.class));
+					}else{
+						MyApplication.getInstance().throwTips("当前时间段没有历史记录！");
 					}
+					
 				} catch (UnsupportedEncodingException e) {
 					e.printStackTrace();
 				} catch (Exception e) {

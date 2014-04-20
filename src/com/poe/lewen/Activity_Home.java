@@ -428,7 +428,8 @@ public class Activity_Home extends BaseActivity implements OnItemClickListener {
 		try {
 //			progress.setVisibility(View.VISIBLE);
 			if (conline != null && conline.getPlayer_Addr() != null) {
-				System.out.println("直播地址：" + conline.getPlayer_Addr());
+				System.out.println("直播地址：" + conline.getPlayer_Addr()+"ip:"+conline.getDevice_ipAddr()
+						+"port:"+conline.getDevice_portNo());
 				MyApplication.ip_dahua = conline.getDevice_ipAddr();
 				MyApplication.prot_dahua = Integer.parseInt(conline.getDevice_portNo().equals("1")?"37777":conline.getDevice_portNo());
 				MyApplication.username = conline.getUserName();

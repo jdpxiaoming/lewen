@@ -51,6 +51,7 @@
     <string name="str_consume_date">消费日期</string>
     
     <string name="str_user_list">在线用户列表</string>
+    <string name="str_record_list">录像回放</string>
     
     <string-array name="bank_menue">
         <item>充值记录</item>

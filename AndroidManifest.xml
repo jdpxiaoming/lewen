@@ -86,6 +86,10 @@
             android:theme="@android:style/Theme.Black.NoTitleBar">
             
         </activity>
+        <activity android:name=".Activity_Record_List"  	
+            android:theme="@android:style/Theme.Black.NoTitleBar">
+            
+        </activity>
         <activity android:name=".HelloBubblesActivity"  	
             android:theme="@android:style/Theme.Black.NoTitleBar">
             
@@ -116,6 +120,7 @@
             android:theme="@android:style/Theme.Black.NoTitleBar"></activity>
         <activity android:name=".Activity_Map"    android:launchMode="singleInstance"	
             android:theme="@android:style/Theme.Black.NoTitleBar"></activity>
+        
         <activity android:name=".Activity_Login"    android:launchMode="singleInstance"	
             android:theme="@android:style/Theme.Black.NoTitleBar">
             

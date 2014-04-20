@@ -1,7 +1,5 @@
 package com.poe.lewen.adapter;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import com.poe.lewen.R;
 import com.poe.lewen.bean.rsp_recharge_record;

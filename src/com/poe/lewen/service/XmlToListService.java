@@ -234,6 +234,60 @@ public class XmlToListService {
 		
 		return newInfo;
 	}
+	/*
+	 * 解析失败返回NUll
+	 */
+	public static List<history_video>  GetPlayVideoHistoryCollection(String str)throws Exception{
+		if(str==null||"".equals(str))
+			return null;
+		
+		List<history_video> hList = new ArrayList<history_video>();
+		history_video newInfo = new history_video();
+		newInfo.setPlayaddr("playAddress001");
+		
+		history_video newInfo2 = new history_video();
+		newInfo2.setPlayaddr("playAddress002");
+		
+		hList.add(newInfo);
+		hList.add(newInfo2);
+		/*history_video newInfo = null;
+		XmlPullParser parser = Xml.newPullParser();
+		InputStream  inputStream   =   new   ByteArrayInputStream(str.getBytes());
+		parser.setInput(inputStream, "utf-8");
+		int eventType = parser.getEventType();
+		while(eventType!=XmlPullParser.END_DOCUMENT){
+			switch (eventType) {
+			case XmlPullParser.START_DOCUMENT:
+				newInfo = new history_video();
+				break;
+			case XmlPullParser.START_TAG:
+				String name = parser.getName();
+				if(newInfo!=null){
+					
+					if("deviceId".equals(name))
+						newInfo.setDeviceId(parser.nextText());
+					if("channelId".equals(name)){
+						newInfo.setChannelId(parser.nextText());
+					}
+					if("playAddr".equals(name)){
+						newInfo.setPlayaddr(parser.nextText());
+					}
+					if("ierrorCode".equals(name)){
+						newInfo.setErr(parser.nextText());
+					}
+					if("err".equals(name)){
+						newInfo.setErrdesc(parser.nextText());
+					}
+				}
+				break;
+			case XmlPullParser.END_TAG:
+				break;
+			}
+			eventType = parser.next();
+		}*/
+		
+		return hList;
+	}
 	
 	/*
 	 * 赞次通道的count总数
