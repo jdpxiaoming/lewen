@@ -320,7 +320,7 @@ public class Activity_Video extends BaseActivity implements IAV_CaptureDataListe
 					HList	=	XmlToListService.GetPlayVideoHistoryCollection(result_login);
 					
 					if(HList!=null&&HList.size()>0){
-						startActivity(new Intent(Activity_Video.this,Activity_Recharge_List.class));
+						startActivity(new Intent(Activity_Video.this,Activity_Record_List.class));
 					}else{
 						MyApplication.getInstance().throwTips("当前时间段没有历史记录！");
 					}
