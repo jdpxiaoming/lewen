@@ -305,18 +305,6 @@ public class Activity_Video extends BaseActivity implements IAV_CaptureDataListe
 			case 1://录像回放
 				try {
 					
-					/*history_video hv = XmlToListService.GetPlayVideoHistory(result_login);
-					
-					if(hv!=null){
-						if(hv.getPlayaddr().length()>4){
-							VideoPlayerActivity.start(Activity_Video.this,hv.getPlayaddr(), false);
-						}else{
-							MyApplication.getInstance().throwTips("当前时间段没有历史记录！");
-						}
-					}else{
-						// parse exception
-					}*/
-					
 					HList	=	XmlToListService.GetPlayVideoHistoryCollection(result_login);
 					
 					if(HList!=null&&HList.size()>0){

@@ -236,55 +236,36 @@ public class XmlToListService {
 	}
 	/*
 	 * 解析失败返回NUll
+	 * 
+	 * <JoyMon>
+		<type>rsp</type>
+		<cmd>57354</cmd>
+		<deviceId>82</deviceId>
+		<channelId>244</channelId>
+		<listCount>1</listCount>
+		<playAddr_0>rtmp://202.136.60.234/record/82-1-20140514132816</playAddr_0>
+		<ierrorCode>0</ierrorCode>
+		<err>ok</err>
+		</JoyMon>
+	 * 
 	 */
 	public static List<history_video>  GetPlayVideoHistoryCollection(String str)throws Exception{
 		if(str==null||"".equals(str))
 			return null;
 		
 		List<history_video> hList = new ArrayList<history_video>();
-		history_video newInfo = new history_video();
-		newInfo.setPlayaddr("playAddress001");
+		history_video newInfo = null;
+		int count = Integer.parseInt(str.substring(str.indexOf("<listCount>")+11,str.indexOf("</listCount>")));
 		
-		history_video newInfo2 = new history_video();
-		newInfo2.setPlayaddr("playAddress002");
-		
-		hList.add(newInfo);
-		hList.add(newInfo2);
-		/*history_video newInfo = null;
-		XmlPullParser parser = Xml.newPullParser();
-		InputStream  inputStream   =   new   ByteArrayInputStream(str.getBytes());
-		parser.setInput(inputStream, "utf-8");
-		int eventType = parser.getEventType();
-		while(eventType!=XmlPullParser.END_DOCUMENT){
-			switch (eventType) {
-			case XmlPullParser.START_DOCUMENT:
+		if(count>0){
+			
+			for(int i=0;i<count;i++){
+				String address = str.substring(str.indexOf("<"+i+">")+(i+"").length()+2,str.indexOf("</"+i+">"));
 				newInfo = new history_video();
-				break;
-			case XmlPullParser.START_TAG:
-				String name = parser.getName();
-				if(newInfo!=null){
-					
-					if("deviceId".equals(name))
-						newInfo.setDeviceId(parser.nextText());
-					if("channelId".equals(name)){
-						newInfo.setChannelId(parser.nextText());
-					}
-					if("playAddr".equals(name)){
-						newInfo.setPlayaddr(parser.nextText());
-					}
-					if("ierrorCode".equals(name)){
-						newInfo.setErr(parser.nextText());
-					}
-					if("err".equals(name)){
-						newInfo.setErrdesc(parser.nextText());
-					}
-				}
-				break;
-			case XmlPullParser.END_TAG:
-				break;
+				newInfo.setPlayaddr(address);
+				hList.add(newInfo);
 			}
-			eventType = parser.next();
-		}*/
+		}
 		
 		return hList;
 	}
