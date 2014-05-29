@@ -102,6 +102,7 @@ public class HelpShowImageActivity extends Activity {
 
 	private void jumpActivity() {
 		startActivity(new Intent(this, Activity_Login.class));
+		overridePendingTransition(R.anim.bg_slide_left_in, R.anim.bg_slide_left_out);
 		finish();
 	}
 

@@ -166,6 +166,7 @@ public class Activity_Save extends Activity {
 							public void onClick(DialogInterface dialog, int which) {
 
 								startActivity(new Intent(Activity_Save.this, Activity_Video.class));
+								overridePendingTransition(R.anim.bg_slide_left_in, R.anim.bg_slide_left_out);
 								//send the user action to service 
 								MyApplication.packet.WatchChannel(conline.getChannelId(), "1");
 							}

@@ -140,6 +140,7 @@ public class Activity_Login extends Activity {
 					if(MyApplication.rsp_login!=null){
 						MyApplication.getInstance().throwTips("您已经登录了！");
 						startActivity(new Intent(Activity_Login.this,Activity_Home.class));
+						overridePendingTransition(R.anim.bg_slide_down_in, R.anim.bg_slide_down_out);
 						finish();
 					}else{
 						progress.setVisibility(View.VISIBLE);
@@ -166,6 +167,7 @@ public class Activity_Login extends Activity {
 //							MyApplication.getInstance().throwTips("登录成功，自动跳转到播放列表页面！");
 //							TcpUtil.startPolling();
 							startActivity(new Intent(Activity_Login.this,Activity_Home.class));
+							overridePendingTransition(R.anim.bg_slide_down_in, R.anim.bg_slide_down_out);
 							finish();
 						}else{
 							System.out.println("登录错误，rsp_login滞空："+MyApplication.rsp_login.getErr());

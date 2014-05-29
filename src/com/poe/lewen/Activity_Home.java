@@ -192,6 +192,7 @@ public class Activity_Home extends BaseActivity implements OnItemClickListener {
 					pw.dismiss();
 					if(position==0){
 						startActivity(new Intent(Activity_Home.this,Activity_Login.class));
+						overridePendingTransition(R.anim.bg_slide_left_in, R.anim.bg_slide_left_out);
 						finish();
 					}
 					
@@ -201,10 +202,12 @@ public class Activity_Home extends BaseActivity implements OnItemClickListener {
 					
 					if(position==1){
 						startActivity(new Intent(Activity_Home.this,Activity_Save.class));
+						overridePendingTransition(R.anim.bg_slide_left_in, R.anim.bg_slide_left_out);
 					}
 					
 					if(position ==2){
 						startActivity(new Intent(Activity_Home.this,HelpShowImageActivity.class));
+						overridePendingTransition(R.anim.bg_slide_left_in, R.anim.bg_slide_left_out);
 					}
 					
 					if(position == 3){//log out

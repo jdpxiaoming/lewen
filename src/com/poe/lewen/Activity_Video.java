@@ -309,6 +309,7 @@ public class Activity_Video extends BaseActivity implements IAV_CaptureDataListe
 					
 					if(HList!=null&&HList.size()>0){
 						startActivity(new Intent(Activity_Video.this,Activity_Record_List.class));
+						overridePendingTransition(R.anim.bg_slide_left_in, R.anim.bg_slide_left_out);
 					}else{
 						MyApplication.getInstance().throwTips("当前时间段没有历史记录！");
 					}
@@ -343,6 +344,7 @@ public class Activity_Video extends BaseActivity implements IAV_CaptureDataListe
 		case R.id.imgPlayHistoryOfVideo:
 			if (MyApplication.cOnline != null) {
 				startActivityForResult(new Intent(Activity_Video.this, DateTimeDialog.class), 0);
+				overridePendingTransition(R.anim.bg_slide_left_in, R.anim.bg_slide_left_out);
 			} else {
 				MyApplication.getInstance().throwTips("请先登录选择通道！");
 			}
@@ -362,12 +364,14 @@ public class Activity_Video extends BaseActivity implements IAV_CaptureDataListe
 			if(MyApplication.rsp_login!=null){
 				
 				startActivity(new Intent(Activity_Video.this,Activity_User_List.class));
+				overridePendingTransition(R.anim.bg_slide_left_in, R.anim.bg_slide_left_out);
 			}else{
 				MyApplication.getInstance().throwTips("请先登录！");
 			}
 			break;
 		case R.id.imgRecordBalanceOfVideo://收银记录
 			startActivity(new Intent(Activity_Video.this,Activity_Recharge_List.class));
+			overridePendingTransition(R.anim.bg_slide_left_in, R.anim.bg_slide_left_out);
 			break;
 		default:
 			super.onClick(v);

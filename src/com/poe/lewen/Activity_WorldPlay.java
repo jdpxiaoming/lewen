@@ -578,6 +578,7 @@ public class Activity_WorldPlay extends Activity implements OnItemClickListener 
 							Intent intent =new Intent(Activity_WorldPlay.this, Activity_Video.class);
 							intent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
 							startActivity(intent);
+							overridePendingTransition(R.anim.bg_slide_left_in, R.anim.bg_slide_left_out);
 							//send the user action to service 
 							MyApplication.packet.WatchChannel(conline.getChannelId(), "1");
 						}

@@ -85,6 +85,7 @@ public class Activity_Recharge_Record extends Activity {
 		}else{
 			MyApplication.getInstance().throwTips("您当前没有充值记录，请先登录！");
 			startActivity(new Intent(Activity_Recharge_Record.this,Activity_Login.class));
+			overridePendingTransition(R.anim.bg_slide_left_in, R.anim.bg_slide_left_out);
 			finish();
 		}
 	}

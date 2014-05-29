@@ -569,6 +569,7 @@ public class Activity_PlayList extends Activity implements OnItemClickListener {
 						public void onClick(DialogInterface dialog, int which) {
 
 							startActivity(new Intent(Activity_PlayList.this, Activity_Video.class));
+							overridePendingTransition(R.anim.bg_slide_left_in, R.anim.bg_slide_left_out);
 						}
 					});
 					ab.show();

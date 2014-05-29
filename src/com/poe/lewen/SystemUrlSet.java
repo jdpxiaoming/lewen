@@ -118,7 +118,7 @@ public class SystemUrlSet extends Activity {
 				Intent intent = new Intent(SystemUrlSet.this,Activity_Login.class);
 				intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 				startActivity(intent);
-				
+				overridePendingTransition(R.anim.bg_slide_left_in, R.anim.bg_slide_left_out);
 				SystemUrlSet.this.finish();
 				
 			}

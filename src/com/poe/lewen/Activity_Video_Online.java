@@ -282,6 +282,7 @@ public class Activity_Video_Online extends BaseActivity implements IAV_CaptureDa
 		case R.id.imgPlayHistoryOfVideo:
 			if (MyApplication.cOnline != null) {
 				startActivityForResult(new Intent(Activity_Video_Online.this, DateTimeDialog.class), 100);
+				overridePendingTransition(R.anim.bg_slide_left_in, R.anim.bg_slide_left_out);
 			} else {
 				MyApplication.getInstance().throwTips("请先登录选择通道！");
 			}

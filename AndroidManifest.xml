@@ -75,19 +75,25 @@
         <activity   android:name="Activity_Home"
             		android:theme="@android:style/Theme.Black.NoTitleBar"
             		android:launchMode="singleInstance"
+            		android:screenOrientation="portrait"
             		>
             	
         </activity>
         <activity  android:name=".DateTimeDialog"
             	   android:theme="@android:style/Theme.Dialog"
+            	   android:screenOrientation="portrait"
             		>
         </activity>
         <activity android:name=".Activity_Video"  	
-            android:theme="@android:style/Theme.Black.NoTitleBar">
+            android:theme="@android:style/Theme.Black.NoTitleBar"
+            android:screenOrientation="portrait"
+            >
             
         </activity>
         <activity android:name=".Activity_Record_List"  	
-            android:theme="@android:style/Theme.Black.NoTitleBar">
+            android:theme="@android:style/Theme.Black.NoTitleBar"
+            android:screenOrientation="portrait"
+            >
             
         </activity>
         <activity android:name=".HelloBubblesActivity"  	
@@ -95,34 +101,49 @@
             
         </activity>
         <activity android:name=".Activity_Recharge_Record"  	
-            android:theme="@android:style/Theme.Black.NoTitleBar">
+            android:theme="@android:style/Theme.Black.NoTitleBar"
+            android:screenOrientation="portrait"
+            >
             
         </activity>
         <activity android:name=".Activity_Consume_Record"  	
-            android:theme="@android:style/Theme.Black.NoTitleBar">
+            android:theme="@android:style/Theme.Black.NoTitleBar"
+            android:screenOrientation="portrait"
+            >
             
         </activity>
         <activity android:name=".Activity_Recharge_List"  	
-            android:theme="@android:style/Theme.Black.NoTitleBar">
+            android:theme="@android:style/Theme.Black.NoTitleBar"
+            android:screenOrientation="portrait"
+            >
             
         </activity>
         <activity android:name=".Activity_User_List"  	
-            android:theme="@android:style/Theme.Black.NoTitleBar">
+            android:theme="@android:style/Theme.Black.NoTitleBar"
+            android:screenOrientation="portrait"
+            >
             
         </activity>
         
         <activity android:name=".chat.ChatActivity"  	
-            android:theme="@android:style/Theme.Black.NoTitleBar">
+            android:theme="@android:style/Theme.Black.NoTitleBar"
+            android:screenOrientation="portrait"
+            >
             
         </activity>
         
         <activity android:name=".Activity_Yuntai" android:launchMode="singleInstance"	
-            android:theme="@android:style/Theme.Black.NoTitleBar"></activity>
+            android:theme="@android:style/Theme.Black.NoTitleBar" 
+            android:screenOrientation="portrait"></activity>
         <activity android:name=".Activity_Map"    android:launchMode="singleInstance"	
-            android:theme="@android:style/Theme.Black.NoTitleBar"></activity>
+            android:theme="@android:style/Theme.Black.NoTitleBar"
+            android:screenOrientation="portrait"
+            ></activity>
         
         <activity android:name=".Activity_Login"    android:launchMode="singleInstance"	
-            android:theme="@android:style/Theme.Black.NoTitleBar">
+            android:theme="@android:style/Theme.Black.NoTitleBar"
+            android:screenOrientation="portrait"
+            >
             
             	<intent-filter >
             	    	<action  android:name="android.intent.action.MAIN"/>
@@ -132,13 +153,21 @@
             	
         </activity>
         <activity android:name=".Activity_WorldPlay"    android:launchMode="singleInstance"	
-            android:theme="@android:style/Theme.Black.NoTitleBar"></activity>
+            android:theme="@android:style/Theme.Black.NoTitleBar"
+            android:screenOrientation="portrait"
+            ></activity>
         <activity android:name=".Activity_WorldPlay2"    android:launchMode="singleInstance"	
-            android:theme="@android:style/Theme.Black.NoTitleBar"></activity>
+            android:theme="@android:style/Theme.Black.NoTitleBar"
+            android:screenOrientation="portrait"
+            ></activity>
          <activity android:name=".Activity_Save"    android:launchMode="singleInstance"	
-            android:theme="@android:style/Theme.Black.NoTitleBar"></activity>
+            android:theme="@android:style/Theme.Black.NoTitleBar"
+            android:screenOrientation="portrait"
+            ></activity>
           <activity android:name=".Activity_Video_Play"    android:launchMode="singleInstance"	
-            android:theme="@android:style/Theme.Black.NoTitleBar">
+            android:theme="@android:style/Theme.Black.NoTitleBar"
+            android:screenOrientation="portrait"
+            >
           </activity>
           
           
